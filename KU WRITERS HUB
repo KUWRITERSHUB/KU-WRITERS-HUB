@@ -1,0 +1,60 @@
+import React from "react";
+
+// Simple replacements for Card, Button, Input
+const Card = ({ children }) => <div style={{background:'white',padding:'20px',borderRadius:'15px',boxShadow:'0 0 10px rgba(0,0,0,0.1)',margin:'10px 0'}}>{children}</div>;
+const CardContent = ({ children }) => <div>{children}</div>;
+const Button = ({ children }) => <button style={{background:'black',color:'white',padding:'10px 15px',borderRadius:'10px',border:'none',cursor:'pointer',margin:'5px 0'}}>{children}</button>;
+const Input = (props) => <input style={{padding:'10px',width:'100%',borderRadius:'10px',border:'1px solid #ccc',margin:'5px 0'}} {...props} />;
+
+export default function App() {
+  return (
+    <div style={{minHeight:'100vh',background:'#f9fafb',color:'#333',fontFamily:'Arial, sans-serif',padding:'20px'}}>
+      {/* Navbar */}
+      <nav style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px',background:'white',boxShadow:'0 2px 4px rgba(0,0,0,0.1)',borderRadius:'10px'}}>
+        <h1 style={{fontWeight:'bold'}}>UK WRITERS HUB</h1>
+        <div>
+          <Button>Login</Button>
+          <Button>Register</Button>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section style={{textAlign:'center',padding:'40px 10px'}}>
+        <h2 style={{fontSize:'28px',fontWeight:'bold',marginBottom:'10px'}}>Earn, Write, and Grow with UK WRITERS HUB</h2>
+        <p style={{marginBottom:'20px'}}>Join Kenya’s fastest growing academic writing platform</p>
+        <Button>Join Now (KES 500)</Button>
+      </section>
+
+      {/* Features */}
+      <section>
+        {["Bid for Writing Jobs","Earn from Blogs","Affiliate & Referral Income"].map((feature,i)=>(
+          <Card key={i}><CardContent style={{textAlign:'center'}}><h3 style={{fontWeight:'bold'}}>{feature}</h3></CardContent></Card>
+        ))}
+      </section>
+
+      {/* Payment Section */}
+      <section style={{maxWidth:'400px',margin:'20px auto'}}>
+        <Card>
+          <CardContent>
+            <h3 style={{textAlign:'center',fontWeight:'bold',marginBottom:'10px'}}>Activate Account</h3>
+            <Input placeholder="Enter Phone Number (2547XXXXXXXX)" />
+            <Button style={{width:'100%'}}>Pay KES 500 via M-PESA</Button>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Dashboard Preview */}
+      <section>
+        <h2 style={{textAlign:'center',fontWeight:'bold',marginBottom:'10px'}}>Dashboard Preview</h2>
+        {["Wallet Balance","Active Jobs","Referral Earnings"].map((item,i)=>(
+          <Card key={i}><CardContent style={{textAlign:'center'}}><h3>{item}</h3><p>KES 0</p></CardContent></Card>
+        ))}
+      </section>
+
+      {/* Footer */}
+      <footer style={{textAlign:'center',padding:'20px',background:'white',marginTop:'20px',borderRadius:'10px'}}>
+        <p>© 2026 UK WRITERS HUB. All rights reserved.</p>
+      </footer>
+    </div>
+  );
+}
