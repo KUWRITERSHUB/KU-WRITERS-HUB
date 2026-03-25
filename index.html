@@ -1,19 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>UK WRITERS HUB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body { font-family: Arial; margin:0; background:#f4f6f9; }
+
+    .navbar {
+      background:black; color:white;
+      padding:15px; display:flex; justify-content:space-between;
+    }
+
+    .btn {
+      padding:10px; border:none; border-radius:8px; cursor:pointer;
+    }
+
+    .green { background:#16a34a; color:white; }
+
+    .card {
+      background:white; padding:15px; margin:10px 0;
+      border-radius:10px;
+    }
+
+    #dashboard {
+      background:#16a34a; color:white;
+      min-height:100vh; padding:20px;
+    }
+
+    input {
+      width:100%; padding:10px; margin:5px 0;
+      border-radius:8px; border:1px solid #ccc;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <b>UK WRITERS HUB</b>
+  <div>
+    <button class="btn" onclick="showLogin()">Login</button>
+    <button class="btn" onclick="showRegister()">Register</button>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="home" style="padding:20px; text-align:center;">
+  <h2>Earn Online with UK WRITERS HUB</h2>
+  <button class="btn green" onclick="showRegister()">Get Started</button>
+</div>
+
+<!-- REGISTER -->
+<div id="register" style="display:none; padding:20px;">
+  <h3>Register</h3>
+  <input id="name" placeholder="Name">
+  <input id="email" placeholder="Email">
+  <input id="pass" placeholder="Password">
+  <button class="btn green" onclick="register()">Register</button>
+</div>
+
+<!-- LOGIN -->
+<div id="login" style="display:none; padding:20px;">
+  <h3>Login</h3>
+  <input id="lemail" placeholder="Email">
+  <input id="lpass" placeholder="Password">
+  <button class="btn green" onclick="login()">Login</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" style="display:none;">
+
+  <h2 id="welcome"></h2>
+
+  <div class="card"><b>Account Balance:</b> KES <span id="bal">0</span></div>
+  <div class="card"><b>Profits:</b> KES <span id="pro">0</span></div>
+  <div class="card"><b>Referral Earnings:</b> KES <span id="ref">0</span></div>
+
+  <h3>Features</h3>
+
+  <button class="card" onclick="earnJob()">📄 Academic Job (+150)</button>
+  <button class="card" onclick="earnBlog()">✍️ Blog (+100)</button>
+  <button class="card" onclick="earnSurvey()">📊 Survey (+10)</button>
+
+  <button class="card" onclick="addReferral()">🔗 Referral (+200)</button>
+
+  <button class="card" onclick="withdraw()">💰 Withdraw</button>
+
+  <h3>Extra</h3>
+
+  <button class="card" onclick="alert('Training coming')">🎓 Training</button>
+
+  <button class="card" onclick="window.open('https://binomo.com')">
+    📈 Trading
+  </button>
+
+</div>
+
 <script>
 
-let user = JSON.parse(localStorage.getItem("user")) || null;
+let user = null;
 
+// NAVIGATION
 function hideAll(){
-  ["home","register","login","payment","dashboard"].forEach(id=>{
-    document.getElementById(id).style.display="none";
-  });
+  home.style.display="none";
+  register.style.display="none";
+  login.style.display="none";
+  dashboard.style.display="none";
 }
+
+function showRegister(){ hideAll(); register.style.display="block"; }
+function showLogin(){ hideAll(); login.style.display="block"; }
 
 // REGISTER
 function register(){
   user = {
-    name: regName.value,
-    email: regEmail.value,
-    pass: regPass.value,
+    name: name.value,
+    email: email.value,
+    pass: pass.value,
     balance: 0,
     profits: 0,
     referrals: 0
@@ -28,20 +132,19 @@ function register(){
 function login(){
   let saved = JSON.parse(localStorage.getItem("user"));
 
-  if(saved && logEmail.value === saved.email && logPass.value === saved.pass){
+  if(saved && lemail.value === saved.email && lpass.value === saved.pass){
     user = saved;
+
+    // give initial balance
+    if(user.balance === 0){
+      user.balance = 600;
+    }
+
+    save();
     loadDashboard();
   } else {
     alert("Wrong login");
   }
-}
-
-// PAYMENT
-function pay(){
-  user.balance = 600;
-  saveUser();
-  alert("Payment Successful!");
-  loadDashboard();
 }
 
 // LOAD DASHBOARD
@@ -49,73 +152,57 @@ function loadDashboard(){
   hideAll();
   dashboard.style.display="block";
 
-  document.getElementById("welcome").innerText = "Welcome, " + user.name;
+  welcome.innerText = "Welcome, " + user.name;
 
-  updateWallet();
+  update();
 }
 
-// UPDATE VALUES (THIS FIXES BLANK ISSUE)
-function updateWallet(){
-  document.getElementById("balance").innerText = user.balance;
-  document.getElementById("profits").innerText = user.profits;
-  document.getElementById("referrals").innerText = user.referrals;
+// UPDATE UI
+function update(){
+  bal.innerText = user.balance;
+  pro.innerText = user.profits;
+  ref.innerText = user.referrals;
 }
 
-// EARNINGS
+// FEATURES
 function earnJob(){
   user.profits += 150;
-  saveUser();
-  updateWallet();
+  save(); update();
 }
 
 function earnBlog(){
   user.profits += 100;
-  saveUser();
-  updateWallet();
+  save(); update();
 }
 
 function earnSurvey(){
   user.profits += 10;
-  saveUser();
-  updateWallet();
+  save(); update();
 }
 
-// REFERRAL
 function addReferral(){
   user.referrals += 200;
   user.balance += 200;
-  saveUser();
-  updateWallet();
+  save(); update();
 }
 
-// WITHDRAW
 function withdraw(){
   if(user.referrals <= 0){
-    alert("No referral earnings");
+    alert("No referral money");
     return;
   }
 
-  alert("Withdrawn: KES " + user.referrals);
+  alert("Withdrawn KES " + user.referrals);
   user.referrals = 0;
-  saveUser();
-  updateWallet();
-}
-
-// BUY BOT
-function buyBot(){
-  if(user.balance < 15000){
-    alert("Insufficient balance");
-  } else {
-    user.balance -= 15000;
-    alert("AI Bot Activated!");
-    saveUser();
-    updateWallet();
-  }
+  save(); update();
 }
 
 // SAVE
-function saveUser(){
+function save(){
   localStorage.setItem("user", JSON.stringify(user));
 }
 
 </script>
+
+</body>
+  </html>
