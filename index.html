@@ -1,30 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>UK WRITERS HUB</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+<button onclick="pay()" style="padding:10px 20px; background:green; color:white; border:none; border-radius:10px;">
+  Pay KES 500 via M-PESA
+</button>
 
-<body style="font-family: Arial; background:#f9fafb; text-align:center; padding:20px;">
+<script>
+function pay() {
+  const phone = prompt("Enter your phone number (2547XXXXXXXX)");
 
-  <h1>UK WRITERS HUB</h1>
-  <p>Earn, Write, and Grow with UK WRITERS HUB</p>
+  if (!phone) {
+    alert("Phone number required!");
+    return;
+  }
 
-  <button style="padding:10px 20px; background:black; color:white; border:none; border-radius:10px;">
-    Join Now (KES 500)
-  </button>
-
-  <h2 style="margin-top:30px;">Activate Account</h2>
-
-  <input type="text" placeholder="Enter Phone 2547XXXXXXXX" style="padding:10px; width:80%; margin-top:10px;"><br><br>
-
-  <button style="padding:10px 20px; background:green; color:white; border:none; border-radius:10px;">
-    Pay KES 500 via M-PESA
-  </button>
-
-  <footer style="margin-top:40px;">
-    <p>© 2026 UK WRITERS HUB</p>
-  </footer>
-
-</body>
-</html>
+  alert("Payment request received for " + phone + ".\n\nNOTE: M-PESA integration coming next.");
+}
+</script>
