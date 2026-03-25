@@ -1,4 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>UK WRITERS HUB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body style="font-family: Arial; margin:0;">
+
+<!-- NAVBAR -->
+<div style="background:black; color:white; padding:15px; display:flex; justify-content:space-between;">
+  <b>UK WRITERS HUB</b>
+  <div>
+    <button onclick="showLogin()">Login</button>
+    <button onclick="showRegister()">Register</button>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="home" style="padding:20px; text-align:center;">
+  <h2>Welcome to UK WRITERS HUB</h2>
+  <p>Earn Daily from Academic Writing, Blogs, and Online Tasks</p>
+
+  <button onclick="showPayment()" style="padding:10px; background:green; color:white;">
+    Join Now (KES 500)
+  </button>
+
+  <p style="color:green;">
+    ✔ Secure Platform  
+    ✔ Instant Activation  
+    ✔ Trusted by Writers  
+  </p>
+</div>
+
+<!-- REGISTER -->
+<div id="register" style="display:none; padding:20px;">
+  <h3>Register</h3>
+  <input placeholder="Name"><br><br>
+  <input placeholder="Email"><br><br>
+  <input placeholder="Phone"><br><br>
+  <input type="password" placeholder="Password"><br><br>
+  <button onclick="alert('Registered successfully')">Submit</button>
+</div>
+
+<!-- LOGIN -->
+<div id="login" style="display:none; padding:20px;">
+  <h3>Login</h3>
+  <input placeholder="Email"><br><br>
+  <input type="password" placeholder="Password"><br><br>
+  <button onclick="showDashboard()">Login</button>
+</div>
+
+<!-- PAYMENT -->
+<div id="payment" style="display:none; padding:20px;">
+  <h3>Activate Account</h3>
+  <input id="phone" placeholder="2547XXXXXXXX"><br><br>
+
+  <button onclick="pay()" style="background:green; color:white; padding:10px;">
+    Pay KES 500 via M-PESA
+  </button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" style="display:none; padding:20px; background:green; color:white; min-height:100vh;">
+  <h2>Dashboard</h2>
+
+  <p><b>Wallet Balance:</b> KES 0</p>
+
+  <p><b>Your Referral Link:</b></p>
+  <input value="https://your-site.vercel.app/?ref=123" style="width:100%; padding:10px;">
+
+  <hr>
+
+  <h3>Features</h3>
+
+  <button onclick="alert('Bidding feature coming')" style="width:100%; margin:5px; padding:10px;">
+    📄 Academic Writing Jobs (Bid)
+  </button>
+
+  <button onclick="alert('Blog system coming')" style="width:100%; margin:5px; padding:10px;">
+    ✍️ Blog Writing (Earn KES 100)
+  </button>
+
+  <button onclick="alert('Affiliate system coming')" style="width:100%; margin:5px; padding:10px;">
+    🔗 Affiliate Program
+  </button>
+
+  <button onclick="alert('E-commerce coming')" style="width:100%; margin:5px; padding:10px;">
+    🛒 E-commerce Store
+  </button>
+
+  <button onclick="alert('Withdrawals coming')" style="width:100%; margin:5px; padding:10px;">
+    💰 Withdraw Earnings
+  </button>
+
+  <hr>
+
+  <h3>Community</h3>
+
+  <a href="https://wa.me/254799074299" target="_blank">
+    <button style="width:100%; padding:10px; background:black; color:white;">
+      Join WhatsApp Group
+    </button>
+  </a>
+
+</div>
+
+<!-- SCRIPT -->
 <script>
+
+function hideAll(){
+  document.getElementById("home").style.display="none";
+  document.getElementById("register").style.display="none";
+  document.getElementById("login").style.display="none";
+  document.getElementById("payment").style.display="none";
+  document.getElementById("dashboard").style.display="none";
+}
+
+function showRegister(){ hideAll(); document.getElementById("register").style.display="block"; }
+function showLogin(){ hideAll(); document.getElementById("login").style.display="block"; }
+function showPayment(){ hideAll(); document.getElementById("payment").style.display="block"; }
+function showDashboard(){ hideAll(); document.getElementById("dashboard").style.display="block"; }
+
 function pay(){
   let phone = document.getElementById("phone").value;
 
@@ -7,23 +129,18 @@ function pay(){
     return;
   }
 
-  // Show processing
-  alert("Processing payment for " + phone + "...");
+  alert("Processing payment...");
 
-  // Simulate delay like M-PESA
   setTimeout(() => {
-    alert("STK Push Sent!\nCheck your phone and enter PIN.");
-
-    // Simulate success
+    alert("STK Push Sent. Check your phone.");
     setTimeout(() => {
       alert("Payment Successful ✅");
-
-      // Activate dashboard
-      document.getElementById("payment").style.display="none";
-      document.getElementById("dashboard").style.display="block";
-
+      showDashboard();
     }, 3000);
-
   }, 2000);
 }
+
 </script>
+
+</body>
+  </html>
