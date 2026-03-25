@@ -1,221 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>UK WRITERS HUB</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div id="dashboard" style="display:none; background:#16a34a; color:white; padding:20px; min-height:100vh;">
 
-  <style>
-    body {
-      font-family: Arial;
-      margin: 0;
-      background: #f4f6f9;
-    }
-
-    .navbar {
-      background: #000;
-      color: white;
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .btn {
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .btn-green {
-      background: #16a34a;
-      color: white;
-    }
-
-    .card {
-      background: white;
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    #dashboard {
-      background: #16a34a;
-      color: white;
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 5px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-  </style>
-</head>
-
-<body>
-
-<!-- NAVBAR -->
-<div class="navbar">
-  <b>UK WRITERS HUB</b>
-  <div>
-    <button class="btn" onclick="showLogin()">Login</button>
-    <button class="btn" onclick="showRegister()">Register</button>
-  </div>
-</div>
-
-<!-- HOME -->
-<div id="home" style="padding:20px; text-align:center;">
-  <h2>Earn Online with UK WRITERS HUB</h2>
-  <p>Academic Writing | Blogs | Affiliate Marketing</p>
-
-  <button class="btn btn-green" onclick="showPayment()">
-    Join Now (KES 500)
-  </button>
-
-  <p style="color:green;">
-    ✔ Secure Platform ✔ Instant Activation ✔ Trusted System
-  </p>
-</div>
-
-<!-- REGISTER -->
-<div id="register" style="display:none; padding:20px;">
-  <h3>Create Account</h3>
-  <input id="regName" placeholder="Full Name">
-  <input id="regEmail" placeholder="Email">
-  <input id="regPass" type="password" placeholder="Password">
-
-  <button class="btn btn-green" onclick="register()">Register</button>
-</div>
-
-<!-- LOGIN -->
-<div id="login" style="display:none; padding:20px;">
-  <h3>Login</h3>
-  <input id="logEmail" placeholder="Email">
-  <input id="logPass" type="password" placeholder="Password">
-
-  <button class="btn btn-green" onclick="login()">Login</button>
-</div>
-
-<!-- PAYMENT -->
-<div id="payment" style="display:none; padding:20px;">
-  <h3>Activate Account</h3>
-  <input id="phone" placeholder="2547XXXXXXXX">
-
-  <button class="btn btn-green" onclick="pay()">
-    Pay KES 500 via M-PESA
-  </button>
-</div>
-
-<!-- DASHBOARD -->
-<div id="dashboard" style="display:none;">
   <h2 id="welcome"></h2>
 
   <div class="card">
-    <b>Wallet Balance:</b> KES 0
+    <b>Account Balance:</b> KES <span id="balance">0</span>
   </div>
 
   <div class="card">
-    <b>Your Referral Link:</b><br>
-    <input id="refLink">
+    <b>Profits:</b> KES <span id="profits">0</span>
+  </div>
+
+  <div class="card">
+    <b>Referral Earnings:</b> KES <span id="referrals">0</span>
   </div>
 
   <h3>Features</h3>
 
-  <div class="card">📄 Academic Writing Jobs</div>
-  <div class="card">✍️ Blog Writing (KES 100)</div>
-  <div class="card">🔗 Affiliate Program</div>
-  <div class="card">🛒 E-commerce</div>
-  <div class="card">💰 Withdraw Earnings</div>
+  <button class="card" onclick="earnJob()">📄 Academic Job (+150)</button>
+  <button class="card" onclick="earnBlog()">✍️ Blog Writing (+100)</button>
+  <button class="card" onclick="earnSurvey()">📊 Survey (+10)</button>
+
+  <button class="card" onclick="addReferral()">🔗 Add Referral (+200)</button>
+
+  <button class="card" onclick="withdraw()">💰 Withdraw Referral Earnings</button>
+
+  <h3>Trading & Training</h3>
+
+  <button class="card" onclick="window.open('https://binomo.com')">
+    📈 Open Binary Trading
+  </button>
+
+  <button class="card" onclick="alert('Training sessions coming soon')">
+    🎓 Online Training Sessions
+  </button>
+
+  <button class="card" onclick="buyBot()">
+    🤖 Buy AI Trading Bot (KES 15,000)
+  </button>
 
   <h3>Community</h3>
 
   <a href="https://wa.me/254799074299">
-    <button class="btn" style="width:100%; background:black; color:white;">
+    <button class="card" style="background:black;color:white;">
       Join WhatsApp Group
     </button>
   </a>
+
 </div>
-
-<script>
-
-// NAVIGATION
-function hideAll(){
-  ["home","register","login","payment","dashboard"].forEach(id=>{
-    document.getElementById(id).style.display="none";
-  });
-}
-
-function showRegister(){ hideAll(); register.style.display="block"; }
-function showLogin(){ hideAll(); login.style.display="block"; }
-function showPayment(){ hideAll(); payment.style.display="block"; }
-
-// REGISTER (SAVES DATA)
-function register(){
-  let user = {
-    name: regName.value,
-    email: regEmail.value,
-    pass: regPass.value
-  };
-
-  localStorage.setItem("user", JSON.stringify(user));
-
-  alert("Registered successfully!");
-  showLogin();
-}
-
-// LOGIN
-function login(){
-  let saved = JSON.parse(localStorage.getItem("user"));
-
-  if(!saved){
-    alert("No account found!");
-    return;
-  }
-
-  if(logEmail.value === saved.email && logPass.value === saved.pass){
-    alert("Login successful!");
-    loadDashboard(saved);
-  }else{
-    alert("Wrong details");
-  }
-}
-
-// PAYMENT (SIMULATION)
-function pay(){
-  let phone = document.getElementById("phone").value;
-
-  if(!phone){
-    alert("Enter phone");
-    return;
-  }
-
-  alert("Processing...");
-  setTimeout(()=>{
-    alert("Payment Successful ✅");
-
-    let user = JSON.parse(localStorage.getItem("user"));
-    loadDashboard(user);
-
-  },2000);
-}
-
-// LOAD DASHBOARD
-function loadDashboard(user){
-  hideAll();
-  dashboard.style.display="block";
-
-  document.getElementById("welcome").innerText =
-    "Welcome, " + user.name;
-
-  document.getElementById("refLink").value =
-    window.location.origin + "?ref=" + user.name;
-}
-
-</script>
-
-</body>
-</html>
