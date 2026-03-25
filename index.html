@@ -1,5 +1,5 @@
 <script>
-async function pay(){
+function pay(){
   let phone = document.getElementById("phone").value;
 
   if(!phone){
@@ -7,14 +7,23 @@ async function pay(){
     return;
   }
 
-  await fetch("https://YOUR-GLITCH-LINK/pay", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ phone })
-  });
+  // Show processing
+  alert("Processing payment for " + phone + "...");
 
-  alert("Payment request sent! Check your phone soon.");
+  // Simulate delay like M-PESA
+  setTimeout(() => {
+    alert("STK Push Sent!\nCheck your phone and enter PIN.");
+
+    // Simulate success
+    setTimeout(() => {
+      alert("Payment Successful ✅");
+
+      // Activate dashboard
+      document.getElementById("payment").style.display="none";
+      document.getElementById("dashboard").style.display="block";
+
+    }, 3000);
+
+  }, 2000);
 }
 </script>
