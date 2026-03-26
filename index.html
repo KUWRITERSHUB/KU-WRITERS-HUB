@@ -132,40 +132,30 @@
 
 <script>
 
-let user = JSON.parse(localStorage.getItem("user")) || {
-  balance:600,
-  profits:0,
-  referrals:0,
-  withdrawals:0
-};
-let user = JSON.parse(localStorage.getItem("user")) || {
-  balance: 0,
+  let user = JSON.parse(localStorage.getItem("user")) || {
+  balance: 600,
   profits: 0,
   referrals: 0,
   withdrawals: 0,
-  activated: false
+  activated: true
 };
+
+// UPDATE UI
 function update(){
-  balance.innerText = user.balance;
-  profits.innerText = user.profits;
-  referrals.innerText = user.referrals;
-  withdrawals.innerText = user.withdrawals;
+  document.getElementById("balance").innerText = user.balance;
+  document.getElementById("profits").innerText = user.profits;
+  document.getElementById("referrals").innerText = user.referrals;
+  document.getElementById("withdrawals").innerText = user.withdrawals;
 }
 
+// SAVE DATA
 function save(){
   localStorage.setItem("user", JSON.stringify(user));
   update();
 }
 
-// EARNING
+// EARNING FUNCTIONS
 function earn(amount){
-
-  function earn(amount){
-
-  if(!user.activated){
-    alert("Activate your account first (KES 500)");
-    return;
-  }
   user.profits += amount;
   save();
 }
@@ -202,6 +192,16 @@ function buyBot(){
   }
 }
 
+// ✅ REFERRAL LINK FUNCTION (FIXED)
+function generateRefLink(){
+  let refInput = document.getElementById("refLink");
+
+  if(refInput){
+    refInput.value = window.location.origin + "/?ref=" + Math.floor(Math.random()*10000);
+  }
+}
+
+// RUN WHEN PAGE LOADS
 update();
 setTimeout(generateRefLink, 500);
   
