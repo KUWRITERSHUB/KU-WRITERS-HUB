@@ -186,7 +186,19 @@ function buyBot(){
 
 update();
 
-</script>
+</scriptfunction convert(){
+  if(user.profits <= 0){
+    alert("No profits to convert");
+    return;
+  }
+
+  user.balance += user.profits;
+  user.profits = 0;
+
+  save();
+
+  alert("Converted to balance");
+}>
 
 </body>
 </html>
