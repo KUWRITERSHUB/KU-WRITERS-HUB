@@ -5,204 +5,186 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-    body { font-family: Arial; margin:0; background:#f4f6f9; }
-
-    .navbar {
-      background:black; color:white;
-      padding:15px; display:flex; justify-content:space-between;
+    body {
+      margin:0;
+      font-family: Arial;
+      background:#0f172a;
+      color:white;
     }
 
-    .btn {
-      padding:10px; border:none; border-radius:8px; cursor:pointer;
+    .header {
+      background:#111827;
+      padding:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
     }
 
-    .green { background:#16a34a; color:white; }
+    .logo {
+      font-weight:bold;
+      font-size:18px;
+      color:#22c55e;
+    }
+
+    .container {
+      padding:15px;
+    }
 
     .card {
-      background:white; padding:15px; margin:10px 0;
+      background:#1f2937;
+      padding:15px;
+      border-radius:12px;
+      margin-bottom:15px;
+    }
+
+    .balance {
+      background:linear-gradient(45deg,#22c55e,#16a34a);
+      padding:20px;
+      border-radius:12px;
+      margin-bottom:15px;
+    }
+
+    .features {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .box {
+      padding:15px;
       border-radius:10px;
+      text-align:center;
+      font-weight:bold;
+      cursor:pointer;
     }
 
-    #dashboard {
-      background:#16a34a; color:white;
-      min-height:100vh; padding:20px;
-    }
+    .red {background:#ef4444;}
+    .blue {background:#3b82f6;}
+    .purple {background:#8b5cf6;}
+    .pink {background:#ec4899;}
+    .green {background:#22c55e;}
+    .orange {background:#f97316;}
+    .maroon {background:#7f1d1d;}
+    .teal {background:#14b8a6;}
 
-    input {
-      width:100%; padding:10px; margin:5px 0;
-      border-radius:8px; border:1px solid #ccc;
+    button {
+      padding:10px;
+      width:100%;
+      border:none;
+      border-radius:8px;
+      margin-top:10px;
+      background:#22c55e;
+      color:white;
     }
   </style>
 </head>
 
 <body>
 
-<div class="navbar">
-  <b>UK WRITERS HUB</b>
-  <div>
-    <button class="btn" onclick="showLogin()">Login</button>
-    <button class="btn" onclick="showRegister()">Register</button>
+<div class="header">
+  <div class="logo">UK WRITERS HUB</div>
+</div>
+
+<div class="container">
+
+  <div class="balance">
+    <h2>KES <span id="balance">600</span></h2>
+    <p>Main Balance</p>
   </div>
-</div>
 
-<!-- HOME -->
-<div id="home" style="padding:20px; text-align:center;">
-  <h2>Earn Online with UK WRITERS HUB</h2>
-  <button class="btn green" onclick="showRegister()">Get Started</button>
-</div>
-
-<!-- REGISTER -->
-<div id="register" style="display:none; padding:20px;">
-  <h3>Register</h3>
-  <input id="name" placeholder="Name">
-  <input id="email" placeholder="Email">
-  <input id="pass" placeholder="Password">
-  <button class="btn green" onclick="register()">Register</button>
-</div>
-
-<!-- LOGIN -->
-<div id="login" style="display:none; padding:20px;">
-  <h3>Login</h3>
-  <input id="lemail" placeholder="Email">
-  <input id="lpass" placeholder="Password">
-  <button class="btn green" onclick="login()">Login</button>
-</div>
-
-<!-- DASHBOARD -->
-<div id="dashboard" style="display:none;">
-
-  <h2 id="welcome"></h2>
-
-  <div class="card"><b>Account Balance:</b> KES <span id="bal">0</span></div>
-  <div class="card"><b>Profits:</b> KES <span id="pro">0</span></div>
-  <div class="card"><b>Referral Earnings:</b> KES <span id="ref">0</span></div>
+  <div class="card">
+    <p>Profits: KES <span id="profits">0</span></p>
+    <p>Referral Earnings: KES <span id="referrals">0</span></p>
+    <p>Total Withdrawals: KES <span id="withdrawals">0</span></p>
+  </div>
 
   <h3>Features</h3>
 
-  <button class="card" onclick="earnJob()">📄 Academic Job (+150)</button>
-  <button class="card" onclick="earnBlog()">✍️ Blog (+100)</button>
-  <button class="card" onclick="earnSurvey()">📊 Survey (+10)</button>
+  <div class="features">
 
-  <button class="card" onclick="addReferral()">🔗 Referral (+200)</button>
+    <div class="box red" onclick="earn(150)">Academic Writing</div>
+    <div class="box blue" onclick="earn(100)">Blog Writing</div>
+    <div class="box purple" onclick="earn(120)">Article Writing</div>
+    <div class="box pink" onclick="earn(10)">Surveys</div>
 
-  <button class="card" onclick="withdraw()">💰 Withdraw</button>
+    <div class="box green" onclick="referral()">Affiliate Program</div>
+    <div class="box orange" onclick="earn(200)">E-commerce</div>
 
-  <h3>Extra</h3>
+    <div class="box teal" onclick="alert('Join WhatsApp group')">WhatsApp Group</div>
 
-  <button class="card" onclick="alert('Training coming')">🎓 Training</button>
+    <div class="box maroon" onclick="buyBot()">AI Trading Bot (KES 15,000)</div>
 
-  <button class="card" onclick="window.open('https://binomo.com')">
-    📈 Trading
-  </button>
+    <div class="box blue" onclick="alert('Training sessions coming')">Training</div>
+    <div class="box red" onclick="earn(80)">Daily Tasks</div>
+
+  </div>
+
+  <button onclick="withdraw()">Withdraw (Min KES 600)</button>
 
 </div>
 
 <script>
 
-let user = null;
+let user = JSON.parse(localStorage.getItem("user")) || {
+  balance:600,
+  profits:0,
+  referrals:0,
+  withdrawals:0
+};
 
-// NAVIGATION
-function hideAll(){
-  home.style.display="none";
-  register.style.display="none";
-  login.style.display="none";
-  dashboard.style.display="none";
+function update(){
+  balance.innerText = user.balance;
+  profits.innerText = user.profits;
+  referrals.innerText = user.referrals;
+  withdrawals.innerText = user.withdrawals;
 }
 
-function showRegister(){ hideAll(); register.style.display="block"; }
-function showLogin(){ hideAll(); login.style.display="block"; }
-
-// REGISTER
-function register(){
-  user = {
-    name: name.value,
-    email: email.value,
-    pass: pass.value,
-    balance: 0,
-    profits: 0,
-    referrals: 0
-  };
-
+function save(){
   localStorage.setItem("user", JSON.stringify(user));
-  alert("Registered!");
-  showLogin();
-}
-
-// LOGIN
-function login(){
-  let saved = JSON.parse(localStorage.getItem("user"));
-
-  if(saved && lemail.value === saved.email && lpass.value === saved.pass){
-    user = saved;
-
-    // give initial balance
-    if(user.balance === 0){
-      user.balance = 600;
-    }
-
-    save();
-    loadDashboard();
-  } else {
-    alert("Wrong login");
-  }
-}
-
-// LOAD DASHBOARD
-function loadDashboard(){
-  hideAll();
-  dashboard.style.display="block";
-
-  welcome.innerText = "Welcome, " + user.name;
-
   update();
 }
 
-// UPDATE UI
-function update(){
-  bal.innerText = user.balance;
-  pro.innerText = user.profits;
-  ref.innerText = user.referrals;
+// EARNING
+function earn(amount){
+  user.profits += amount;
+  save();
 }
 
-// FEATURES
-function earnJob(){
-  user.profits += 150;
-  save(); update();
+// REFERRAL
+function referral(){
+  user.referrals += 150;
+  user.balance += 150;
+  save();
 }
 
-function earnBlog(){
-  user.profits += 100;
-  save(); update();
-}
-
-function earnSurvey(){
-  user.profits += 10;
-  save(); update();
-}
-
-function addReferral(){
-  user.referrals += 200;
-  user.balance += 200;
-  save(); update();
-}
-
+// WITHDRAW
 function withdraw(){
-  if(user.referrals <= 0){
-    alert("No referral money");
+  if(user.balance < 600){
+    alert("Minimum withdrawal is KES 600");
     return;
   }
 
-  alert("Withdrawn KES " + user.referrals);
-  user.referrals = 0;
-  save(); update();
+  user.withdrawals += user.balance;
+  user.balance = 0;
+  save();
+
+  alert("Withdrawal successful");
 }
 
-// SAVE
-function save(){
-  localStorage.setItem("user", JSON.stringify(user));
+// AI BOT
+function buyBot(){
+  if(user.balance < 15000){
+    alert("Insufficient balance");
+  } else {
+    user.balance -= 15000;
+    save();
+    alert("AI Trading Bot Activated!");
+  }
 }
+
+update();
 
 </script>
 
 </body>
-  </html>
+</html>
