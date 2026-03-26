@@ -203,6 +203,7 @@ function buyBot(){
 }
 
 update();
+  generateRefLink();
 function generateRefLink(){
   document.getElementById("refLink").value =
     window.location.href + "?ref=" + Math.floor(Math.random()*10000);
