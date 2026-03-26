@@ -133,7 +133,13 @@ let user = JSON.parse(localStorage.getItem("user")) || {
   referrals:0,
   withdrawals:0
 };
-
+let user = JSON.parse(localStorage.getItem("user")) || {
+  balance: 0,
+  profits: 0,
+  referrals: 0,
+  withdrawals: 0,
+  activated: false
+};
 function update(){
   balance.innerText = user.balance;
   profits.innerText = user.profits;
