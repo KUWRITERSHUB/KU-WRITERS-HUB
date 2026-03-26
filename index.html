@@ -209,11 +209,13 @@ function generateRefLink(){
     window.location.href + "?ref=" + Math.floor(Math.random()*10000);
   }
   
-</scriptfunction convert(){
-  if(user.profits <= 0){
-    alert("No profits to convert");
-    return;
+</script>function generateRefLink(){
+  let refInput = document.getElementById("refLink");
+
+  if(refInput){
+    refInput.value = window.location.origin + "/?ref=" + Math.floor(Math.random()*10000);
   }
+}
 
   user.balance += user.profits;
   user.profits = 0;
