@@ -142,36 +142,39 @@
 
 <script>
 
-let user = JSON.parse(localStorage.getItem("user")) || {
-  balance: 600,
-  profits: 0,
-  referrals: 0
-};
+let user = { balance: 600, profits: 0, referrals: 0 };
 
 function update(){
-  document.getElementById("balance").innerText = user.balance;
-  document.getElementById("profits").innerText = user.profits;
-  document.getElementById("referrals").innerText = user.referrals;
+  let b = document.getElementById("balance");
+  let p = document.getElementById("profits");
+  let r = document.getElementById("referrals");
+
+  if(b) b.innerText = user.balance;
+  if(p) p.innerText = user.profits;
+  if(r) r.innerText = user.referrals;
 }
 
-function save(){
-  localStorage.setItem("user", JSON.stringify(user));
-  update();
-}
-
-function referral(){
-  user.referrals += 150;
-  user.balance += 150;
-  save();
-}
-
+// REFERRAL LINK
 function generateRefLink(){
   let refInput = document.getElementById("refLink");
+
   if(refInput){
     refInput.value = window.location.origin + "/?ref=" + Math.floor(Math.random()*10000);
   }
 }
 
+// MENU TOGGLE
+function toggleMenu(){
+  let menu = document.getElementById("menu");
+
+  if(menu.style.display === "block"){
+    menu.style.display = "none";
+  } else {
+    menu.style.display = "block";
+  }
+}
+
+// LOAD PAGE
 window.onload = function(){
   update();
   generateRefLink();
