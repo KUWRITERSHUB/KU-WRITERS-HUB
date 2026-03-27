@@ -201,10 +201,12 @@ function toggleMenu(){
 }
 
 // LOAD PAGE
-window.onload = function(){
-  update();
-  generateRefLink();
-};
+function update(){
+  if(document.getElementById("status")){
+    document.getElementById("status").innerText =
+      user.package ? "Active ✅" : "Not Activated ❌";
+  }
+}
 
 </script>
   
