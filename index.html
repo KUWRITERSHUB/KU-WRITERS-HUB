@@ -206,13 +206,6 @@ function buyBot(){
 }
 
 // ✅ REFERRAL LINK FUNCTION (FIXED)
-function generateRefLink(){
-  let refInput = document.getElementById("refLink");
-
-  if(refInput){
-    refInput.value = window.location.origin + "/?ref=" + Math.floor(Math.random()*10000);
-  }
-}
 
 // RUN WHEN PAGE LOADS
 window.onload = function(){
