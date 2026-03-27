@@ -150,25 +150,26 @@
 let user = JSON.parse(localStorage.getItem("user")) || {
   balance: 600,
   profits: 0,
-  referrals: 0,
-  withdrawals: 0,
-  package: "standard"
+  referrals: 0
 };
 
-// UPDATE UI
 function update(){
   document.getElementById("balance").innerText = user.balance;
   document.getElementById("profits").innerText = user.profits;
   document.getElementById("referrals").innerText = user.referrals;
 }
 
-// SAVE
 function save(){
   localStorage.setItem("user", JSON.stringify(user));
   update();
 }
 
-// REFERRAL LINK
+function referral(){
+  user.referrals += 150;
+  user.balance += 150;
+  save();
+}
+
 function generateRefLink(){
   let refInput = document.getElementById("refLink");
   if(refInput){
@@ -176,87 +177,6 @@ function generateRefLink(){
   }
 }
 
-// EARNING (CONTROL BY PACKAGE)
-function earn(type){
-
-  if(type === "blog" || type === "survey"){
-    user.profits += (type === "blog") ? 100 : 10;
-  }
-
-  if(type === "academic" || type === "article"){
-    if(user.package !== "intermediate"){
-      alert("Upgrade to Intermediate Package (KES 1500)");
-      return;
-    }
-    user.profits += 150;
-  }
-
-  save();
-}
-
-// REFERRAL
-function referral(){
-  user.referrals += 150;
-  user.balance += 150;
-  save();
-}
-
-// WITHDRAW
-function withdraw(){
-  if(user.balance < 600){
-    alert("Minimum withdrawal is 600");
-    return;
-  }
-
-  user.balance = 0;
-  save();
-  alert("Withdraw successful");
-}
-
-// PACKAGES
-function buyPackage(type){
-
-  if(type === "standard"){
-    if(user.balance < 500){ alert("Need 500"); return; }
-    user.balance -= 500;
-    user.package = "standard";
-  }
-
-  if(type === "intermediate"){
-    if(user.balance < 1500){ alert("Need 1500"); return; }
-    user.balance -= 1500;
-    user.package = "intermediate";
-  }
-
-  if(type === "premium"){
-    if(user.balance < 2500){ alert("Need 2500"); return; }
-    user.balance -= 2500;
-    user.package = "premium";
-  }
-
-  save();
-  alert("Package Activated: " + type);
-}
-
-// AI BOT
-function buyBot(){
-  if(user.balance < 15000){
-    alert("Need 15000");
-    return;
-  }
-
-  user.balance -= 15000;
-  save();
-  alert("AI Bot Activated");
-}
-
-// MENU TOGGLE
-function toggleMenu(){
-  let menu = document.getElementById("menu");
-  menu.style.display = (menu.style.display === "block") ? "none" : "block";
-}
-
-// LOAD
 window.onload = function(){
   update();
   generateRefLink();
