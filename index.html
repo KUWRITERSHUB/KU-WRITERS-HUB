@@ -215,8 +215,10 @@ function generateRefLink(){
 }
 
 // RUN WHEN PAGE LOADS
-update();
-setTimeout(generateRefLink, 500);
+window.onload = function(){
+  update();
+  generateRefLink();
+};
   
 </script>function generateRefLink(){
   let refInput = document.getElementById("refLink");
