@@ -173,6 +173,19 @@
 </div>
 
 <script>
+  function loadTasks(){
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+  let html = "";
+
+  tasks.forEach((t) => {
+    html += `<div onclick="earn(150)" style="padding:10px; margin:5px; background:#eee; border-radius:8px;">
+      ${t}
+    </div>`;
+  });
+
+  document.getElementById("tasksList").innerHTML = html;
+  }
   function withdraw(){
   if(user.balance < 600){
     alert("Minimum withdrawal is KES 600");
