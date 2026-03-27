@@ -141,7 +141,27 @@
 </div>
 
 <script>
+function payNow(){
+  let phone = prompt("Enter your M-PESA number (2547XXXXXXXX)");
 
+  if(!phone){
+    alert("Phone number required");
+    return;
+  }
+
+  // simulate stk push
+  alert("STK Push sent to " + phone);
+
+  setTimeout(() => {
+    alert("Payment successful ✅");
+
+    // activate account
+    user.balance = 600;
+    user.package = "standard";
+
+    save();
+  }, 3000);
+  }
 let user = { balance: 600, profits: 0, referrals: 0 };
 
 function update(){
