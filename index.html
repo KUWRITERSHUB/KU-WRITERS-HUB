@@ -179,7 +179,15 @@ function update(){
   if(p) p.innerText = user.profits;
   if(r) r.innerText = user.referrals;
 }
+function earn(){
+  if(!user.package){
+    alert("Please activate account first");
+    return;
+  }
 
+  user.profits += 100;
+  save();
+  }
 // REFERRAL LINK
 function generateRefLink(){
   let refInput = document.getElementById("refLink");
