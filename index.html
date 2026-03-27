@@ -269,7 +269,37 @@ function update(){
       user.package ? "Active ✅" : "Not Activated ❌";
   }
   }
+// OPEN ADMIN PANEL
+function openAdmin(){
+  let password = prompt("Enter admin password");
 
+  if(password === "1234"){
+    document.getElementById("adminPanel").style.display = "block";
+  } else {
+    alert("Wrong password");
+  }
+}
+
+// ADD TASK
+function addTask(){
+  let task = prompt("Enter task name");
+
+  if(!task) return;
+
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+  tasks.push(task);
+
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+
+  alert("Task added successfully");
+}
+
+// VIEW WITHDRAWALS
+function viewWithdrawals(){
+  document.getElementById("adminContent").innerHTML =
+    "Withdrawals feature coming soon...";
+  }
 </script>
   
 
