@@ -150,6 +150,27 @@
 </div>
 
 <script>
+  function withdraw(){
+  if(user.balance < 600){
+    alert("Minimum withdrawal is KES 600");
+    return;
+  }
+
+  let phone = prompt("Enter your M-PESA number");
+
+  if(!phone){
+    alert("Phone number required");
+    return;
+  }
+
+  let amount = user.balance;
+
+  user.balance = 0;
+
+  save();
+
+  alert("Withdrawal request sent successfully ✅");
+  }
 function payNow(){
   let phone = prompt("Enter your M-PESA number (2547XXXXXXXX)");
 
