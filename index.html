@@ -145,12 +145,12 @@
 
 <script>
 
-  let user = JSON.parse(localStorage.getItem("user")) || {
+let user = JSON.parse(localStorage.getItem("user")) || {
   balance: 600,
   profits: 0,
   referrals: 0,
   withdrawals: 0,
-  activated: true
+  package: "standard"
 };
 
 // UPDATE UI
@@ -158,23 +158,42 @@ function update(){
   document.getElementById("balance").innerText = user.balance;
   document.getElementById("profits").innerText = user.profits;
   document.getElementById("referrals").innerText = user.referrals;
-  document.getElementById("withdrawals").innerText = user.withdrawals;
 }
 
-// SAVE DATA
+// SAVE
 function save(){
   localStorage.setItem("user", JSON.stringify(user));
   update();
 }
 
-// EARNING FUNCTIONS
-function earn(amount){
-  user.profits += amount;
+// REFERRAL LINK
+function generateRefLink(){
+  let refInput = document.getElementById("refLink");
+  if(refInput){
+    refInput.value = window.location.origin + "/?ref=" + Math.floor(Math.random()*10000);
+  }
+}
+
+// EARNING (CONTROL BY PACKAGE)
+function earn(type){
+
+  if(type === "blog" || type === "survey"){
+    user.profits += (type === "blog") ? 100 : 10;
+  }
+
+  if(type === "academic" || type === "article"){
+    if(user.package !== "intermediate"){
+      alert("Upgrade to Intermediate Package (KES 1500)");
+      return;
+    }
+    user.profits += 150;
+  }
+
   save();
 }
 
 // REFERRAL
-function referral (uk-writers-hub.vercel.app){
+function referral(){
   user.referrals += 150;
   user.balance += 150;
   save();
@@ -183,37 +202,66 @@ function referral (uk-writers-hub.vercel.app){
 // WITHDRAW
 function withdraw(){
   if(user.balance < 600){
-    alert("Minimum withdrawal is KES 600");
+    alert("Minimum withdrawal is 600");
     return;
   }
 
-  user.withdrawals += user.balance;
   user.balance = 0;
   save();
+  alert("Withdraw successful");
+}
 
-  alert("Withdrawal successful");
+// PACKAGES
+function buyPackage(type){
+
+  if(type === "standard"){
+    if(user.balance < 500){ alert("Need 500"); return; }
+    user.balance -= 500;
+    user.package = "standard";
+  }
+
+  if(type === "intermediate"){
+    if(user.balance < 1500){ alert("Need 1500"); return; }
+    user.balance -= 1500;
+    user.package = "intermediate";
+  }
+
+  if(type === "premium"){
+    if(user.balance < 2500){ alert("Need 2500"); return; }
+    user.balance -= 2500;
+    user.package = "premium";
+  }
+
+  save();
+  alert("Package Activated: " + type);
 }
 
 // AI BOT
 function buyBot(){
   if(user.balance < 15000){
-    alert("Insufficient balance");
-  } else {
-    user.balance -= 15000;
-    save();
-    alert("AI Trading Bot Activated!");
+    alert("Need 15000");
+    return;
   }
+
+  user.balance -= 15000;
+  save();
+  alert("AI Bot Activated");
 }
 
-// ✅ REFERRAL LINK FUNCTION (FIXED)
+// MENU TOGGLE
+function toggleMenu(){
+  let menu = document.getElementById("menu");
+  menu.style.display = (menu.style.display === "block") ? "none" : "block";
+}
 
-// RUN WHEN PAGE LOADS
+// LOAD
 window.onload = function(){
   update();
   generateRefLink();
 };
-  
-</script>function generateRefLink(){
+
+</script>
+  function generateRefLink(){
   let refInput = document.getElementById("refLink");
 
   if(refInput){
