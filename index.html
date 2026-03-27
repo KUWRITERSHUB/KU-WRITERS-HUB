@@ -246,11 +246,19 @@ function toggleMenu(){
 
 // LOAD PAGE
 function update(){
+  if(document.getElementById("balance")){
+    document.getElementById("balance").innerText = user.balance;
+  }
+
+  if(document.getElementById("profits")){
+    document.getElementById("profits").innerText = user.profits;
+  }
+
   if(document.getElementById("status")){
     document.getElementById("status").innerText =
       user.package ? "Active ✅" : "Not Activated ❌";
   }
-}
+  }
 
 </script>
   
