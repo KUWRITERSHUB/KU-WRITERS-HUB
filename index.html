@@ -196,6 +196,22 @@
 </div>
 
 <script>
+  function doSurvey(){
+  if(!user.package){
+    alert("Activate account first");
+    return;
+  }
+
+  let answer = prompt("What is 2 + 2 ?");
+
+  if(answer == "4"){
+    user.profits += 10;
+    save();
+    alert("Correct! Earned KES 10 ✅");
+  } else {
+    alert("Wrong answer ❌");
+  }
+  }
   function buyPackage(type){
 
   if(type === "standard"){
