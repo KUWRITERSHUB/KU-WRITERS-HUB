@@ -374,6 +374,14 @@ function viewWithdrawals(){
   user.profits += 200;
   save();
 }
+  function trainingAccess(){
+  if(user.package !== "premium"){
+    alert("Upgrade to Premium package");
+    return;
+  }
+
+  alert("Access granted to training ✅");
+  }
 </script>
   
 
