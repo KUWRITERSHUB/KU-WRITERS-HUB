@@ -365,6 +365,15 @@ function viewWithdrawals(){
   user.profits += 100;
   save();
   }
+  function academicTask(){
+  if(user.package !== "intermediate" && user.package !== "premium"){
+    alert("Upgrade to Intermediate package");
+    return;
+  }
+
+  user.profits += 200;
+  save();
+}
 </script>
   
 
