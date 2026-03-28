@@ -218,6 +218,23 @@
 </div>
 
 <script>
+  window.onload = function(){
+
+  let email = localStorage.getItem("currentUser");
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+
+  if(email && users[email]){
+    user = users[email];
+
+    document.getElementById("authBox").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+
+    update();
+    generateRefLink();
+    loadTasks();
+  }
+
+};
   function login(){
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
