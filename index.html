@@ -306,6 +306,7 @@ function toggleMenu(){
 
 // LOAD PAGE
 function update(){
+
   if(document.getElementById("balance")){
     document.getElementById("balance").innerText = user.balance;
   }
@@ -317,6 +318,11 @@ function update(){
   if(document.getElementById("status")){
     document.getElementById("status").innerText =
       user.package ? "Active ✅" : "Not Activated ❌";
+  }
+
+  if(document.getElementById("package")){
+    document.getElementById("package").innerText =
+      user.package ? user.package : "None";
   }
   }
 // OPEN ADMIN PANEL
