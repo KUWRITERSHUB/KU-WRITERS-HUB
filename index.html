@@ -290,16 +290,6 @@
     package: null,
     referrals: 0
   };
-    function save(){
-  let users = JSON.parse(localStorage.getItem("users")) || {};
-  let email = localStorage.getItem("currentUser");
-
-  users[email] = user;
-
-  localStorage.setItem("users", JSON.stringify(users));
-
-  update();
-    }
 
   localStorage.setItem("users", JSON.stringify(users));
 
