@@ -489,6 +489,18 @@ function withdraw(){
 
   document.getElementById("adminContent").innerHTML = html;
     }
+  function approveWithdrawal(index){
+
+  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+
+  withdrawals[index].status = "approved";
+
+  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+
+  alert("Withdrawal approved ✅");
+
+  viewWithdrawals();
+    }
 </script>
   
 
