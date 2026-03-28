@@ -240,6 +240,16 @@
   let password = document.getElementById("password").value;
 
   let users = JSON.parse(localStorage.getItem("users")) || {};
+    function save(){
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+  let email = localStorage.getItem("currentUser");
+
+  users[email] = user;
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  update();
+    }
 
   if(!users[email] || users[email].password !== password){
     alert("Invalid login");
