@@ -356,6 +356,15 @@ function viewWithdrawals(){
   document.getElementById("adminContent").innerHTML =
     "Withdrawals feature coming soon...";
   }
+  function earnBlog(){
+  if(!user.package){
+    alert("Activate account first");
+    return;
+  }
+
+  user.profits += 100;
+  save();
+  }
 </script>
   
 
