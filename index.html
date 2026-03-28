@@ -182,6 +182,25 @@
 </div>
 
 <script>
+  function buyPackage(type){
+
+  if(type === "standard"){
+    user.package = "standard";
+    user.balance = 600;
+  }
+
+  if(type === "intermediate"){
+    user.package = "intermediate";
+  }
+
+  if(type === "premium"){
+    user.package = "premium";
+  }
+
+  save();
+
+  alert(type + " package activated ✅");
+  }
   function loadTasks(){
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
