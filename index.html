@@ -469,6 +469,26 @@ function withdraw(){
 
   alert("E-commerce task completed ✅");
   }
+  function viewWithdrawals(){
+
+  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+
+  let html = "<h3>Withdrawal Requests</h3>";
+
+  withdrawals.forEach((w, i) => {
+    html += `
+      <div style="background:#222; padding:10px; margin:5px;">
+        Amount: ${w.amount} <br>
+        Phone: ${w.phone} <br>
+        Status: ${w.status} <br>
+
+        <button onclick="approveWithdrawal(${i})">Approve</button>
+      </div>
+    `;
+  });
+
+  document.getElementById("adminContent").innerHTML = html;
+    }
 </script>
   
 
