@@ -443,6 +443,9 @@ window.onload = function(){
     update();
     generateRefLink();
     loadTasks();
+  } else {
+    document.getElementById("authBox").style.display = "block";
+    document.getElementById("dashboard").style.display = "none";
   }
 
 };
