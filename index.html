@@ -218,6 +218,34 @@
 </div>
 
 <script>
+  function register(){
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  if(!email || !password){
+    alert("Fill all fields");
+    return;
+  }
+
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+
+  if(users[email]){
+    alert("User already exists");
+    return;
+  }
+
+  users[email] = {
+    password: password,
+    balance: 0,
+    profits: 0,
+    package: null,
+    referrals: 0
+  };
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  alert("Registered successfully ✅");
+  }
   function joinGroup(){
   window.open("https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou?mode=gi_t");
   }
