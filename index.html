@@ -417,6 +417,17 @@ function viewWithdrawals(){
 
   alert("Access granted to training ✅");
   }
+  function buyBot(){
+  if(user.balance < 15000){
+    alert("You need KES 15,000 to buy this bot");
+    return;
+  }
+
+  user.balance -= 15000;
+  save();
+
+  alert("AI Trading Bot Activated ✅");
+  }
 </script>
   
 
