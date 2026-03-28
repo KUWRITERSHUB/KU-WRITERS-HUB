@@ -434,6 +434,17 @@ function viewWithdrawals(){
 
   alert("AI Trading Bot Activated ✅");
   }
+  function ecommerce(){
+  if(user.package !== "premium"){
+    alert("Upgrade to Premium package (KES 2500)");
+    return;
+  }
+
+  user.profits += 200;
+  save();
+
+  alert("E-commerce task completed ✅");
+  }
 </script>
   
 
