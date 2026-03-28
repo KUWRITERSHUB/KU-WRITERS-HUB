@@ -218,6 +218,28 @@
 </div>
 
 <script>
+  function login(){
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+
+  if(!users[email] || users[email].password !== password){
+    alert("Invalid login");
+    return;
+  }
+
+  // load user
+  user = users[email];
+
+  // save current user email
+  localStorage.setItem("currentUser", email);
+
+  document.getElementById("authBox").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+
+  update();
+  }
   function register(){
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
