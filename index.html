@@ -393,10 +393,34 @@ function addTask(){
 }
 
 // VIEW WITHDRAWALS
-function viewWithdrawals(){
-  document.getElementById("adminContent").innerHTML =
-    "Withdrawals feature coming soon...";
+function withdraw(){
+  if(user.balance < 600){
+    alert("Minimum withdrawal is KES 600");
+    return;
   }
+
+  let phone = prompt("Enter your M-PESA number");
+
+  if(!phone){
+    alert("Phone number required");
+    return;
+  }
+
+  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+
+  withdrawals.push({
+    amount: user.balance,
+    phone: phone,
+    status: "pending"
+  });
+
+  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+
+  user.balance = 0;
+  save();
+
+  alert("Withdrawal request submitted ✅");
+}
   function earnBlog(){
   if(!user.package){
     alert("Activate account first");
