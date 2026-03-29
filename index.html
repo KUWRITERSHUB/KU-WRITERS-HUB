@@ -322,6 +322,10 @@ function openAdmin(){
     save();
   }, 3000);
   }
+  function logout(){
+  localStorage.removeItem("currentUser");
+  location.reload();
+  }
 </script>
 
 </body>
