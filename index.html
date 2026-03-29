@@ -5,76 +5,124 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-    body {
-      margin:0;
-      font-family: Arial;
-      background:#0f172a;
-      color:white;
-    }
+  body {
+    margin:0;
+    font-family: 'Segoe UI', Arial;
+    background: linear-gradient(135deg, #0f172a, #020617);
+    color:white;
+  }
 
-    .header {
-      background:#111827;
-      padding:15px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-    }
+  .header {
+    background:#020617;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid #1f2937;
+  }
 
-    .logo {
-      color:#22c55e;
-      font-weight:bold;
-    }
+  .logo {
+    color:#22c55e;
+    font-weight:bold;
+    font-size:20px;
+  }
 
-    .container {
-      padding:15px;
-    }
+  .container {
+    padding:15px;
+  }
 
-    .card {
-      background:#1f2937;
-      padding:15px;
-      border-radius:10px;
-      margin-bottom:10px;
-    }
+  .card {
+    background:#111827;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:12px;
+    box-shadow:0 0 10px rgba(0,0,0,0.4);
+  }
 
-    .features {
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
+  .balance-card {
+    background: linear-gradient(45deg,#22c55e,#16a34a);
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:15px;
+    font-size:18px;
+  }
 
-    .box {
-      padding:15px;
-      border-radius:10px;
-      text-align:center;
-      font-weight:bold;
-      cursor:pointer;
-    }
+  .features {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
 
-    .red{background:#ef4444;}
-    .blue{background:#3b82f6;}
-    .purple{background:#8b5cf6;}
-    .pink{background:#ec4899;}
-    .green{background:#22c55e;}
-    .orange{background:#f97316;}
-    .maroon{background:#7f1d1d;}
-    .teal{background:#14b8a6;}
+  .box {
+    padding:18px;
+    border-radius:12px;
+    text-align:center;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+  }
 
-    button {
-      padding:10px;
-      border:none;
-      border-radius:8px;
-      width:100%;
-      background:#22c55e;
-      color:white;
-      margin-top:10px;
-    }
+  .box:hover {
+    transform:scale(1.05);
+  }
 
-    #menu {
-      display:none;
-      background:#1f2937;
-      padding:10px;
-    }
-  </style>
+  .red {background:#ef4444;}
+  .blue {background:#3b82f6;}
+  .purple {background:#8b5cf6;}
+  .pink {background:#ec4899;}
+  .green {background:#22c55e;}
+  .orange {background:#f97316;}
+  .maroon {background:#7f1d1d;}
+  .teal {background:#14b8a6;}
+
+  button {
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    width:100%;
+    background:#22c55e;
+    color:white;
+    font-weight:bold;
+    margin-top:10px;
+    cursor:pointer;
+  }
+
+  button:hover {
+    background:#16a34a;
+  }
+
+  input {
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:none;
+    margin-top:5px;
+  }
+
+  #menu {
+    display:none;
+    background:#111827;
+    padding:10px;
+    border-bottom:1px solid #1f2937;
+  }
+
+  #menu p {
+    padding:10px;
+    border-bottom:1px solid #1f2937;
+    cursor:pointer;
+  }
+
+  #menu p:hover {
+    background:#1f2937;
+  }
+
+  .footer {
+    text-align:center;
+    padding:20px;
+    font-size:12px;
+    color:gray;
+  }
+    </style>
 </head>
 
 <body>
