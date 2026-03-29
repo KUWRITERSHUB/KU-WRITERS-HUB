@@ -190,6 +190,51 @@
   <div class="box maroon" onclick="buyBot()">🤖 AI Trading Bot</div>
 </div>
 <script>
+  let running = false;
+let multiplier = 1;
+let gameInterval;
+
+function startGame(){
+  if(!user.package){
+    alert("Activate account first");
+    return;
+  }
+
+  running = true;
+  multiplier = 1;
+
+  gameInterval = setInterval(()=>{
+    multiplier += 0.1;
+    document.getElementById("multi").innerText = multiplier.toFixed(2) + "x";
+
+    // random crash
+    if(Math.random() < 0.05){
+      stopGame(true);
+    }
+
+  }, 200);
+}
+
+function cashOut(){
+  if(!running) return;
+
+  let win = Math.floor(multiplier * 50);
+  user.balance += win;
+  save();
+
+  alert("You earned KES " + win + " 💰");
+
+  stopGame(false);
+}
+
+function stopGame(crashed){
+  clearInterval(gameInterval);
+  running = false;
+
+  if(crashed){
+    alert("Crashed! You lost ❌");
+  }
+  }
   function withdraw(){
   if(user.balance < 600){
     alert("Minimum 600");
