@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
+    @keyframes glow {
+  0% {box-shadow:0 0 5px #22c55e;}
+  50% {box-shadow:0 0 20px #22c55e;}
+  100% {box-shadow:0 0 5px #22c55e;}
+}
+
+.game-box {
+  animation: glow 2s infinite;
+}
   body {
     margin:0;
     font-family: Arial;
