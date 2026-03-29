@@ -197,6 +197,18 @@
   <div class="box maroon" onclick="buyBot()">🤖 AI Trading Bot</div>
 </div>
 <script>
+  function withdraw(){
+  if(user.balance < 600){
+    alert("Minimum 600");
+    return;
+  }
+
+  showLoading("Processing withdrawal");
+
+  setTimeout(()=>{
+    alert("Withdrawal successful ✅");
+  },2000);
+  }
 function showLoading(msg){
   alert(msg + " ⏳ Processing...");
   }
