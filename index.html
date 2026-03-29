@@ -2,9 +2,6 @@
 <html>
 <head>
   <title>UK WRITERS HUB</title>
-  <button onclick="openAdmin()" style="padding:8px; background:black; color:white; border:none; border-radius:6px;">
-  Admin
-  </button>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -24,65 +21,20 @@
     }
 
     .logo {
-      font-weight:bold;
-      font-size:18px;
       color:#22c55e;
+      font-weight:bold;
     }
 
     .container {
       padding:15px;
     }
-    <div class="card">
-  <p>Current Package:</p>
-  <b id="package">None</b>
-</div>
-    <div class="card">
-  <h3>Upgrade Package</h3>
 
-  <button onclick="buyPackage('standard')">Standard (KES 500)</button><br><br>
-
-  <button onclick="buyPackage('intermediate')">Intermediate (KES 1500)</button><br><br>
-
-  <button onclick="buyPackage('premium')">Premium (KES 2500)</button>
-</div>
-    <div class="card">
-  <h3>Available Tasks</h3>
-  <div id="tasksList"></div>
-</div>
-    <div id="authBox" style="padding:20px; text-align:center;">
-  <h2>UK WRITERS HUB</h2>
-
-  <input id="email" placeholder="Enter Email"><br><br>
-  <input id="password" type="password" placeholder="Enter Password"><br><br>
-
-  <button onclick="register()">Register</button>
-  <button onclick="login()">Login</button>
-</div>
-<button onclick="payNow()" style="padding:10px; background:green; color:white; border:none; border-radius:8px;">
-  Activate Account (KES 500)
-</button>
-    <div class="card">
-  <p>Account Status:</p>
-  <b id="status">Not Activated ❌</b>
-</div>
-    <button onclick="viewWithdrawals()">View Withdrawals</button>
-    <button onclick="withdraw()" style="padding:10px; background:red; color:white; border:none; border-radius:8px;">
-  Withdraw Money
-</button>
     .card {
       background:#1f2937;
       padding:15px;
-      border-radius:12px;
-      margin-bottom:15px;
+      border-radius:10px;
+      margin-bottom:10px;
     }
-
-    .balance {
-      background:linear-gradient(45deg,#22c55e,#16a34a);
-      padding:20px;
-      border-radius:12px;
-      margin-bottom:15px;
-    }
-    <button onclick="activate()">Activate Account (KES 500)</button>
 
     .features {
       display:grid;
@@ -98,526 +50,241 @@
       cursor:pointer;
     }
 
-    .red {background:#ef4444;}
-    .blue {background:#3b82f6;}
-    .purple {background:#8b5cf6;}
-    .pink {background:#ec4899;}
-    .green {background:#22c55e;}
-    .orange {background:#f97316;}
-    .maroon {background:#7f1d1d;}
-    .teal {background:#14b8a6;}
+    .red{background:#ef4444;}
+    .blue{background:#3b82f6;}
+    .purple{background:#8b5cf6;}
+    .pink{background:#ec4899;}
+    .green{background:#22c55e;}
+    .orange{background:#f97316;}
+    .maroon{background:#7f1d1d;}
+    .teal{background:#14b8a6;}
 
     button {
       padding:10px;
-      width:100%;
       border:none;
       border-radius:8px;
-      margin-top:10px;
+      width:100%;
       background:#22c55e;
       color:white;
+      margin-top:10px;
+    }
+
+    #menu {
+      display:none;
+      background:#1f2937;
+      padding:10px;
     }
   </style>
 </head>
-<div id="adminPanel" style="display:none; padding:20px; background:#111; color:white;">
-  <h2>Admin Dashboard</h2>
 
-  <button onclick="addTask()">Add Task</button>
-  <button onclick="viewWithdrawals()">View Withdrawals</button>
-
-  <div id="adminContent"></div>
-</div>
 <body>
 
+<!-- HEADER -->
 <div class="header">
   <div class="logo">UK WRITERS HUB</div>
-  <div onclick="toggleMenu()" style="font-size:24px; cursor:pointer;">⋮</div>
+  <div onclick="toggleMenu()" style="font-size:24px;cursor:pointer;">⋮</div>
 </div>
 
-<!-- MENU DROPDOWN -->
-<div id="menu" style="display:none; background:#1f2937; padding:10px; color:white;">
-
-  <p onclick="earn('blog')">📝 Blog Writing</p>
-
-  <p onclick="earn('survey')">📊 Surveys</p>
-
-  <p onclick="buyPackage('standard')">💼 Standard Package (500)</p>
-
-  <p onclick="buyPackage('intermediate')">📈 Intermediate Package (1500)</p>
-
-  <p onclick="buyPackage('premium')">👑 Premium Package (2500)</p>
-
+<!-- MENU -->
+<div id="menu">
+  <p onclick="buyPackage('standard')">Standard (KES 500)</p>
+  <p onclick="buyPackage('intermediate')">Intermediate (KES 1500)</p>
+  <p onclick="buyPackage('premium')">Premium (KES 2500)</p>
+  <p onclick="viewWithdrawals()">Admin Withdrawals</p>
 </div>
+
+<!-- LOGIN -->
+<div id="authBox" class="container">
+  <h2>Login / Register</h2>
+  <input id="email" placeholder="Email"><br><br>
+  <input id="password" type="password" placeholder="Password"><br><br>
+  <button onclick="register()">Register</button>
+  <button onclick="login()">Login</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="container" style="display:none;">
+
   <div class="card">
-  <p>Your Referral Link:</p>
-  <input id="refLink" readonly style="width:100%; padding:10px;">
+    <p>Referral Link:</p>
+    <input id="refLink" readonly style="width:100%;">
   </div>
+
   <div class="card">
-  <p>Account Balance (Withdrawable):</p>
-  <b id="balance">0</b>
-</div>
-
-<div class="card">
-  <p>Profits (Tasks Earnings):</p>
-  <b id="profits">0</b>
-</div>
-<h3>Features</h3>
-
-<div class="features">
-<div class="container" id="dashboard" style="display:none;">
-  <div class="box red" onclick="academicTask()">
-  Academic Writing
-  </div>
-  <div class="box orange" onclick="ecommerce()">
-  E-commerce
+    Balance: KES <b id="balance">0</b><br>
+    Profits: KES <b id="profits">0</b>
   </div>
 
-  <div class="box maroon" onclick="buyBot()">Binany Trading</div>
-  <div class="box maroon" onclick="buyBot()">
-  AI Trading Bot (KES 15,000)
-  </div>
-  <div class="box green" onclick="joinGroup()">
-  Join WhatsApp Group
-  </div>
+  <h3>Features</h3>
 
-  <div class="box green" onclick="referral()">Network Marketing</div>
-
-  <div class="box orange" onclick="earn('article')">E-commerce</div>
-
-</div>
-
-    <div class="box red" onclick="academicTask()">
-  Academic Writing
-    </div>
-    <div class="box blue" onclick="earnBlog()">
-  Blog Writing
-    </div>
+  <div class="features">
+    <div class="box red" onclick="academicTask()">Academic Writing</div>
+    <div class="box blue" onclick="earnBlog()">Blog Writing</div>
     <div class="box purple" onclick="earn(120)">Article Writing</div>
-    <div class="box pink" onclick="doSurvey()">
-  Surveys (Earn KES 10)
-    </div>
-
-    <div class="box green" onclick="uk-writers-hub.vercel.app()">Affiliate Program</div>
-    <div class="box orange" onclick="earn(200)">E-commerce</div>
-
-    <div class="box teal" onclick="alert('https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou?mode=gi_t')">WhatsApp Group</div>
-
-    <div class="box maroon" onclick="buyBot()">AI Trading Bot (KES 15,000)</div>
-  <div class="box maroon" onclick="buyBot()">
-  AI Trading Bot (KES 15,000)
+    <div class="box pink" onclick="survey()">Surveys</div>
+    <div class="box green" onclick="referral()">Affiliate</div>
+    <div class="box orange" onclick="ecommerce()">E-commerce</div>
+    <div class="box teal" onclick="joinGroup()">WhatsApp</div>
+    <div class="box maroon" onclick="buyBot()">AI Bot (15,000)</div>
   </div>
 
-    <div class="box purple" onclick="trainingAccess()">
-  Training & Trading
-    </div>
-    <div class="box red" onclick="earn(80)">Daily Tasks</div>
+  <button onclick="withdraw()">Withdraw (Min 600)</button>
 
-  </div>
+</div>
 
-  <button onclick="withdraw()">Withdraw (Min KES 600)</button>
-
+<!-- ADMIN -->
+<div id="adminPanel" style="display:none; padding:15px;">
+  <h3>Admin Panel</h3>
+  <button onclick="viewWithdrawals()">View Withdrawals</button>
+  <div id="adminContent"></div>
 </div>
 
 <script>
-  let user = {
-  balance: 0,
-  profits: 0,
-  package: null,
-  referrals: 0
-};
-  function save(){
+
+let user = {};
+
+function save(){
   let users = JSON.parse(localStorage.getItem("users")) || {};
   let email = localStorage.getItem("currentUser");
-
-  if(email){
-    users[email] = user;
-    localStorage.setItem("users", JSON.stringify(users));
-  }
-
+  users[email] = user;
+  localStorage.setItem("users", JSON.stringify(users));
   update();
-  }
-  window.onload = function(){
+}
 
-  let email = localStorage.getItem("currentUser");
-  let users = JSON.parse(localStorage.getItem("users")) || {};
+function update(){
+  document.getElementById("balance").innerText = user.balance || 0;
+  document.getElementById("profits").innerText = user.profits || 0;
+}
 
-  if(email && users[email]){
-    user = users[email];
-
-    document.getElementById("authBox").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
-
-    update();
-    generateRefLink();
-    loadTasks();
-  }
-
-};
-  function login(){
-  let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
+function register(){
+  let email = emailInput();
+  let password = passInput();
 
   let users = JSON.parse(localStorage.getItem("users")) || {};
 
-  if(!users[email]){
-    alert("User not found");
-    return;
-  }
+  if(users[email]) return alert("User exists");
 
-  if(users[email].password !== password){
-    alert("Wrong password");
-    return;
+  users[email] = {password,balance:0,profits:0,package:null};
+  localStorage.setItem("users", JSON.stringify(users));
+
+  alert("Registered ✅");
+}
+
+function login(){
+  let email = emailInput();
+  let password = passInput();
+
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+
+  if(!users[email] || users[email].password !== password){
+    return alert("Login failed");
   }
 
   user = users[email];
-
   localStorage.setItem("currentUser", email);
 
-  document.getElementById("authBox").style.display = "none";
-  document.getElementById("dashboard").style.display = "block";
+  document.getElementById("authBox").style.display="none";
+  document.getElementById("dashboard").style.display="block";
 
-  update();
   generateRefLink();
-  loadTasks();
-  }
-  function register(){
-  let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
+  update();
+}
 
-  if(!email || !password){
-    alert("Fill all fields");
-    return;
-  }
+function emailInput(){return document.getElementById("email").value;}
+function passInput(){return document.getElementById("password").value;}
 
-  let users = JSON.parse(localStorage.getItem("users")) || {};
+function generateRefLink(){
+  document.getElementById("refLink").value =
+    location.origin + "/?ref=" + Math.floor(Math.random()*10000);
+}
 
-  if(users[email]){
-    alert("User already exists");
-    return;
-  }
+function toggleMenu(){
+  let m = document.getElementById("menu");
+  m.style.display = m.style.display==="block"?"none":"block";
+}
 
-  users[email] = {
-    password: password,
-    balance: 0,
-    profits: 0,
-    package: null,
-    referrals: 0
-  };
+function earn(amount){
+  if(!user.package) return alert("Activate account");
+  user.profits += amount;
+  save();
+}
 
-  localStorage.setItem("users", JSON.stringify(users));
+function earnBlog(){earn(100);}
+function survey(){earn(10);}
 
-  alert("Registered successfully ✅");
-  }
-  function joinGroup(){
-  window.open("https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou?mode=gi_t");
-  }
-  function doSurvey(){
-  if(!user.package){
-    alert("Activate account first");
-    return;
-  }
+function referral(){
+  user.balance += 150;
+  save();
+}
 
-  let answer = prompt("What is 2 + 2 ?");
+function ecommerce(){
+  if(user.package!=="premium") return alert("Upgrade to premium");
+  earn(200);
+}
 
-  if(answer == "4"){
-    user.profits += 10;
-    save();
-    alert("Correct! Earned KES 10 ✅");
-  } else {
-    alert("Wrong answer ❌");
-  }
-  }
-  function buyPackage(type){
+function academicTask(){
+  if(user.package!=="intermediate" && user.package!=="premium")
+    return alert("Upgrade package");
+  earn(200);
+}
 
-  if(type === "standard"){
-    user.package = "standard";
-    user.balance = 600;
-  }
+function buyBot(){
+  if(user.balance < 15000) return alert("Insufficient");
+  user.balance -= 15000;
+  save();
+  alert("Bot activated");
+}
 
-  if(type === "intermediate"){
-    user.package = "intermediate";
-  }
+function buyPackage(type){
+  user.package = type;
+  if(type==="standard") user.balance=600;
+  save();
+  alert(type+" activated");
+}
 
-  if(type === "premium"){
-    user.package = "premium";
-  }
+function joinGroup(){
+  window.open("https://chat.whatsapp.com/");
+}
 
+function withdraw(){
+  if(user.balance<600) return alert("Min 600");
+
+  let phone = prompt("Enter number");
+
+  let list = JSON.parse(localStorage.getItem("withdrawals")) || [];
+
+  list.push({amount:user.balance,phone,status:"pending"});
+  localStorage.setItem("withdrawals", JSON.stringify(list));
+
+  user.balance=0;
   save();
 
-  alert(type + " package activated ✅");
-  }
-  function loadTasks(){
-  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  alert("Request sent");
+}
 
-  let html = "";
+function viewWithdrawals(){
+  let list = JSON.parse(localStorage.getItem("withdrawals")) || [];
 
-  tasks.forEach((t) => {
-    html += `<div onclick="earn(150)" style="padding:10px; margin:5px; background:#eee; border-radius:8px;">
-      ${t}
+  let html="";
+  list.forEach((w,i)=>{
+    html+=`<div>
+    ${w.amount} - ${w.phone} - ${w.status}
+    <button onclick="approve(${i})">Approve</button>
     </div>`;
   });
 
-  document.getElementById("tasksList").innerHTML = html;
-  }
-  function withdraw(){
-  if(user.balance < 600){
-    alert("Minimum withdrawal is KES 600");
-    return;
-  }
-
-  let phone = prompt("Enter your M-PESA number");
-
-  if(!phone){
-    alert("Phone number required");
-    return;
-  }
-
-  let amount = user.balance;
-
-  user.balance = 0;
-
-  save();
-
-  alert("Withdrawal request sent successfully ✅");
-  }
-function payNow(){
-  let phone = prompt("Enter your M-PESA number (2547XXXXXXXX)");
-
-  if(!phone){
-    alert("Phone number required");
-    return;
-  }
-
-  // simulate stk push
-  alert("STK Push sent to " + phone);
-
-  setTimeout(() => {
-    alert("Payment successful ✅");
-
-    // activate account
-    user.balance = 600;
-    user.package = "standard";
-
-    save();
-  }, 3000);
-  }
-let user = { balance: 600, profits: 0, referrals: 0 };
-
-function update(){
-  let b = document.getElementById("balance");
-  let p = document.getElementById("profits");
-  let r = document.getElementById("referrals");
-
-  if(b) b.innerText = user.balance;
-  if(p) p.innerText = user.profits;
-  if(r) r.innerText = user.referrals;
-}
-function earn(){
-  if(!user.package){
-    alert("Please activate account first");
-    return;
-  }
-
-  user.profits += 100;
-  save();
-  }
-// REFERRAL LINK
-function generateRefLink(){
-  let refInput = document.getElementById("refLink");
-
-  if(refInput){
-    refInput.value =
-      window.location.origin + "/?ref=" + Math.floor(Math.random()*10000);
-  }
-}
-window.onload = function(){
-
-  let email = localStorage.getItem("currentUser");
-  let users = JSON.parse(localStorage.getItem("users")) || {};
-
-  if(email && users[email]){
-    user = users[email];
-
-    document.getElementById("authBox").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
-
-    update();
-    generateRefLink();
-    loadTasks();
-  } else {
-    document.getElementById("authBox").style.display = "block";
-    document.getElementById("dashboard").style.display = "none";
-  }
-
-};
-// MENU TOGGLE
-function toggleMenu(){
-  let menu = document.getElementById("menu");
-
-  if(menu.style.display === "block"){
-    menu.style.display = "none";
-  } else {
-    menu.style.display = "block";
-  }
+  document.getElementById("adminContent").innerHTML=html;
+  document.getElementById("adminPanel").style.display="block";
 }
 
-// LOAD PAGE
-function update(){
-
-  if(document.getElementById("balance")){
-    document.getElementById("balance").innerText = user.balance;
-  }
-
-  if(document.getElementById("profits")){
-    document.getElementById("profits").innerText = user.profits;
-  }
-
-  if(document.getElementById("status")){
-    document.getElementById("status").innerText =
-      user.package ? "Active ✅" : "Not Activated ❌";
-  }
-
-  if(document.getElementById("package")){
-    document.getElementById("package").innerText =
-      user.package ? user.package : "None";
-  }
-  }
-// OPEN ADMIN PANEL
-function openAdmin(){
-  let password = prompt("Enter admin password");
-
-  if(password === "1234"){
-    document.getElementById("adminPanel").style.display = "block";
-  } else {
-    alert("Wrong password");
-  }
-}
-
-// ADD TASK
-function addTask(){
-  let task = prompt("Enter task name");
-
-  if(!task) return;
-
-  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-  tasks.push(task);
-
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-
-  alert("Task added successfully");
-}
-
-// VIEW WITHDRAWALS
-function withdraw(){
-  if(user.balance < 600){
-    alert("Minimum withdrawal is KES 600");
-    return;
-  }
-
-  let phone = prompt("Enter your M-PESA number");
-
-  if(!phone){
-    alert("Phone number required");
-    return;
-  }
-
-  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-  withdrawals.push({
-    amount: user.balance,
-    phone: phone,
-    status: "pending"
-  });
-
-  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-
-  user.balance = 0;
-  save();
-
-  alert("Withdrawal request submitted ✅");
-}
-  function earnBlog(){
-  if(!user.package){
-    alert("Activate account first");
-    return;
-  }
-
-  user.profits += 100;
-  save();
-  }
-  function academicTask(){
-  if(user.package !== "intermediate" && user.package !== "premium"){
-    alert("Upgrade to Intermediate package");
-    return;
-  }
-
-  user.profits += 200;
-  save();
-}
-  function trainingAccess(){
-  if(user.package !== "premium"){
-    alert("Upgrade to Premium package");
-    return;
-  }
-
-  alert("Access granted to training ✅");
-  }
-  function buyBot(){
-  if(user.balance < 15000){
-    alert("You need KES 15,000 to buy this bot");
-    return;
-  }
-
-  user.balance -= 15000;
-  save();
-
-  alert("AI Trading Bot Activated ✅");
-  }
-  function ecommerce(){
-  if(user.package !== "premium"){
-    alert("Upgrade to Premium package (KES 2500)");
-    return;
-  }
-
-  user.profits += 200;
-  save();
-
-  alert("E-commerce task completed ✅");
-  }
-  function viewWithdrawals(){
-
-  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-  let html = "<h3>Withdrawal Requests</h3>";
-
-  withdrawals.forEach((w, i) => {
-    html += `
-      <div style="background:#222; padding:10px; margin:5px;">
-        Amount: ${w.amount} <br>
-        Phone: ${w.phone} <br>
-        Status: ${w.status} <br>
-
-        <button onclick="approveWithdrawal(${i})">Approve</button>
-      </div>
-    `;
-  });
-
-  document.getElementById("adminContent").innerHTML = html;
-    }
-  function approveWithdrawal(index){
-
-  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-  withdrawals[index].status = "approved";
-
-  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-
-  alert("Withdrawal approved ✅");
-
+function approve(i){
+  let list = JSON.parse(localStorage.getItem("withdrawals"));
+  list[i].status="approved";
+  localStorage.setItem("withdrawals", JSON.stringify(list));
   viewWithdrawals();
-    }
+}
+
 </script>
-  
 
 </body>
-</html>
+  </html>
