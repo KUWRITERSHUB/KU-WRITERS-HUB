@@ -202,6 +202,9 @@
   let running = false;
 let multiplier = 1;
 let gameInterval;
+let running = false;
+let multiplier = 1;
+let gameInterval;
 
 function startGame(){
   if(!user.package){
@@ -213,11 +216,21 @@ function startGame(){
   multiplier = 1;
 
   gameInterval = setInterval(()=>{
-    multiplier += 0.1;
-    document.getElementById("multi").innerText = multiplier.toFixed(2) + "x";
+    multiplier += Math.random()*0.2;
 
-    // random crash
-    if(Math.random() < 0.05){
+    let multiText = document.getElementById("multi");
+    multiText.innerText = multiplier.toFixed(2) + "x";
+
+    // glow effect
+    multiText.style.color = "#22c55e";
+    multiText.style.transform = "scale(1.2)";
+
+    setTimeout(()=>{
+      multiText.style.transform = "scale(1)";
+    },100);
+
+    // crash randomly
+    if(Math.random() < 0.04){
       stopGame(true);
     }
 
@@ -228,10 +241,13 @@ function cashOut(){
   if(!running) return;
 
   let win = Math.floor(multiplier * 50);
+
   user.balance += win;
   save();
 
-  alert("You earned KES " + win + " 💰");
+  document.getElementById("winSound").play();
+
+  alert("💰 You won KES " + win);
 
   stopGame(false);
 }
@@ -241,7 +257,8 @@ function stopGame(crashed){
   running = false;
 
   if(crashed){
-    alert("Crashed! You lost ❌");
+    document.getElementById("loseSound").play();
+    alert("❌ Crashed! You lost");
   }
   }
   function withdraw(){
