@@ -302,6 +302,25 @@ function openAdmin(){
     alert("Wrong password");
   }
   }
+  function payNow(){
+  let phone = prompt("Enter M-PESA Number (2547XXXXXXXX)");
+
+  if(!phone){
+    alert("Phone required");
+    return;
+  }
+
+  alert("Sending STK Push to " + phone);
+
+  setTimeout(() => {
+    alert("Payment Successful ✅");
+
+    user.package = "standard";
+    user.balance += 600;
+
+    save();
+  }, 3000);
+  }
 </script>
 
 </body>
