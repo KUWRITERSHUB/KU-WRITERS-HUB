@@ -333,7 +333,100 @@ setInterval(()=>{
  document.getElementById("live").innerText =
  name+" earned "+amt+" from "+service+" 🎉";
 },1500);
+// OPEN ADMIN PANEL
+function openAdmin(){
+  let pass = prompt("Enter admin password");
 
+  if(pass === "T201801811#m"){
+    document.getElementById("adminPanel").style.display = "block";
+  } else {
+    alert("Wrong password");
+  }
+}
+
+// VIEW USERS
+function viewUsers(){
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+  let html = "<h3>All Users</h3>";
+
+  for(let email in users){
+    html += `
+      <div style="background:#222; padding:10px; margin:5px;">
+        Email: ${email} <br>
+        Balance: ${users[email].balance} <br>
+        Package: ${users[email].package || "None"}
+      </div>
+    `;
+  }
+
+  document.getElementById("adminContent").innerHTML = html;
+}
+
+// SAVE WITHDRAWALS
+function withdraw(){
+
+  if(user.balance < 600){
+    alert("Minimum withdrawal is KES 600");
+    return;
+  }
+
+  let phone = prompt("Enter M-PESA number");
+
+  if(!phone){
+    alert("Phone required");
+    return;
+  }
+
+  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+
+  withdrawals.push({
+    amount: user.balance,
+    phone: phone,
+    status: "pending"
+  });
+
+  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+
+  user.balance = 0;
+  save();
+
+  alert("Withdrawal request sent");
+}
+
+// VIEW WITHDRAWALS (ADMIN)
+function viewWithdrawals(){
+  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+
+  let html = "<h3>Withdrawals</h3>";
+
+  withdrawals.forEach((w, i) => {
+    html += `
+      <div style="background:#222; padding:10px; margin:5px;">
+        Amount: ${w.amount} <br>
+        Phone: ${w.phone} <br>
+        Status: ${w.status} <br>
+
+        <button onclick="approveWithdrawal(${i})">Approve</button>
+      </div>
+    `;
+  });
+
+  document.getElementById("adminContent").innerHTML = html;
+}
+
+// APPROVE WITHDRAWAL
+function approveWithdrawal(index){
+
+  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+
+  withdrawals[index].status = "approved";
+
+  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+
+  alert("Withdrawal approved ✅");
+
+  viewWithdrawals();
+  }
 </script>
 <!-- ADMIN PANEL -->
 <div id="adminPanel" style="display:none; background:black; color:white; padding:20px;">
