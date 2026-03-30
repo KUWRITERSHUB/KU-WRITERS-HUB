@@ -1,724 +1,288 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>UK WRITERS HUB</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UK WRITERS HUB</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    .leader-item {
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(135deg,#0ea5e9,#22c55e,#f97316);
+  color:white;
+}
+
+.header{
   display:flex;
   justify-content:space-between;
+  padding:15px;
+  background:black;
+}
+
+.logo{color:#22c55e;font-weight:bold;}
+
+.card{
+  background:rgba(0,0,0,0.6);
+  padding:15px;
+  margin:10px;
+  border-radius:12px;
+}
+
+.features{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
   padding:10px;
-  margin:5px 0;
+}
+
+.box{
+  padding:15px;
   border-radius:10px;
-  background: linear-gradient(45deg, #22c55e, #3b82f6);
-  font-weight:bold;
-}
-
-.rank1 {background: gold; color:black;}
-.rank2 {background: silver; color:black;}
-.rank3 {background: #cd7f32; color:black;}
-    @keyframes glow {
-  0% {box-shadow:0 0 5px #22c55e;}
-  50% {box-shadow:0 0 20px #22c55e;}
-  100% {box-shadow:0 0 5px #22c55e;}
-}
-
-.game-box {
-  animation: glow 2s infinite;
-}
-  body {
-  margin:0;
-  font-family: Arial;
-  background: linear-gradient(135deg, #0ea5e9, #22c55e, #f97316);
-  background-size: 400% 400%;
-  animation: bgMove 10s infinite;
-  color:white;
-}
-
-@keyframes bgMove {
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
-}
-
-  .header {
-    background:#000;
-    padding:15px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    border-bottom:2px solid #22c55e;
-  }
-
-  .logo {
-    color:#22c55e;
-    font-weight:bold;
-    font-size:20px;
-  }
-
-  .container {
-    padding:15px;
-  }
-
-  .card {
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(10px);
-  padding:15px;
-  border-radius:15px;
-  margin-bottom:15px;
-  box-shadow:0 0 15px rgba(255,255,255,0.2);
-  }
-    
-  .features {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-  }
-
-  .box {
-  padding:15px;
-  border-radius:15px;
+  background:linear-gradient(45deg,#ff0000,#00ffff,#ff00ff);
   text-align:center;
-  font-weight:bold;
   cursor:pointer;
-  background: linear-gradient(45deg, #ff0000, #ff9900, #00ffcc, #0066ff);
-  color:white;
-  transition:0.3s;
 }
 
-.box:hover {
-  transform: scale(1.05);
-       }
+#menu{
+  display:none;
+  background:black;
+  padding:10px;
+}
 
-  .box:hover {
-    background:#22c55e;
-    color:black;
-    transform:scale(1.05);
-  }
+.leader-item{
+  display:flex;
+  justify-content:space-between;
+  padding:8px;
+  margin:5px;
+  background:#222;
+  border-radius:8px;
+}
 
-  button {
-    padding:12px;
-    width:100%;
-    border:none;
-    border-radius:10px;
-    background:#22c55e;
-    color:black;
-    font-weight:bold;
-    margin-top:10px;
-    cursor:pointer;
-  }
-
-  input {
-    width:100%;
-    padding:10px;
-    border-radius:8px;
-    border:none;
-    margin-top:5px;
-  }
-
-  #menu {
-    display:none;
-    background:#000;
-    padding:10px;
-  }
-
-  #menu p {
-    padding:10px;
-    border-bottom:1px solid #222;
-    cursor:pointer;
-  }
-
-  .game-box {
-    background:#111;
-    padding:20px;
-    border-radius:12px;
-    text-align:center;
-    margin-bottom:15px;
-    border:1px solid #22c55e;
-  }
-
-  .multiplier {
-    font-size:30px;
-    color:#22c55e;
-    font-weight:bold;
-  }
-    <div id="liveUsers" style="margin-top:10px; color:#fff;"></div>
-    <div class="card">
-  <h3>🏆 Top Earners</h3>
-<div class="card">
-  <h3>📊 Your Rank</h3>
-  <div id="myRank">Checking...</div>
-</div>
-  <div id="leaderboard"></div>
-</div>
-  </style>
+button{
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:#22c55e;
+  color:black;
+}
+</style>
 </head>
-  <div id="liveWins" style="
-background:black;
-padding:10px;
-color:#22c55e;
-font-weight:bold;
-text-align:center;
-font-size:14px;
-">
-Loading live wins...
-  </div>
 
 <body>
-  <audio id="winSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
-<audio id="loseSound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
 
-<!-- HEADER -->
 <div class="header">
-  <div class="logo">UK WRITERS HUB 🎰</div>
-  <div style="text-align:center; font-size:12px; color:gray; padding:5px;">
-  ✔ Secure Platform | ✔ Fast Payments | ✔ Trusted by Members
-  </div>
   <div class="logo">UK WRITERS HUB</div>
+  <div onclick="toggleMenu()">⋮</div>
+</div>
 
-  <div style="display:flex; gap:10px;">
-    <button onclick="openAdmin()" style="background:black;">Admin</button>
-    <div onclick="toggleMenu()" style="font-size:24px;cursor:pointer;">⋮</div>
-  </div>
-</div>
-  <div class="logo">UK WRITERS HUB</div>
-  <div onclick="toggleMenu()" style="font-size:24px;cursor:pointer;">⋮</div>
-</div>
-<p style="font-size:12px; color:gray;">
-  Official Platform | Secure System | Trusted by Writers
-</p>
-<!-- MENU -->
 <div id="menu">
-  <p onclick="buyPackage('standard')">Standard (KES 500)</p>
-  <p onclick="buyPackage('intermediate')">Intermediate (KES 1500)</p>
-  <p onclick="buyPackage('premium')">Premium (KES 2500)</p>
-  <p onclick="viewWithdrawals()">Admin Withdrawals</p>
+  <p onclick="joinGroup()">Join WhatsApp</p>
+  <p onclick="showHistory()">Transactions</p>
+  <p onclick="showNotifications()">Notifications</p>
 </div>
 
-<!-- LOGIN -->
-<div id="authBox" class="container">
-  <h2>Login / Register</h2>
+<div id="liveWins" class="card">Loading live activity...</div>
+
+<div id="authBox" class="card">
   <input id="email" placeholder="Email"><br><br>
   <input id="password" type="password" placeholder="Password"><br><br>
   <button onclick="register()">Register</button>
   <button onclick="login()">Login</button>
 </div>
 
-<!-- DASHBOARD -->
-  <div class="card">
-  <h3>Membership Packages</h3>
+<div id="dashboard" style="display:none;">
 
-  <button onclick="buyPackage('standard')">Standard - KES 500</button>
-  <button onclick="buyPackage('intermediate')">Intermediate - KES 1500</button>
-  <button onclick="buyPackage('premium')">Premium - KES 2500</button>
-  </div>
-  <button onclick="logout()" style="background:red;">Logout</button>
-<div id="dashboard" class="container" style="display:none;">
-
-  <div class="card">
-    <p>Referral Link:</p>
-    <input id="refLink" readonly style="width:100%;">
-  </div>
-
-  <div class="balance-card">
-  💰 Balance: KES <b id="balance">0</b><br>
-  📈 Profits: KES <b id="profits">0</b>
-  </div>
-                  
-<div class="game-box">
-  <h3>🔥 Live Multiplier Game</h3>
-
-  <div class="multiplier" id="multi">1.00x</div>
-
-  <button onclick="startGame()">Start</button>
-  <button onclick="cashOut()">Cash Out</button>
+<div class="card">
+Balance: <span id="balance">0</span><br>
+Profits: <span id="profits">0</span><br>
+Package: <span id="package">None</span>
 </div>
-  <div class="game-box">
-  <h3>🎡 Lucky Spin</h3>
 
-  <div id="wheel" style="
-    width:150px;
-    height:150px;
-    border-radius:50%;
-    background:conic-gradient(
-      red 0deg 60deg,
-      blue 60deg 120deg,
-      green 120deg 180deg,
-      yellow 180deg 240deg,
-      purple 240deg 300deg,
-      orange 300deg 360deg
-    );
-    margin:auto;
-    transition:3s;
-  "></div>
+<div class="card">
+<input id="refLink" readonly>
+</div>
 
-  <button onclick="spinWheel()">Spin</button>
-  </div>
- <h3>💼 Earning Opportunities</h3>
+<div class="card">
+<h3>🏆 Leaderboard</h3>
+<div id="leaderboard"></div>
+</div>
 
 <div class="features">
-  <div class="box teal" onclick="chatJobs()">
-💬 Chat with Foreigners (KES 5000)
-  </div>
-  <div class="box red" onclick="academicTask()">📚 Academic Writing</div>
-  <div class="box blue" onclick="earnBlog()">📝 Blog Writing</div>
-  <div class="box purple" onclick="earn(120)">📄 Article Writing</div>
-  <div class="box pink" onclick="survey()">📊 Surveys (KES 10)</div>
-  <div class="box green" onclick="referral()">💸 Affiliate Program</div>
-  <div class="box orange" onclick="ecommerce()">🛒 E-commerce</div>
-  <div class="box teal" onclick="joinGroup()">💬 WhatsApp Group</div>
-  <div class="box maroon" onclick="buyBot()">🤖 AI Trading Bot</div>
+<div class="box" onclick="earn()">Earn</div>
+<div class="box" onclick="referral()">Referral</div>
+<div class="box" onclick="spin()">Spin</div>
+<div class="box" onclick="chat()">Chat Jobs</div>
 </div>
+
+<button onclick="withdraw()">Withdraw</button>
+
+</div>
+
 <script>
-  setInterval(()=>{
-  showMyRank();
-},3000);
-  function showMyRank(){
 
-  let users = JSON.parse(localStorage.getItem("users")) || {};
-  let email = localStorage.getItem("currentUser");
-
-  if(!email || !users[email]){
-    document.getElementById("myRank").innerText = "Login to see rank";
-    return;
-  }
-
-  let current = users[email];
-
-  let allUsers = [];
-
-  for(let u in users){
-    allUsers.push({
-      email: u,
-      amount: (users[u].balance || 0) + (users[u].profits || 0)
-    });
-  }
-
-  allUsers.sort((a,b)=> b.amount - a.amount);
-
-  let rank = allUsers.findIndex(u => u.email === email);
-
-  if(rank === -1){
-    document.getElementById("myRank").innerText = "Not ranked";
-  } else {
-    document.getElementById("myRank").innerText =
-      "You are ranked #" + (rank + 1);
-  }
-  }
-  function getBadge(rank){
-  if(rank === 0) return "👑 VIP";
-  if(rank === 1) return "🥈 Pro";
-  if(rank === 2) return "🥉 Rising Star";
-  if(rank < 6) return "🔥 Active";
-  return "✨ Member";
-  }
-  html += `
-  <div class="leader-item ${rankClass}">
-    <div style="display:flex; align-items:center; gap:10px;">
-      <img src="https://i.pravatar.cc/40?img=${i+1}" 
-           style="border-radius:50%; width:40px; height:40px;">
-      
-      <div>
-        <div>#${i+1} ${u.name}</div>
-        <small>${getBadge(i)}</small>
-      </div>
-    </div>
-
-    <span>KES ${u.amount}</span>
-  </div>
-`;
-  let users = JSON.parse(localStorage.getItem("users")) || {};
-
-  let realUsers = [];
-
-  for(let email in users){
-    let u = users[email];
-
-    realUsers.push({
-      name: email.slice(0,3) + "****",
-      amount: (u.balance || 0) + (u.profits || 0)
-    });
-  }
-
-  let allUsers = [...fakeUsers, ...realUsers];
-
-  // sort highest first
-  allUsers.sort((a,b)=> b.amount - a.amount);
-
-  let html = "";
-
-  allUsers.slice(0,10).forEach((u,i)=>{
-
-    let rankClass = "";
-    if(i===0) rankClass = "rank1";
-    if(i===1) rankClass = "rank2";
-    if(i===2) rankClass = "rank3";
-
-    html += `
-      <div class="leader-item ${rankClass}">
-        <span>#${i+1} ${u.name}</span>
-        <span>KES ${u.amount}</span>
-      </div>
-    `;
-  });
-
-  document.getElementById("leaderboard").innerHTML = html;
-  }
-  setInterval(()=>{
-  let names = ["Kevin","Mercy","Brian","Faith"];
-  let name = names[Math.floor(Math.random()*names.length)];
-  let win = Math.floor(Math.random()*2000);
-
-  document.getElementById("liveUsers").innerText =
-    name + " just won KES " + win + " 🎉";
-
-},2000);
-  function chatJobs(){
-
-  if(!user.chatAccess){
-
-    if(confirm("Access costs KES 5,000. Continue?")){
-
-      if(user.balance < 5000){
-        alert("Insufficient balance");
-        return;
-      }
-
-      user.balance -= 5000;
-      user.chatAccess = true;
-      save();
-
-      alert("Access granted ✅");
-    }
-
-    return;
-  }
-
-  let earn = Math.floor(Math.random()*1500);
-
-  user.balance += earn;
-  save();
-
-  alert("You earned KES " + earn + " from chatting 💬");
-      }
-  setInterval(()=>{
-
-  let names = ["Brian","Kevin","Mercy","Faith","John","Mary","Alex","James","Sarah"];
-
-  let name = names[Math.floor(Math.random()*names.length)];
-
-  let hidden = name.slice(0,2) + "****";
-
-  let amount = Math.floor(Math.random()*5000 + 200);
-
-  let services = [
-    "Multiplier Game",
-    "Lucky Spin",
-    "AI Trading Bot",
-    "Chat Jobs",
-    "E-commerce"
-  ];
-
-  let service = services[Math.floor(Math.random()*services.length)];
-
-  document.getElementById("liveWins").innerText =
-    hidden + " won KES " + amount + " from " + service + " 🎉";
-
-}, 2000);
-  function spinWheel(){
-
-  if(!user.package){
-    alert("Activate account first");
-    return;
-  }
-
-  let wheel = document.getElementById("wheel");
-
-  let deg = Math.floor(2000 + Math.random()*2000);
-
-  wheel.style.transform = "rotate(" + deg + "deg)";
-
-  setTimeout(()=>{
-    let reward = Math.floor(Math.random()*500);
-
-    user.balance += reward;
-    save();
-
-    document.getElementById("winSound").play();
-
-    alert("🎉 You won KES " + reward);
-  },3000);
-      }
-  setInterval(()=>{
-  let names = ["Brian","Kevin","Mercy","James","Faith","John","Mary"];
-  let name = names[Math.floor(Math.random()*names.length)];
-
-  let amount = Math.floor(Math.random()*2000);
-
-  document.getElementById("liveUsers").innerText =
-    name + " just won KES " + amount + " 🎉";
-
-},2000);
-
-function startGame(){
-  if(!user.package){
-    alert("Activate account first");
-    return;
-  }
-
-  running = true;
-  multiplier = 1;
-
-  gameInterval = setInterval(()=>{
-    multiplier += Math.random()*0.2;
-
-    let multiText = document.getElementById("multi");
-    multiText.innerText = multiplier.toFixed(2) + "x";
-
-    // glow effect
-    multiText.style.color = "#22c55e";
-    multiText.style.transform = "scale(1.2)";
-
-    setTimeout(()=>{
-      multiText.style.transform = "scale(1)";
-    },100);
-
-    // crash randomly
-    if(Math.random() < 0.04){
-      stopGame(true);
-    }
-
-  }, 200);
-}
-
-function cashOut(){
-  if(!running) return;
-
-  let win = Math.floor(multiplier * 50);
-
-  user.balance += win;
-  save();
-
-  document.getElementById("winSound").play();
-
-  alert("💰 You won KES " + win);
-
-  stopGame(false);
-}
-
-function stopGame(crashed){
-  clearInterval(gameInterval);
-  running = false;
-
-  if(crashed){
-    document.getElementById("loseSound").play();
-    alert("❌ Crashed! You lost");
-  }
-  }
-  function withdraw(){
-  if(user.balance < 600){
-    alert("Minimum 600");
-    return;
-  }
-
-  showLoading("Processing withdrawal");
-
-  setTimeout(()=>{
-    alert("Withdrawal successful ✅");
-  },2000);
-  }
-function showLoading(msg){
-  alert(msg + " ⏳ Processing...");
-  }
-let user = {};
-
+// USER
+let user = JSON.parse(localStorage.getItem("user")) || {
+ balance:0,
+ profits:0,
+ package:null,
+ referrals:0,
+ history:[],
+ notifications:[]
+};
+
+// SAVE
 function save(){
-  let users = JSON.parse(localStorage.getItem("users")) || {};
-  let email = localStorage.getItem("currentUser");
-  users[email] = user;
-  localStorage.setItem("users", JSON.stringify(users));
-  update();
+ localStorage.setItem("user", JSON.stringify(user));
+ update();
 }
 
+// UPDATE UI
 function update(){
-  document.getElementById("balance").innerText = user.balance || 0;
-  document.getElementById("profits").innerText = user.profits || 0;
+ document.getElementById("balance").innerText = user.balance;
+ document.getElementById("profits").innerText = user.profits;
+ document.getElementById("package").innerText = user.package || "None";
 }
 
+// LOGIN SYSTEM
 function register(){
-  let email = emailInput();
-  let password = passInput();
+ let email = document.getElementById("email").value;
+ let password = document.getElementById("password").value;
 
-  let users = JSON.parse(localStorage.getItem("users")) || {};
+ let users = JSON.parse(localStorage.getItem("users")) || {};
 
-  if(users[email]) return alert("User exists");
+ users[email] = {password,...user};
 
-  users[email] = {password,balance:0,profits:0,package:null};
-  localStorage.setItem("users", JSON.stringify(users));
-
-  alert("Registered ✅");
+ localStorage.setItem("users", JSON.stringify(users));
+ alert("Registered");
 }
 
 function login(){
-  let email = emailInput();
-  let password = passInput();
+ let email = document.getElementById("email").value;
+ let password = document.getElementById("password").value;
 
-  let users = JSON.parse(localStorage.getItem("users")) || {};
+ let users = JSON.parse(localStorage.getItem("users")) || {};
 
-  if(!users[email] || users[email].password !== password){
-    return alert("Login failed");
+ if(users[email] && users[email].password===password){
+   user = users[email];
+   localStorage.setItem("currentUser", email);
+   document.getElementById("authBox").style.display="none";
+   document.getElementById("dashboard").style.display="block";
+   update();
+   generateRef();
+ } else alert("Login failed");
+}
+
+// REFERRAL
+function generateRef(){
+ document.getElementById("refLink").value =
+ location.href + "?ref=" + Math.floor(Math.random()*9999);
+}
+
+// EARN
+function earn(){
+ user.profits+=100;
+ user.history.push("Earned 100");
+ save();
+}
+
+// REFERRAL
+function referral(){
+ user.balance+=150;
+ user.referrals++;
+ user.history.push("Referral bonus 150");
+ save();
+}
+
+// SPIN
+function spin(){
+ user.profits+=Math.floor(Math.random()*200);
+ user.history.push("Spin win");
+ save();
+}
+
+// CHAT
+function chat(){
+ if(!user.chat){
+  if(confirm("Pay 5000 to unlock?")){
+    user.chat=true;
+    user.balance-=5000;
+    save();
   }
+ }else{
+  user.balance+=1500;
+  user.history.push("Chat earning");
+  save();
+ }
+}
 
+// WITHDRAW
+function withdraw(){
+ if(user.balance<600){
+  alert("Minimum 600");
+  return;
+ }
+ user.history.push("Withdraw " + user.balance);
+ user.balance=0;
+ save();
+ alert("Request sent");
+}
+
+// MENU
+function toggleMenu(){
+ let m=document.getElementById("menu");
+ m.style.display = m.style.display==="block"?"none":"block";
+}
+
+// WHATSAPP
+function joinGroup(){
+ window.open("https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou?mode=gi_t");
+}
+
+// HISTORY
+function showHistory(){
+ alert(user.history.join("\n"));
+}
+
+// NOTIFICATIONS
+function showNotifications(){
+ alert(user.notifications.join("\n"));
+}
+
+// FAKE LIVE USERS
+setInterval(()=>{
+ let names = Array.from({length:2000},(_,i)=>"User"+i);
+ let name = names[Math.floor(Math.random()*names.length)];
+ let amt = Math.floor(Math.random()*5000);
+
+ document.getElementById("liveWins").innerText =
+ name + " won KES " + amt + " 🎉";
+},1500);
+
+// LEADERBOARD
+function leaderboard(){
+ let html="";
+ for(let i=1;i<=10;i++){
+  html+=`<div class="leader-item">User${i} - KES ${Math.floor(Math.random()*10000)}</div>`;
+ }
+ document.getElementById("leaderboard").innerHTML=html;
+}
+setInterval(leaderboard,3000);
+
+// LOAD
+window.onload=function(){
+ let email = localStorage.getItem("currentUser");
+ let users = JSON.parse(localStorage.getItem("users")) || {};
+
+ if(email && users[email]){
   user = users[email];
-  localStorage.setItem("currentUser", email);
-
   document.getElementById("authBox").style.display="none";
   document.getElementById("dashboard").style.display="block";
-
-  generateRefLink();
   update();
-}
+  generateRef();
+ }
+};
 
-function emailInput(){return document.getElementById("email").value;}
-function passInput(){return document.getElementById("password").value;}
-
-function generateRefLink(){
-  document.getElementById("refLink").value =
-    location.origin + "/?ref=" + Math.floor(Math.random()*10000);
-}
-
-function toggleMenu(){
-  let m = document.getElementById("menu");
-  m.style.display = m.style.display==="block"?"none":"block";
-}
-
-function earn(amount){
-  if(!user.package) return alert("Activate account");
-  user.profits += amount;
-  save();
-}
-
-function earnBlog(){earn(100);}
-function survey(){earn(10);}
-
-function referral(){
-  user.balance += 150;
-  save();
-}
-
-function ecommerce(){
-  if(user.package!=="premium") return alert("Upgrade to premium");
-  earn(200);
-}
-
-function academicTask(){
-  if(user.package!=="intermediate" && user.package!=="premium")
-    return alert("Upgrade package");
-  earn(200);
-}
-
-function buyBot(){
-  if(user.balance < 15000) return alert("Insufficient");
-  user.balance -= 15000;
-  save();
-  alert("Bot activated");
-}
-
-function buyPackage(type){
-  user.package = type;
-  if(type==="standard") user.balance=600;
-  save();
-  alert(type+" activated");
-}
-
-function joinGroup(){
-  window.open("https://chat.whatsapp.com/");
-}
-
-function withdraw(){
-  if(user.balance<600) return alert("Min 600");
-
-  let phone = prompt("Enter number");
-
-  let list = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-  list.push({amount:user.balance,phone,status:"pending"});
-  localStorage.setItem("withdrawals", JSON.stringify(list));
-
-  user.balance=0;
-  save();
-
-  alert("Request sent");
-}
-
-function viewWithdrawals(){
-  let list = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-  let html="";
-  list.forEach((w,i)=>{
-    html+=`<div>
-    ${w.amount} - ${w.phone} - ${w.status}
-    <button onclick="approve(${i})">Approve</button>
-    </div>`;
-  });
-
-  document.getElementById("adminContent").innerHTML=html;
-  document.getElementById("adminPanel").style.display="block";
-}
-
-function approve(i){
-  let list = JSON.parse(localStorage.getItem("withdrawals"));
-  list[i].status="approved";
-  localStorage.setItem("withdrawals", JSON.stringify(list));
-  viewWithdrawals();
-}
-function openAdmin(){
-  let pass = prompt("Enter Admin Password");
-
-  if(pass === "admin123"){
-    document.getElementById("adminPanel").style.display = "block";
-  } else {
-    alert("Wrong password");
-  }
-  }
-function payNow(){
-
-  let phone = prompt("Enter M-PESA number");
-
-  if(!phone){
-    alert("Number required");
-    return;
-  }
-
-  alert("STK Push sent to " + phone + " 📱");
-
-  setTimeout(()=>{
-    alert("Payment successful ✅");
-
-    user.package = "standard";
-    user.balance += 600;
-
-    save();
-  }, 3000);
-  }
-  function logout(){
-  localStorage.removeItem("currentUser");
-  location.reload();
-  }
-  setInterval(()=>{
-  loadLeaderboard();
-},3000);
 </script>
 
 </body>
-  </html>
-<div style="text-align:center; padding:20px; font-size:12px; color:gray;">
-  © 2026 UK Writers Hub  
-  | Secure Platform  
-  | Powered by AI Systems  
-</div>
-<div class="footer">
-  © 2026 UK Writers Hub <br>
-  All Rights Reserved | Secure System
-</div>
+</html>
