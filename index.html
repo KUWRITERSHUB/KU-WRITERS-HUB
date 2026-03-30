@@ -15,11 +15,19 @@
   animation: glow 2s infinite;
 }
   body {
-    margin:0;
-    font-family: Arial;
-    background:#020617;
-    color:white;
-  }
+  margin:0;
+  font-family: Arial;
+  background: linear-gradient(135deg, #0ea5e9, #22c55e, #f97316);
+  background-size: 400% 400%;
+  animation: bgMove 10s infinite;
+  color:white;
+}
+
+@keyframes bgMove {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
 
   .header {
     background:#000;
