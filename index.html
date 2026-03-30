@@ -268,6 +268,53 @@ Loading live wins...
   <div class="box maroon" onclick="buyBot()">🤖 AI Trading Bot</div>
 </div>
 <script>
+  function loadLeaderboard(){
+
+  let fakeUsers = [
+    {name:"Br****", amount:12000},
+    {name:"Ke****", amount:9800},
+    {name:"Me****", amount:8700},
+    {name:"Fa****", amount:7600},
+    {name:"Jo****", amount:6500}
+  ];
+
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+
+  let realUsers = [];
+
+  for(let email in users){
+    let u = users[email];
+
+    realUsers.push({
+      name: email.slice(0,3) + "****",
+      amount: (u.balance || 0) + (u.profits || 0)
+    });
+  }
+
+  let allUsers = [...fakeUsers, ...realUsers];
+
+  // sort highest first
+  allUsers.sort((a,b)=> b.amount - a.amount);
+
+  let html = "";
+
+  allUsers.slice(0,10).forEach((u,i)=>{
+
+    let rankClass = "";
+    if(i===0) rankClass = "rank1";
+    if(i===1) rankClass = "rank2";
+    if(i===2) rankClass = "rank3";
+
+    html += `
+      <div class="leader-item ${rankClass}">
+        <span>#${i+1} ${u.name}</span>
+        <span>KES ${u.amount}</span>
+      </div>
+    `;
+  });
+
+  document.getElementById("leaderboard").innerHTML = html;
+  }
   setInterval(()=>{
   let names = ["Kevin","Mercy","Brian","Faith"];
   let name = names[Math.floor(Math.random()*names.length)];
