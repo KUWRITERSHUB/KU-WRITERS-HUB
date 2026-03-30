@@ -271,6 +271,9 @@ Loading live wins...
   <div class="box maroon" onclick="buyBot()">🤖 AI Trading Bot</div>
 </div>
 <script>
+  setInterval(()=>{
+  showMyRank();
+},3000);
   function showMyRank(){
 
   let users = JSON.parse(localStorage.getItem("users")) || {};
