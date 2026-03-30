@@ -268,16 +268,21 @@ Loading live wins...
   <div class="box maroon" onclick="buyBot()">🤖 AI Trading Bot</div>
 </div>
 <script>
-  function loadLeaderboard(){
+  html += `
+  <div class="leader-item ${rankClass}">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <img src="https://i.pravatar.cc/40?img=${i+1}" 
+           style="border-radius:50%; width:40px; height:40px;">
+      
+      <div>
+        <div>#${i+1} ${u.name}</div>
+        <small>${getBadge(i)}</small>
+      </div>
+    </div>
 
-  let fakeUsers = [
-    {name:"Br****", amount:12000},
-    {name:"Ke****", amount:9800},
-    {name:"Me****", amount:8700},
-    {name:"Fa****", amount:7600},
-    {name:"Jo****", amount:6500}
-  ];
-loadLeaderboard();
+    <span>KES ${u.amount}</span>
+  </div>
+`;
   let users = JSON.parse(localStorage.getItem("users")) || {};
 
   let realUsers = [];
