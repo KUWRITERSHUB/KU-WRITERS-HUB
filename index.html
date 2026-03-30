@@ -271,6 +271,38 @@ Loading live wins...
   <div class="box maroon" onclick="buyBot()">🤖 AI Trading Bot</div>
 </div>
 <script>
+  function showMyRank(){
+
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+  let email = localStorage.getItem("currentUser");
+
+  if(!email || !users[email]){
+    document.getElementById("myRank").innerText = "Login to see rank";
+    return;
+  }
+
+  let current = users[email];
+
+  let allUsers = [];
+
+  for(let u in users){
+    allUsers.push({
+      email: u,
+      amount: (users[u].balance || 0) + (users[u].profits || 0)
+    });
+  }
+
+  allUsers.sort((a,b)=> b.amount - a.amount);
+
+  let rank = allUsers.findIndex(u => u.email === email);
+
+  if(rank === -1){
+    document.getElementById("myRank").innerText = "Not ranked";
+  } else {
+    document.getElementById("myRank").innerText =
+      "You are ranked #" + (rank + 1);
+  }
+  }
   function getBadge(rank){
   if(rank === 0) return "👑 VIP";
   if(rank === 1) return "🥈 Pro";
