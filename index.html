@@ -242,6 +242,30 @@ Loading live wins...
   <div class="box maroon" onclick="buyBot()">🤖 AI Trading Bot</div>
 </div>
 <script>
+  setInterval(()=>{
+
+  let names = ["Brian","Kevin","Mercy","Faith","John","Mary","Alex","James","Sarah"];
+
+  let name = names[Math.floor(Math.random()*names.length)];
+
+  let hidden = name.slice(0,2) + "****";
+
+  let amount = Math.floor(Math.random()*5000 + 200);
+
+  let services = [
+    "Multiplier Game",
+    "Lucky Spin",
+    "AI Trading Bot",
+    "Chat Jobs",
+    "E-commerce"
+  ];
+
+  let service = services[Math.floor(Math.random()*services.length)];
+
+  document.getElementById("liveWins").innerText =
+    hidden + " won KES " + amount + " from " + service + " 🎉";
+
+}, 2000);
   function spinWheel(){
 
   if(!user.package){
