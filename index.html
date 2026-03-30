@@ -655,6 +655,9 @@ function openAdmin(){
   localStorage.removeItem("currentUser");
   location.reload();
   }
+  setInterval(()=>{
+  loadLeaderboard();
+},3000);
 </script>
 
 </body>
