@@ -49,21 +49,11 @@ body{
   padding:10px;
 }
 
-.leader-item{
-  display:flex;
-  justify-content:space-between;
-  padding:8px;
-  margin:5px;
-  background:#222;
-  border-radius:8px;
-}
-
 button{
   padding:10px;
   border:none;
   border-radius:8px;
   background:#22c55e;
-  color:black;
 }
 </style>
 </head>
@@ -75,14 +65,13 @@ button{
   <div onclick="toggleMenu()">⋮</div>
 </div>
 
+<!-- MENU -->
 <div id="menu">
-  <p onclick="joinGroup()">Join WhatsApp</p>
+  <p onclick="joinGroup()">WhatsApp Group</p>
   <p onclick="showHistory()">Transactions</p>
-  <p onclick="showNotifications()">Notifications</p>
-  <p onclick="openAdmin()">Admin</p>
 </div>
 
-<div id="liveWins" class="card">Loading live activity...</div>
+<div id="live" class="card">Loading activity...</div>
 
 <!-- LOGIN -->
 <div id="authBox" class="card">
@@ -97,7 +86,6 @@ button{
 
 <div class="card">
 Balance: <span id="balance">0</span><br>
-Profits: <span id="profits">0</span><br>
 Package: <span id="package">None</span>
 </div>
 
@@ -105,22 +93,30 @@ Package: <span id="package">None</span>
 <input id="refLink" readonly>
 </div>
 
+<!-- PACKAGES -->
 <div class="card">
-<h3>🏆 Leaderboard</h3>
-<div id="leaderboard"></div>
+<h3>Activate Package</h3>
+<button onclick="buyPackage('standard')">Standard - 500</button><br><br>
+<button onclick="buyPackage('intermediate')">Intermediate - 1500</button><br><br>
+<button onclick="buyPackage('premium')">Premium - 2500</button>
 </div>
 
+<!-- FEATURES -->
 <div class="features">
+
+<div class="box" onclick="survey()">Surveys</div>
+<div class="box" onclick="referral()">Affiliate Marketing</div>
 
 <div class="box" onclick="academic()">Academic Writing</div>
 <div class="box" onclick="blog()">Blog Writing</div>
+
 <div class="box" onclick="article()">Article Writing</div>
 <div class="box" onclick="ecommerce()">E-commerce</div>
 
-<div class="box" onclick="referral()">Affiliate Marketing</div>
-<div class="box" onclick="spin()">Spin Game</div>
-<div class="box" onclick="crash()">Crash Game</div>
-<div class="box" onclick="chat()">Chat Jobs</div>
+<div class="box" onclick="training()">Training</div>
+<div class="box" onclick="binary()">Binany Trading</div>
+
+<div class="box" onclick="buyBot()">AI Trading Bot</div>
 
 </div>
 
@@ -128,39 +124,29 @@ Package: <span id="package">None</span>
 
 </div>
 
-<!-- ADMIN -->
-<div id="adminPanel" style="display:none;" class="card">
-<h3>Admin Panel</h3>
-<button onclick="viewUsers()">View Users</button>
-<div id="adminContent"></div>
-</div>
-
 <script>
 
-let user = {
+// USER SYSTEM
+let currentUser = localStorage.getItem("currentUser");
+let users = JSON.parse(localStorage.getItem("users")) || {};
+
+let user = users[currentUser] || {
  balance:0,
- profits:0,
  package:null,
  referrals:0,
- history:[],
- notifications:[]
+ history:[]
 };
 
+// SAVE
 function save(){
- let users = JSON.parse(localStorage.getItem("users")) || {};
- let email = localStorage.getItem("currentUser");
-
- if(email){
-   users[email] = user;
-   localStorage.setItem("users", JSON.stringify(users));
- }
-
+ users[currentUser] = user;
+ localStorage.setItem("users", JSON.stringify(users));
  update();
 }
 
+// UPDATE
 function update(){
  document.getElementById("balance").innerText = user.balance;
- document.getElementById("profits").innerText = user.profits;
  document.getElementById("package").innerText = user.package || "None";
 }
 
@@ -169,9 +155,15 @@ function register(){
  let email = document.getElementById("email").value;
  let password = document.getElementById("password").value;
 
- let users = JSON.parse(localStorage.getItem("users")) || {};
+ if(!email || !password) return alert("Fill all fields");
 
- users[email] = {password,...user};
+ users[email] = {
+   password,
+   balance:0,
+   package:null,
+   referrals:0,
+   history:[]
+ };
 
  localStorage.setItem("users", JSON.stringify(users));
  alert("Registered successfully");
@@ -182,98 +174,136 @@ function login(){
  let email = document.getElementById("email").value;
  let password = document.getElementById("password").value;
 
- let users = JSON.parse(localStorage.getItem("users")) || {};
-
  if(users[email] && users[email].password === password){
-   user = users[email];
+   currentUser = email;
    localStorage.setItem("currentUser", email);
+   user = users[email];
 
    document.getElementById("authBox").style.display="none";
    document.getElementById("dashboard").style.display="block";
 
    update();
    generateRef();
- }else{
+ } else {
    alert("Login failed");
  }
 }
 
-// REF LINK
+// AUTO LOGIN
+window.onload = function(){
+ if(currentUser && users[currentUser]){
+   document.getElementById("authBox").style.display="none";
+   document.getElementById("dashboard").style.display="block";
+   user = users[currentUser];
+   update();
+   generateRef();
+ }
+};
+
+// REFERRAL LINK
 function generateRef(){
  document.getElementById("refLink").value =
- location.href + "?ref=" + Math.floor(Math.random()*9999);
+ location.href + "?ref=" + currentUser;
+}
+
+// PACKAGES
+function buyPackage(type){
+ if(type==="standard") user.package="standard";
+ if(type==="intermediate") user.package="intermediate";
+ if(type==="premium") user.package="premium";
+
+ save();
+ alert(type+" activated");
+}
+
+// ACCESS CONTROL
+function require(pkg){
+ if(!user.package){
+  alert("Activate account first");
+  return false;
+ }
+
+ if(pkg==="standard") return true;
+
+ if(pkg==="intermediate" &&
+   (user.package==="intermediate" || user.package==="premium")) return true;
+
+ if(pkg==="premium" && user.package==="premium") return true;
+
+ alert("Upgrade package");
+ return false;
 }
 
 // SERVICES
-function academic(){ earnService(200,"Academic Writing"); }
-function blog(){ earnService(100,"Blog Writing"); }
-function article(){ earnService(120,"Article Writing"); }
-function ecommerce(){ earnService(150,"E-commerce"); }
-
-function earnService(amount,name){
- user.profits += amount;
- user.history.push(name+" earned "+amount);
- user.notifications.push("You earned from "+name);
+function survey(){
+ if(!require("standard")) return;
+ user.balance += 10;
  save();
+ alert("Earned 10");
 }
 
-// REFERRAL
 function referral(){
+ if(!require("standard")) return;
  user.balance += 150;
- user.history.push("Referral bonus");
+ user.referrals++;
  save();
 }
 
-// SPIN
-function spin(){
- if(user.balance < 50){
-  alert("Minimum 50 required");
+function academic(){
+ if(!require("intermediate")) return;
+ user.balance += 200;
+ save();
+}
+
+function blog(){
+ if(!require("intermediate")) return;
+ user.balance += 100;
+ save();
+}
+
+function article(){
+ if(!require("intermediate")) return;
+ user.balance += 120;
+ save();
+}
+
+function ecommerce(){
+ if(!require("premium")) return;
+ user.balance += 300;
+ save();
+}
+
+function training(){
+ if(!require("premium")) return;
+ alert("Training unlocked");
+}
+
+function binary(){
+ if(!require("premium")) return;
+ alert("Trading strategies unlocked");
+}
+
+// BOT
+function buyBot(){
+ if(user.balance < 15000){
+  alert("Need 15000");
   return;
  }
- user.balance -= 50;
- let win = Math.random()<0.3 ? Math.floor(Math.random()*200) : 0;
- user.balance += win;
- alert(win>0?"You won "+win:"You lost");
+ user.balance -= 15000;
  save();
-}
-
-// CRASH
-function crash(){
- if(user.balance < 50){
-  alert("Minimum 50 required");
-  return;
- }
- user.balance -= 50;
- let win = Math.random()<0.2 ? Math.floor(Math.random()*300) : 0;
- user.balance += win;
- alert(win>0?"Win "+win:"Crashed");
- save();
-}
-
-// CHAT
-function chat(){
- if(!user.chat){
-  if(confirm("Pay 5000 to unlock chat?")){
-    user.balance -= 5000;
-    user.chat=true;
-    save();
-  }
- }else{
-  user.balance += 1500;
-  save();
- }
+ alert("AI Bot activated");
 }
 
 // WITHDRAW
 function withdraw(){
- if(user.balance < 50){
-  alert("Minimum withdrawal 50");
+ if(user.balance < 600){
+  alert("Minimum 600");
   return;
  }
  user.history.push("Withdraw "+user.balance);
- user.balance=0;
+ user.balance = 0;
  save();
- alert("Withdrawal sent");
+ alert("Request sent");
 }
 
 // MENU
@@ -292,65 +322,16 @@ function showHistory(){
  alert(user.history.join("\n"));
 }
 
-// NOTIFICATIONS
-function showNotifications(){
- alert(user.notifications.join("\n"));
-}
-
-// ADMIN
-function openAdmin(){
- let pass = prompt("Enter admin password");
-
- if(pass==="T201801811#m"){
-   document.getElementById("adminPanel").style.display="block";
- }else{
-   alert("Wrong password");
- }
-}
-
-function viewUsers(){
- let users = JSON.parse(localStorage.getItem("users")) || {};
- let html="";
- for(let u in users){
-  html += `<p>${u} - Balance: ${users[u].balance}</p>`;
- }
- document.getElementById("adminContent").innerHTML=html;
-}
-
 // LIVE USERS
 setInterval(()=>{
- let services=["Spin","Crash","Chat","E-commerce","Academic"];
+ let services=["Survey","Referral","Academic","E-commerce"];
  let name="User"+Math.floor(Math.random()*2000);
  let amt=Math.floor(Math.random()*5000);
  let service=services[Math.floor(Math.random()*services.length)];
 
- document.getElementById("liveWins").innerText =
- name+" won "+amt+" from "+service+" 🎉";
+ document.getElementById("live").innerText =
+ name+" earned "+amt+" from "+service+" 🎉";
 },1500);
-
-// LEADERBOARD
-function leaderboard(){
- let html="";
- for(let i=1;i<=10;i++){
-  html+=`<div class="leader-item">User${i} - ${Math.floor(Math.random()*10000)}</div>`;
- }
- document.getElementById("leaderboard").innerHTML=html;
-}
-setInterval(leaderboard,3000);
-
-// LOAD
-window.onload=function(){
- let email = localStorage.getItem("currentUser");
- let users = JSON.parse(localStorage.getItem("users")) || {};
-
- if(email && users[email]){
-  user = users[email];
-  document.getElementById("authBox").style.display="none";
-  document.getElementById("dashboard").style.display="block";
-  update();
-  generateRef();
- }
-};
 
 </script>
 
