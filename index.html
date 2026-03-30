@@ -682,18 +682,19 @@ function openAdmin(){
     alert("Wrong password");
   }
   }
-  function payNow(){
-  let phone = prompt("Enter M-PESA Number (2547XXXXXXXX)");
+function payNow(){
+
+  let phone = prompt("Enter M-PESA number");
 
   if(!phone){
-    alert("Phone required");
+    alert("Number required");
     return;
   }
 
-  alert("Sending STK Push to " + phone);
+  alert("STK Push sent to " + phone + " 📱");
 
-  setTimeout(() => {
-    alert("Payment Successful ✅");
+  setTimeout(()=>{
+    alert("Payment successful ✅");
 
     user.package = "standard";
     user.balance += 600;
