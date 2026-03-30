@@ -79,10 +79,12 @@ button{
   <p onclick="joinGroup()">Join WhatsApp</p>
   <p onclick="showHistory()">Transactions</p>
   <p onclick="showNotifications()">Notifications</p>
+  <p onclick="openAdmin()">Admin</p>
 </div>
 
 <div id="liveWins" class="card">Loading live activity...</div>
 
+<!-- LOGIN -->
 <div id="authBox" class="card">
   <input id="email" placeholder="Email"><br><br>
   <input id="password" type="password" placeholder="Password"><br><br>
@@ -90,6 +92,7 @@ button{
   <button onclick="login()">Login</button>
 </div>
 
+<!-- DASHBOARD -->
 <div id="dashboard" style="display:none;">
 
 <div class="card">
@@ -108,20 +111,33 @@ Package: <span id="package">None</span>
 </div>
 
 <div class="features">
-<div class="box" onclick="earn()">Earn</div>
-<div class="box" onclick="referral()">Referral</div>
-<div class="box" onclick="spin()">Spin</div>
+
+<div class="box" onclick="academic()">Academic Writing</div>
+<div class="box" onclick="blog()">Blog Writing</div>
+<div class="box" onclick="article()">Article Writing</div>
+<div class="box" onclick="ecommerce()">E-commerce</div>
+
+<div class="box" onclick="referral()">Affiliate Marketing</div>
+<div class="box" onclick="spin()">Spin Game</div>
+<div class="box" onclick="crash()">Crash Game</div>
 <div class="box" onclick="chat()">Chat Jobs</div>
+
 </div>
 
 <button onclick="withdraw()">Withdraw</button>
 
 </div>
 
+<!-- ADMIN -->
+<div id="adminPanel" style="display:none;" class="card">
+<h3>Admin Panel</h3>
+<button onclick="viewUsers()">View Users</button>
+<div id="adminContent"></div>
+</div>
+
 <script>
 
-// USER
-let user = JSON.parse(localStorage.getItem("user")) || {
+let user = {
  balance:0,
  profits:0,
  package:null,
@@ -130,20 +146,25 @@ let user = JSON.parse(localStorage.getItem("user")) || {
  notifications:[]
 };
 
-// SAVE
 function save(){
- localStorage.setItem("user", JSON.stringify(user));
+ let users = JSON.parse(localStorage.getItem("users")) || {};
+ let email = localStorage.getItem("currentUser");
+
+ if(email){
+   users[email] = user;
+   localStorage.setItem("users", JSON.stringify(users));
+ }
+
  update();
 }
 
-// UPDATE UI
 function update(){
  document.getElementById("balance").innerText = user.balance;
  document.getElementById("profits").innerText = user.profits;
  document.getElementById("package").innerText = user.package || "None";
 }
 
-// LOGIN SYSTEM
+// REGISTER
 function register(){
  let email = document.getElementById("email").value;
  let password = document.getElementById("password").value;
@@ -153,78 +174,106 @@ function register(){
  users[email] = {password,...user};
 
  localStorage.setItem("users", JSON.stringify(users));
- alert("Registered");
+ alert("Registered successfully");
 }
 
+// LOGIN
 function login(){
  let email = document.getElementById("email").value;
  let password = document.getElementById("password").value;
 
  let users = JSON.parse(localStorage.getItem("users")) || {};
 
- if(users[email] && users[email].password===password){
+ if(users[email] && users[email].password === password){
    user = users[email];
    localStorage.setItem("currentUser", email);
+
    document.getElementById("authBox").style.display="none";
    document.getElementById("dashboard").style.display="block";
+
    update();
    generateRef();
- } else alert("Login failed");
+ }else{
+   alert("Login failed");
+ }
 }
 
-// REFERRAL
+// REF LINK
 function generateRef(){
  document.getElementById("refLink").value =
  location.href + "?ref=" + Math.floor(Math.random()*9999);
 }
 
-// EARN
-function earn(){
- user.profits+=100;
- user.history.push("Earned 100");
+// SERVICES
+function academic(){ earnService(200,"Academic Writing"); }
+function blog(){ earnService(100,"Blog Writing"); }
+function article(){ earnService(120,"Article Writing"); }
+function ecommerce(){ earnService(150,"E-commerce"); }
+
+function earnService(amount,name){
+ user.profits += amount;
+ user.history.push(name+" earned "+amount);
+ user.notifications.push("You earned from "+name);
  save();
 }
 
 // REFERRAL
 function referral(){
- user.balance+=150;
- user.referrals++;
- user.history.push("Referral bonus 150");
+ user.balance += 150;
+ user.history.push("Referral bonus");
  save();
 }
 
 // SPIN
 function spin(){
- user.profits+=Math.floor(Math.random()*200);
- user.history.push("Spin win");
+ if(user.balance < 50){
+  alert("Minimum 50 required");
+  return;
+ }
+ user.balance -= 50;
+ let win = Math.random()<0.3 ? Math.floor(Math.random()*200) : 0;
+ user.balance += win;
+ alert(win>0?"You won "+win:"You lost");
+ save();
+}
+
+// CRASH
+function crash(){
+ if(user.balance < 50){
+  alert("Minimum 50 required");
+  return;
+ }
+ user.balance -= 50;
+ let win = Math.random()<0.2 ? Math.floor(Math.random()*300) : 0;
+ user.balance += win;
+ alert(win>0?"Win "+win:"Crashed");
  save();
 }
 
 // CHAT
 function chat(){
  if(!user.chat){
-  if(confirm("Pay 5000 to unlock?")){
+  if(confirm("Pay 5000 to unlock chat?")){
+    user.balance -= 5000;
     user.chat=true;
-    user.balance-=5000;
     save();
   }
  }else{
-  user.balance+=1500;
-  user.history.push("Chat earning");
+  user.balance += 1500;
   save();
  }
 }
 
 // WITHDRAW
 function withdraw(){
- if(user.balance<600){
-  alert("Minimum 600");
+ if(user.balance < 50){
+  alert("Minimum withdrawal 50");
   return;
  }
- user.history.push("Withdraw " + user.balance);
+ user.history.push("Withdraw "+user.balance);
  user.balance=0;
  save();
- alert("Request sent");
+ alert("Withdrawal sent");
 }
 
 // MENU
@@ -248,21 +297,42 @@ function showNotifications(){
  alert(user.notifications.join("\n"));
 }
 
-// FAKE LIVE USERS
+// ADMIN
+function openAdmin(){
+ let pass = prompt("Enter admin password");
+
+ if(pass==="T201801811#m"){
+   document.getElementById("adminPanel").style.display="block";
+ }else{
+   alert("Wrong password");
+ }
+}
+
+function viewUsers(){
+ let users = JSON.parse(localStorage.getItem("users")) || {};
+ let html="";
+ for(let u in users){
+  html += `<p>${u} - Balance: ${users[u].balance}</p>`;
+ }
+ document.getElementById("adminContent").innerHTML=html;
+}
+
+// LIVE USERS
 setInterval(()=>{
- let names = Array.from({length:2000},(_,i)=>"User"+i);
- let name = names[Math.floor(Math.random()*names.length)];
- let amt = Math.floor(Math.random()*5000);
+ let services=["Spin","Crash","Chat","E-commerce","Academic"];
+ let name="User"+Math.floor(Math.random()*2000);
+ let amt=Math.floor(Math.random()*5000);
+ let service=services[Math.floor(Math.random()*services.length)];
 
  document.getElementById("liveWins").innerText =
- name + " won KES " + amt + " 🎉";
+ name+" won "+amt+" from "+service+" 🎉";
 },1500);
 
 // LEADERBOARD
 function leaderboard(){
  let html="";
  for(let i=1;i<=10;i++){
-  html+=`<div class="leader-item">User${i} - KES ${Math.floor(Math.random()*10000)}</div>`;
+  html+=`<div class="leader-item">User${i} - ${Math.floor(Math.random()*10000)}</div>`;
  }
  document.getElementById("leaderboard").innerHTML=html;
 }
