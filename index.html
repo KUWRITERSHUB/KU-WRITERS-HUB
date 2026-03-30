@@ -245,6 +245,34 @@ Loading live wins...
   <div class="box maroon" onclick="buyBot()">🤖 AI Trading Bot</div>
 </div>
 <script>
+  function chatJobs(){
+
+  if(!user.chatAccess){
+
+    if(confirm("Access costs KES 5,000. Continue?")){
+
+      if(user.balance < 5000){
+        alert("Insufficient balance");
+        return;
+      }
+
+      user.balance -= 5000;
+      user.chatAccess = true;
+      save();
+
+      alert("Access granted ✅");
+    }
+
+    return;
+  }
+
+  let earn = Math.floor(Math.random()*1500);
+
+  user.balance += earn;
+  save();
+
+  alert("You earned KES " + earn + " from chatting 💬");
+      }
   setInterval(()=>{
 
   let names = ["Brian","Kevin","Mercy","Faith","John","Mary","Alex","James","Sarah"];
