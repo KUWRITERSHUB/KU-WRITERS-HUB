@@ -432,6 +432,90 @@ function approveWithdrawal(index){
 
   viewWithdrawals();
   }
+  // OPEN PANELS
+function openCrash(){
+  document.getElementById("crashGame").style.display = "block";
+}
+
+function openSpin(){
+  document.getElementById("spinGame").style.display = "block";
+}
+
+// CRASH GAME (REALISTIC)
+let crashRunning = false;
+let crashValue = 1;
+let crashInterval;
+
+function startCrash(){
+
+  if(user.balance < 50){
+    alert("Minimum bet is KES 50");
+    return;
+  }
+
+  user.balance -= 50;
+  save();
+
+  crashRunning = true;
+  crashValue = 1;
+
+  crashInterval = setInterval(()=>{
+    crashValue += Math.random() * 0.15;
+
+    document.getElementById("crashMultiplier").innerText =
+      crashValue.toFixed(2) + "x";
+
+    // RANDOM CRASH (VERY REAL)
+    if(Math.random() < 0.04){
+      endCrash(true);
+    }
+
+  }, 200);
+}
+
+function cashOut(){
+
+  if(!crashRunning) return;
+
+  let win = Math.floor(50 * crashValue);
+
+  user.balance += win;
+  save();
+
+  alert("You cashed out at " + crashValue.toFixed(2) + "x\nWon KES " + win);
+
+  endCrash(false);
+}
+
+function endCrash(crashed){
+  clearInterval(crashInterval);
+  crashRunning = false;
+
+  if(crashed){
+    alert("Crashed at " + crashValue.toFixed(2) + "x ❌");
+  }
+}
+
+// SPIN GAME (BETTING STYLE)
+function spinNow(){
+
+  if(user.balance < 50){
+    alert("Minimum bet is KES 50");
+    return;
+  }
+
+  user.balance -= 50;
+
+  let results = [0,0,0,50,100,200];
+  let result = results[Math.floor(Math.random()*results.length)];
+
+  document.getElementById("spinResult").innerText =
+    result > 0 ? "🎉 KES " + result : "❌ Lost";
+
+  user.balance += result;
+
+  save();
+  }
 </script>
 <!-- ADMIN PANEL -->
 <div id="adminPanel" style="display:none; background:black; color:white; padding:20px;">
