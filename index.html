@@ -250,6 +250,15 @@ Loading live wins...
   <div class="box maroon" onclick="buyBot()">🤖 AI Trading Bot</div>
 </div>
 <script>
+  setInterval(()=>{
+  let names = ["Kevin","Mercy","Brian","Faith"];
+  let name = names[Math.floor(Math.random()*names.length)];
+  let win = Math.floor(Math.random()*2000);
+
+  document.getElementById("liveUsers").innerText =
+    name + " just won KES " + win + " 🎉";
+
+},2000);
   function chatJobs(){
 
   if(!user.chatAccess){
