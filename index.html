@@ -134,6 +134,7 @@ Package: <span id="package">None</span>
 
 // USER SYSTEM
 let currentUser = localStorage.getItem("currentUser");
+  let isAdmin = currentUser === "muindithomas16@gmail.com ";
 let users = JSON.parse(localStorage.getItem("users")) || {};
 
 let user = users[currentUser] || {
