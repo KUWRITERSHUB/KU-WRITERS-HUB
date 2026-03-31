@@ -153,465 +153,185 @@ Package: <span id="package">None</span>
 
 <script>
 
-// USER SYSTEM
-let currentUser = localStorage.getItem("currentUser");
-  let isAdmin = currentUser === "muindithomas16@gmail.com ";
+// USERS DATABASE
 let users = JSON.parse(localStorage.getItem("users")) || {};
+let currentUser = localStorage.getItem("currentUser");
 
-let user = users[currentUser] || {
- balance:0,
- package:null,
- referrals:0,
- history:[]
+let user = {
+  balance:0,
+  profits:0,
+  package:null,
+  referrals:0,
+  history:[],
+  notifications:[]
 };
 
-// SAVE
-function save(){
- users[currentUser] = user;
- localStorage.setItem("users", JSON.stringify(users));
- update();
-}
-
-// UPDATE
-function update(){
- document.getElementById("balance").innerText = user.balance;
- document.getElementById("package").innerText = user.package || "None";
-}
-
-// REGISTER
-function register(){
- let email = document.getElementById("email").value;
- let password = document.getElementById("password").value;
-
- if(!email || !password) return alert("Fill all fields");
-
- users[email] = {
-   password,
-   balance:0,
-   package:null,
-   referrals:0,
-   history:[]
- };
-
- localStorage.setItem("users", JSON.stringify(users));
- alert("Registered successfully");
-}
-
-// LOGIN
-function login(){
- let email = document.getElementById("email").value;
- let password = document.getElementById("password").value;
-
- if(users[email] && users[email].password === password){
-   currentUser = email;
-   localStorage.setItem("currentUser", email);
-   user = users[email];
-
-   document.getElementById("authBox").style.display="none";
-   document.getElementById("dashboard").style.display="block";
-
-   update();
-   generateRef();
- } else {
-   alert("Login failed");
- }
-}
-
-// AUTO LOGIN
+// =========================
+// INIT APP
+// =========================
 window.onload = function(){
- if(currentUser && users[currentUser]){
-   document.getElementById("authBox").style.display="none";
-   document.getElementById("dashboard").style.display="block";
-   user = users[currentUser];
-   update();
-   generateRef();
- }
+
+  if(currentUser && users[currentUser]){
+    user = users[currentUser];
+    showDashboard();
+  } else {
+    document.getElementById("authBox").style.display="block";
+    document.getElementById("dashboard").style.display="none";
+  }
+
+  startLiveUsers();
+  generateLeaderboard();
 };
 
-// REFERRAL LINK
+// =========================
+// REGISTER
+// =========================
+function register(){
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  if(!email || !password){
+    alert("Enter email and password");
+    return;
+  }
+
+  if(users[email]){
+    alert("User already exists");
+    return;
+  }
+
+  users[email] = {
+    password:password,
+    balance:0,
+    profits:0,
+    package:null,
+    referrals:0,
+    history:[],
+    notifications:[]
+  };
+
+  localStorage.setItem("users", JSON.stringify(users));
+  alert("Registered successfully ✅");
+}
+
+// =========================
+// LOGIN
+// =========================
+function login(){
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  if(!users[email]){
+    alert("User not found");
+    return;
+  }
+
+  if(users[email].password !== password){
+    alert("Wrong password");
+    return;
+  }
+
+  currentUser = email;
+  localStorage.setItem("currentUser", email);
+
+  user = users[email];
+
+  showDashboard();
+}
+
+// =========================
+// SHOW DASHBOARD
+// =========================
+function showDashboard(){
+  document.getElementById("authBox").style.display="none";
+  document.getElementById("dashboard").style.display="block";
+
+  updateUI();
+  generateRef();
+}
+
+// =========================
+// SAVE USER
+// =========================
+function save(){
+  users[currentUser] = user;
+  localStorage.setItem("users", JSON.stringify(users));
+  updateUI();
+}
+
+// =========================
+// UPDATE UI
+// =========================
+function updateUI(){
+  document.getElementById("balance").innerText = user.balance;
+  document.getElementById("profits").innerText = user.profits;
+  document.getElementById("package").innerText = user.package || "None";
+}
+
+// =========================
+// REFERRAL
+// =========================
 function generateRef(){
- document.getElementById("refLink").value =
- location.href + "?ref=" + currentUser;
+  document.getElementById("refLink").value =
+    location.origin + "?ref=" + currentUser;
 }
 
-// PACKAGES
-function buyPackage(type){
- if(type==="standard") user.package="standard";
- if(type==="intermediate") user.package="intermediate";
- if(type==="premium") user.package="premium";
-
- save();
- alert(type+" activated");
-}
-
-// ACCESS CONTROL
-function require(pkg){
- if(!user.package){
-  alert("Activate account first");
-  return false;
- }
-
- if(pkg==="standard") return true;
-
- if(pkg==="intermediate" &&
-   (user.package==="intermediate" || user.package==="premium")) return true;
-
- if(pkg==="premium" && user.package==="premium") return true;
-
- alert("Upgrade package");
- return false;
-}
-
-// SERVICES
-function survey(){
- if(!require("standard")) return;
- user.balance += 10;
- save();
- alert("Earned 10");
-}
-
-function referral(){
- if(!require("standard")) return;
- user.balance += 150;
- user.referrals++;
- save();
-}
-
-function academic(){
- if(!require("intermediate")) return;
- user.balance += 200;
- save();
-}
-
-function blog(){
- if(!require("intermediate")) return;
- user.balance += 100;
- save();
-}
-
-function article(){
- if(!require("intermediate")) return;
- user.balance += 120;
- save();
-}
-
-function ecommerce(){
- if(!require("premium")) return;
- user.balance += 300;
- save();
-}
-
-function training(){
- if(!require("premium")) return;
- alert("Training unlocked");
-}
-
-function binary(){
- if(!require("premium")) return;
- alert("Trading strategies unlocked");
-}
-
-// BOT
-function buyBot(){
- if(user.balance < 15000){
-  alert("Need 15000");
-  return;
- }
- user.balance -= 15000;
- save();
- alert("AI Bot activated");
-}
-
-// WITHDRAW
-function withdraw(){
- if(user.balance < 600){
-  alert("Minimum 600");
-  return;
- }
- user.history.push("Withdraw "+user.balance);
- user.balance = 0;
- save();
- alert("Request sent");
-}
-
-// MENU
-function toggleMenu(){
- let m=document.getElementById("menu");
- m.style.display = m.style.display==="block"?"none":"block";
-}
-
-// WHATSAPP
-function joinGroup(){
- window.open("https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou?mode=gi_t");
-}
-
-// HISTORY
-function showHistory(){
- alert(user.history.join("\n"));
-}
-
-// LIVE USERS
-// MASSIVE REALISTIC LIVE USERS SYSTEM
-
-setInterval(()=>{
-  let userId = Math.floor(Math.random()*10000) + 1;
+// =========================
+// LIVE FAKE USERS (FIXED)
+// =========================
+function startLiveUsers(){
 
   let services = [
-    "Academic Writing",
-    "Blog Writing",
-    "Article Writing",
-    "Referrals",
-    "E-commerce",
-    "Binary Trading",
-    "Surveys",
-    "Chat Jobs",
-    "Crash Game",
-    "Spin Game"
+    "Academic Writing","Blog Writing","Article Writing",
+    "Surveys","Affiliate","E-commerce",
+    "Binary Trading","Chat Jobs","Crash Game","Spin Game"
   ];
 
-  let service = services[Math.floor(Math.random()*services.length)];
-  let amount = Math.floor(Math.random()*5000) + 100;
+  setInterval(()=>{
 
-  document.getElementById("liveWins").innerText =
-    "User " + userId + " earned KES " + amount + " from " + service + " 💰";
-}, 1000);
-// OPEN ADMIN PANEL
-function openAdmin(){
-  let pass = prompt("Enter admin password");
+    let userId = "User " + Math.floor(Math.random()*10000);
+    let service = services[Math.floor(Math.random()*services.length)];
+    let amount = Math.floor(Math.random()*5000)+50;
 
-  if(pass === "T201801811#m"){
-    document.getElementById("adminPanel").style.display = "block";
-  } else {
-    alert("Wrong password");
-  }
+    document.getElementById("liveWins").innerText =
+      userId + " earned KES " + amount + " from " + service;
+
+  },1500);
 }
 
-// VIEW USERS
-function viewUsers(){
-  let users = JSON.parse(localStorage.getItem("users")) || {};
-  let html = "<h3>All Users</h3>";
+// =========================
+// LEADERBOARD
+// =========================
+function generateLeaderboard(){
 
-  for(let email in users){
-    html += `
-      <div style="background:#222; padding:10px; margin:5px;">
-        Email: ${email} <br>
-        Balance: ${users[email].balance} <br>
-        Package: ${users[email].package || "None"}
-      </div>
-    `;
+  let html="";
+
+  for(let i=1;i<=10;i++){
+    let amount = Math.floor(Math.random()*20000);
+    html += `<div class="leader-item">User ${i} - KES ${amount}</div>`;
   }
 
-  document.getElementById("adminContent").innerHTML = html;
+  document.getElementById("leaderboard").innerHTML = html;
+
+  setTimeout(generateLeaderboard,4000);
 }
 
-// SAVE WITHDRAWALS
-function withdraw(){
-
-  if(user.balance < 600){
-    alert("Minimum withdrawal is KES 600");
-    return;
-  }
-
-  let phone = prompt("Enter M-PESA number");
-
-  if(!phone){
-    alert("Phone required");
-    return;
-  }
-
-  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-  withdrawals.push({
-    amount: user.balance,
-    phone: phone,
-    status: "pending"
-  });
-
-  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-
-  user.balance = 0;
-  save();
-
-  alert("Withdrawal request sent");
+// =========================
+// MENU
+// =========================
+function toggleMenu(){
+  let m=document.getElementById("menu");
+  m.style.display = m.style.display==="block"?"none":"block";
 }
 
-// VIEW WITHDRAWALS (ADMIN)
-function viewWithdrawals(){
-  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-  let html = "<h3>Withdrawals</h3>";
-
-  withdrawals.forEach((w, i) => {
-    html += `
-      <div style="background:#222; padding:10px; margin:5px;">
-        Amount: ${w.amount} <br>
-        Phone: ${w.phone} <br>
-        Status: ${w.status} <br>
-
-        <button onclick="approveWithdrawal(${i})">Approve</button>
-      </div>
-    `;
-  });
-
-  document.getElementById("adminContent").innerHTML = html;
+// =========================
+// WHATSAPP
+// =========================
+function joinGroup(){
+  window.open("https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou?mode=gi_t");
 }
 
-// APPROVE WITHDRAWAL
-function approveWithdrawal(index){
-
-  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-  withdrawals[index].status = "approved";
-
-  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-
-  alert("Withdrawal approved ✅");
-
-  viewWithdrawals();
-  }
-  // OPEN PANELS
-function openCrash(){
-  document.getElementById("crashGame").style.display = "block";
-}
-
-function openSpin(){
-  document.getElementById("spinGame").style.display = "block";
-}
-
-// CRASH GAME (REALISTIC)
-let crashRunning = false;
-let crashValue = 1;
-let crashInterval;
-
-function startCrash(){
-
-  if(user.balance < 50 && !isAdmin){
-    alert("Minimum bet is KES 50");
-    return;
-  }
-
-  if(!isAdmin){
-  user.balance -= 50;
-  }
-  save();
-
-  crashRunning = true;
-  crashValue = 1;
-
-  crashInterval = setInterval(()=>{
-    crashValue += Math.random() * 0.15;
-
-    document.getElementById("crashMultiplier").innerText =
-      crashValue.toFixed(2) + "x";
-document.getElementById("tickSound").play();
-    document.getElementById("winSound").play();
-    document.getElementById("loseSound").play();
-    // RANDOM CRASH (VERY REAL)
-    if(Math.random() < 0.04){
-      endCrash(true);
-    }
-
-  }, 200);
-}
-
-function cashOut(){
-
-  if(!crashRunning) return;
-
-  let win = Math.floor(50 * crashValue);
-
-  user.balance += win;
-  save();
-
-  alert("You cashed out at " + crashValue.toFixed(2) + "x\nWon KES " + win);
-
-  endCrash(false);
-}
-
-function endCrash(crashed){
-  clearInterval(crashInterval);
-  crashRunning = false;
-
-  if(crashed){
-    alert("Crashed at " + crashValue.toFixed(2) + "x ❌");
-  }
-}
-
-// SPIN GAME (BETTING STYLE)
-function spinNow(){
-
-  if(user.balance < 50 && !isAdmin){
-    alert("Minimum bet is KES 50");
-    return;
-  }
-
-  if(!isAdmin){
-  user.balance -= 50;
-  }
-
-  let results = [0,0,0,50,100,200];
-  let result = results[Math.floor(Math.random()*results.length)];
-
-  document.getElementById("spinResult").innerText =
-    result > 0 ? "🎉 KES " + result : "❌ Lost";
-
-  user.balance += result;
-
-  save();
-  }
-  
-  function payNow(){
-  let phone = prompt("Enter phone (2547XXXXXXXX)");
-
-  fetch("https://websocket-server-production-f3d4.up.railway.app/stk", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      phone: phone,
-      amount: 500
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    alert("STK Push sent 📲");
-  });
-  }
-
-  // TEMP simulation (until backend is connected)
-  setTimeout(()=>{
-    alert("Payment successful (Demo)");
-
-    user.package = "standard";
-    user.balance = 600;
-
-    save();
-  }, 3000);
-     }
-  function chatJobs(){
-
-  if(!user.chatAccess){
-    if(confirm("Unlock Chat Jobs for KES 5000?")){
-      if(user.balance < 5000){
-        alert("Insufficient balance");
-        return;
-      }
-
-      user.balance -= 5000;
-      user.chatAccess = true;
-      save();
-    } else return;
-  }
-
-  user.balance += 1500;
-  save();
-
-  alert("You earned KES 1500 from chat job");
-        setInterval(()=>{
-
-                                     }
-</script>
+    </script>
 <!-- ADMIN PANEL -->
 <div id="adminPanel" style="display:none; background:black; color:white; padding:20px;">
   <h2>Admin Dashboard</h2>
