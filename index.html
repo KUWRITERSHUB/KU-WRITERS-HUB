@@ -344,14 +344,31 @@ function showHistory(){
 
 // LIVE USERS
 setInterval(()=>{
- let services=["Survey","Referral","Academic","E-commerce"];
- let name="User"+Math.floor(Math.random()*2000);
- let amt=Math.floor(Math.random()*5000);
- let service=services[Math.floor(Math.random()*services.length)];
 
- document.getElementById("live").innerText =
- name+" earned "+amt+" from "+service+" 🎉";
-},1500);
+  let services = [
+    "Academic Writing",
+    "Blog Writing",
+    "Article Writing",
+    "Referrals",
+    "E-commerce",
+    "Binary Trading",
+    "Surveys",
+    "Chat Jobs"
+  ];
+
+  let names = [
+    "Brian","Mercy","Kevin","Faith","John","Alex",
+    "Diana","Peter","James","Mary"
+  ];
+
+  let name = names[Math.floor(Math.random()*names.length)];
+  let service = services[Math.floor(Math.random()*services.length)];
+  let amount = Math.floor(Math.random()*5000);
+
+  document.getElementById("live").innerText =
+    name + " earned KES " + amount + " from " + service + " 🎉";
+
+}, 2000);
 // OPEN ADMIN PANEL
 function openAdmin(){
   let pass = prompt("Enter admin password");
