@@ -543,6 +543,26 @@ function spinNow(){
   document.getElementById("live").innerText = msg;
 
 }, 2000);
+  function payNow(){
+  let phone = prompt("Enter M-PESA number (2547XXXXXXXX)");
+
+  if(!phone){
+    alert("Phone required");
+    return;
+  }
+
+  alert("STK Push will be sent to " + phone);
+
+  // TEMP simulation (until backend is connected)
+  setTimeout(()=>{
+    alert("Payment successful (Demo)");
+
+    user.package = "standard";
+    user.balance = 600;
+
+    save();
+  }, 3000);
+     }
 </script>
 <!-- ADMIN PANEL -->
 <div id="adminPanel" style="display:none; background:black; color:white; padding:20px;">
