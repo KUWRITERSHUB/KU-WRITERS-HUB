@@ -474,7 +474,7 @@ function startCrash(){
 
     document.getElementById("crashMultiplier").innerText =
       crashValue.toFixed(2) + "x";
-
+document.getElementById("tickSound").play();
     // RANDOM CRASH (VERY REAL)
     if(Math.random() < 0.04){
       endCrash(true);
