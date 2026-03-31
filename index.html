@@ -353,37 +353,28 @@ function showHistory(){
 // LIVE USERS
 // MASSIVE REALISTIC LIVE USERS SYSTEM
 
-const services = [
-  "Academic Writing",
-  "Blog Writing",
-  "Article Writing",
-  "Affiliate Marketing",
-  "E-commerce",
-  "Binary Trading",
-  "Surveys",
-  "Chat Jobs",
-  "Crash Game",
-  "Spin Game"
-];
+setInterval(()=>{
+  let userId = Math.floor(Math.random()*10000) + 1;
 
-// Generate 10,000 users
-let fakeUsers = [];
-for(let i = 1; i <= 10000; i++){
-  fakeUsers.push("User " + i);
-}
+  let services = [
+    "Academic Writing",
+    "Blog Writing",
+    "Article Writing",
+    "Referrals",
+    "E-commerce",
+    "Binary Trading",
+    "Surveys",
+    "Chat Jobs",
+    "Crash Game",
+    "Spin Game"
+  ];
 
-// Live ticker
-setInterval(() => {
+  let service = services[Math.floor(Math.random()*services.length)];
+  let amount = Math.floor(Math.random()*5000) + 100;
 
-  let user = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
-  let service = services[Math.floor(Math.random() * services.length)];
-
-  let amount = Math.floor(Math.random() * 5000) + 50;
-
-  document.getElementById("liveWins").innerHTML =
-    `💰 ${user} earned <b>KES ${amount}</b> from <b>${service}</b>`;
-
-}, 1200);
+  document.getElementById("liveWins").innerText =
+    "User " + userId + " earned KES " + amount + " from " + service + " 💰";
+}, 1000);
 // OPEN ADMIN PANEL
 function openAdmin(){
   let pass = prompt("Enter admin password");
