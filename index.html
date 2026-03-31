@@ -581,14 +581,23 @@ function spinNow(){
 
 }, 2000);
   function payNow(){
-  let phone = prompt("Enter M-PESA number (2547XXXXXXXX)");
+  let phone = prompt("Enter phone (2547XXXXXXXX)");
 
-  if(!phone){
-    alert("Phone required");
-    return;
+  fetch("https://websocket-server-production-f3d4.up.railway.app/stk", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      phone: phone,
+      amount: 500
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert("STK Push sent 📲");
+  });
   }
-
-  alert("STK Push will be sent to " + phone);
 
   // TEMP simulation (until backend is connected)
   setTimeout(()=>{
