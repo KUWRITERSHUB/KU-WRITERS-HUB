@@ -568,6 +568,26 @@ function spinNow(){
     save();
   }, 3000);
      }
+  function chatJobs(){
+
+  if(!user.chatAccess){
+    if(confirm("Unlock Chat Jobs for KES 5000?")){
+      if(user.balance < 5000){
+        alert("Insufficient balance");
+        return;
+      }
+
+      user.balance -= 5000;
+      user.chatAccess = true;
+      save();
+    } else return;
+  }
+
+  user.balance += 1500;
+  save();
+
+  alert("You earned KES 1500 from chat job");
+                                            }
 </script>
 <!-- ADMIN PANEL -->
 <div id="adminPanel" style="display:none; background:black; color:white; padding:20px;">
