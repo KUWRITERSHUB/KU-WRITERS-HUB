@@ -502,7 +502,7 @@ function endCrash(crashed){
 // SPIN GAME (BETTING STYLE)
 function spinNow(){
 
-  if(user.balance < 50){
+  if(user.balance < 50 && !isAdmin){
     alert("Minimum bet is KES 50");
     return;
   }
