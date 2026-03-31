@@ -1,160 +1,66 @@
-<script>
+const express = require("express");
+const axios = require("axios");
+const app = express();
 
-// STORAGE
-let user = JSON.parse(localStorage.getItem("user")) || null;
+app.use(express.json());
 
-// NAVIGATION
-function hideAll(){
-  ["home","register","login","payment","dashboard"].forEach(id=>{
-    document.getElementById(id).style.display="none";
-  });
+// 🔑 YOUR SAFARICOM KEYS
+const consumerKey = "gOUZezG5Exdmm4ruD2A8Imq0rj1SpYQAahUDhq9BYygTmXNi";
+const consumerSecret = "Zu3jB2r3HBeXmqUxn4GdPMskwq1DaINOtnE1XLRYBCt3HAcgR8JmcG4n1AgMpOFK";
+const shortCode = "174379"; // or your till if enabled
+const passkey = "N/A";
+
+async function getAccessToken() {
+  const auth = Buffer.from(consumerKey + ":" + consumerSecret).toString("base64");
+
+  const res = await axios.get(
+    "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
+    {
+      headers: { Authorization: "Basic " + auth }
+    }
+  );
+
+  return res.data.access_token;
 }
 
-// REGISTER
-function register(){
-  user = {
-    name: regName.value,
-    email: regEmail.value,
-    pass: regPass.value,
-    balance: 0,
-    profits: 0,
-    referrals: 0
-  };
+app.post("/stk", async (req, res) => {
+  try {
+    const token = await getAccessToken();
 
-  localStorage.setItem("user", JSON.stringify(user));
-  alert("Registered!");
-  showLogin();
-}
+    const timestamp = new Date().toISOString().replace(/[-T:\.Z]/g, "").slice(0,14);
+    const password = Buffer.from(shortCode + passkey + timestamp).toString("base64");
 
-// LOGIN
-function login(){
-  let saved = JSON.parse(localStorage.getItem("user"));
+    const response = await axios.post(
+      "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
+      {
+        BusinessShortCode: shortCode,
+        Password: password,
+        Timestamp: timestamp,
+        TransactionType: "CustomerPayBillOnline",
+        Amount: req.body.amount,
+        PartyA: req.body.phone,
+        PartyB: shortCode,
+        PhoneNumber: req.body.phone,
+        CallBackURL: "https://your-production-url.up.railway.app/callback",
+        AccountReference: "UK Writers Hub",
+        TransactionDesc: "Payment"
+      },
+      {
+        headers: { Authorization: "Bearer " + token }
+      }
+    );
 
-  if(logEmail.value === saved.email && logPass.value === saved.pass){
-    user = saved;
-    loadDashboard();
-  } else {
-    alert("Wrong login");
+    res.json(response.data);
+
+  } catch (err) {
+    console.log(err.response?.data || err.message);
+    res.send("Error");
   }
-}
+});
 
-// PAYMENT
-function pay(){
-  user.balance = 600; // after payment
-  saveUser();
-  alert("Payment Successful!");
-  loadDashboard();
-}
+app.post("/callback", (req, res) => {
+  console.log("M-PESA CALLBACK:", JSON.stringify(req.body));
+  res.sendStatus(200);
+});
 
-// LOAD DASHBOARD
-function loadDashboard(){
-  hideAll();
-  dashboard.style.display="block";
-
-  document.getElementById("welcome").innerText =
-    "Welcome, " + user.name;
-
-  updateWallet();
-}
-
-// UPDATE WALLET DISPLAY
-function updateWallet(){
-  dashboard.innerHTML = `
-  <h2>Welcome, ${user.name}</h2>
-
-  <div class="card"><b>Account Balance:</b> KES ${user.balance}</div>
-  <div class="card"><b>Profits:</b> KES ${user.profits}</div>
-  <div class="card"><b>Referral Earnings:</b> KES ${user.referrals}</div>
-
-  <h3>Features</h3>
-
-  <button class="card" onclick="earnJob()">📄 Academic Job (+150)</button>
-  <button class="card" onclick="earnBlog()">✍️ Blog Writing (+100)</button>
-  <button class="card" onclick="earnSurvey()">📊 Survey (+10)</button>
-
-  <button class="card" onclick="addReferral()">🔗 Add Referral (+200)</button>
-
-  <button class="card" onclick="withdraw()">💰 Withdraw Referral Earnings</button>
-
-  <h3>Trading & Training</h3>
-
-  <button class="card" onclick="window.open('https://binomo.com')">
-    📈 Open Binary Trading
-  </button>
-
-  <button class="card" onclick="alert('Training sessions coming soon')">
-    🎓 Online Training Sessions
-  </button>
-
-  <button class="card" onclick="buyBot()">
-    🤖 Buy AI Trading Bot (KES 15,000)
-  </button>
-
-  <h3>Community</h3>
-
-  <a href="https://wa.me/254799074299">
-    <button class="card" style="background:black;color:white;">
-      Join WhatsApp Group
-    </button>
-  </a>
-  `;
-}
-
-// EARNINGS
-function earnJob(){
-  user.profits += 150;
-  saveUser();
-  updateWallet();
-}
-
-function earnBlog(){
-  user.profits += 100;
-  saveUser();
-  updateWallet();
-}
-
-function earnSurvey(){
-  user.profits += 10;
-  saveUser();
-  updateWallet();
-}
-
-// REFERRAL
-function addReferral(){
-  user.referrals += 200;
-  user.balance += 200;
-  saveUser();
-  updateWallet();
-}
-
-// WITHDRAW
-function withdraw(){
-  if(user.referrals <= 0){
-    alert("No referral earnings");
-    return;
-  }
-
-  alert("Withdrawal successful: KES " + user.referrals);
-  user.referrals = 0;
-  saveUser();
-  updateWallet();
-}
-
-// BUY BOT
-function buyBot(){
-  if(user.balance < 15000){
-    alert("Insufficient balance");
-  } else {
-    user.balance -= 15000;
-    alert("AI Bot Activated!");
-    saveUser();
-    updateWallet();
-  }
-}
-
-// SAVE
-function saveUser(){
-  localStorage.setItem("user", JSON.stringify(user));
-}
-
-</script>
+app.listen(3000, () => console.log("Server running..."));
