@@ -601,7 +601,7 @@ function spinNow(){
     "Spin Game"
   ];
 
-  // generate random user number (1 - 10000)
+  // generate user numbers 1 - 10000
   let userNumber = Math.floor(Math.random() * 10000) + 1;
 
   let service = services[Math.floor(Math.random() * services.length)];
@@ -609,9 +609,9 @@ function spinNow(){
   let amount = Math.floor(Math.random() * 5000) + 50;
 
   document.getElementById("live").innerText =
-    "User" + userNumber + " earned KES " + amount + " from " + service + " 🎉";
+    "User" + userNumber + " earned KES " + amount + " from " + service;
 
-}, 1500);                                    }
+}, 1200);                                   }
 </script>
 <!-- ADMIN PANEL -->
 <div id="adminPanel" style="display:none; background:black; color:white; padding:20px;">
