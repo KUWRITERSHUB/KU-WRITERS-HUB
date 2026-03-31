@@ -568,18 +568,7 @@ function spinNow(){
 
   save();
   }
-  setInterval(()=>{
-
-  let fakeNames = ["Brian","Mercy","Kevin","Faith","John","Alex","Diana"];
-
-  let name = fakeNames[Math.floor(Math.random()*fakeNames.length)];
-  let multi = (1 + Math.random()*5).toFixed(2);
-
-  let msg = name + " cashed out at " + multi + "x 🚀";
-
-  document.getElementById("live").innerText = msg;
-
-}, 2000);
+  
   function payNow(){
   let phone = prompt("Enter phone (2547XXXXXXXX)");
 
