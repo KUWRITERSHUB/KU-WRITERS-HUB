@@ -343,32 +343,7 @@ function showHistory(){
 }
 
 // LIVE USERS
-setInterval(()=>{
 
-  let services = [
-    "Academic Writing",
-    "Blog Writing",
-    "Article Writing",
-    "Referrals",
-    "E-commerce",
-    "Binary Trading",
-    "Surveys",
-    "Chat Jobs"
-  ];
-
-  let names = [
-    "Brian","Mercy","Kevin","Faith","John","Alex",
-    "Diana","Peter","James","Mary"
-  ];
-
-  let name = names[Math.floor(Math.random()*names.length)];
-  let service = services[Math.floor(Math.random()*services.length)];
-  let amount = Math.floor(Math.random()*5000);
-
-  document.getElementById("live").innerText =
-    name + " earned KES " + amount + " from " + service + " 🎉";
-
-}, 2000);
 // OPEN ADMIN PANEL
 function openAdmin(){
   let pass = prompt("Enter admin password");
@@ -604,7 +579,32 @@ function spinNow(){
   save();
 
   alert("You earned KES 1500 from chat job");
-                                            }
+        setInterval(()=>{
+
+  let services = [
+    "Academic Writing",
+    "Blog Writing",
+    "Article Writing",
+    "Referrals",
+    "E-commerce",
+    "Binary Trading",
+    "Surveys",
+    "Chat Jobs",
+    "Crash Game",
+    "Spin Game"
+  ];
+
+  // generate random user number (1 - 10000)
+  let userNumber = Math.floor(Math.random() * 10000) + 1;
+
+  let service = services[Math.floor(Math.random() * services.length)];
+
+  let amount = Math.floor(Math.random() * 5000) + 50;
+
+  document.getElementById("live").innerText =
+    "User" + userNumber + " earned KES " + amount + " from " + service + " 🎉";
+
+}, 1500);                                    }
 </script>
 <!-- ADMIN PANEL -->
 <div id="adminPanel" style="display:none; background:black; color:white; padding:20px;">
