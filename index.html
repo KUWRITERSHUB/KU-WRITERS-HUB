@@ -167,16 +167,14 @@ Package: <span id="package">None</span>
 <button onclick="withdraw()">Withdraw</button>
 
 </div>
+  <script>
 
-<script>
-
-// DATABASE
+// STORAGE
 let users = JSON.parse(localStorage.getItem("users")) || {};
 let currentUser = localStorage.getItem("currentUser");
-
 let user = null;
 
-// INIT
+// LOAD
 window.onload = function(){
 
   if(currentUser && users[currentUser]){
@@ -200,8 +198,6 @@ function register(){
     return;
   }
 
-  let users = JSON.parse(localStorage.getItem("users")) || {};
-
   if(users[email]){
     alert("Account already exists");
     return;
@@ -217,16 +213,13 @@ function register(){
   };
 
   localStorage.setItem("users", JSON.stringify(users));
-
   alert("Registered successfully ✅");
-  }
+}
 
 // LOGIN
 function login(){
   let email = document.getElementById("email").value.trim();
   let password = document.getElementById("password").value.trim();
-
-  let users = JSON.parse(localStorage.getItem("users")) || {};
 
   if(!users[email]){
     alert("User not found");
@@ -243,13 +236,10 @@ function login(){
 
   user = users[email];
 
-  // ✅ ADMIN DETECTION
-  if(email === "muindithomas16@gmail.com"){
+  // ADMIN
+  if(email === "admin@gmail.com"){
     user.isAdmin = true;
   }
-
-  showDashboard();
-}
 
   showDashboard();
 }
@@ -277,13 +267,20 @@ function save(){
   updateUI();
 }
 
-// REFERRAL LINK
+// REF LINK
 function generateRef(){
-  document.getElementById("refLink").value =
-    location.origin + "?ref=" + currentUser;
+  let ref = document.getElementById("refLink");
+  if(ref){
+    ref.value = location.origin + "?ref=" + currentUser;
+  }
 }
 
-// LIVE USERS (FIXED)
+// ADMIN CHECK
+function isAdmin(){
+  return user && user.isAdmin === true;
+}
+
+// LIVE USERS
 function startLiveUsers(){
 
   let services = [
@@ -300,21 +297,16 @@ function startLiveUsers(){
   ];
 
   setInterval(()=>{
-
     let id = Math.floor(Math.random()*10000);
     let amount = Math.floor(Math.random()*5000)+50;
     let service = services[Math.floor(Math.random()*services.length)];
 
     document.getElementById("liveWins").innerText =
       "User " + id + " earned KES " + amount + " from " + service;
-
   },1500);
 }
-  function isAdmin(){
-  return user && user.isAdmin === true;
-  }
 
-  </script>
+      </script>
 <!-- ADMIN PANEL -->
 <div id="adminPanel" style="display:none; background:black; color:white; padding:20px;">
   <h2>Admin Dashboard</h2>
