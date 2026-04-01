@@ -68,19 +68,31 @@ button{
 </head>
 
 <body>
-  <div id="liveWins">Loading activity...</div>
 
+<h2>UK WRITERS HUB</h2>
+
+<!-- LIVE USERS -->
+<div id="liveWins">Loading activity...</div>
+
+<!-- AUTH -->
 <div id="authBox">
-  <input id="email">
-  <input id="password">
+  <input id="email" placeholder="Enter Email"><br><br>
+  <input id="password" type="password" placeholder="Enter Password"><br><br>
+
+  <button onclick="register()">Register</button>
+  <button onclick="login()">Login</button>
 </div>
 
+<!-- DASHBOARD -->
 <div id="dashboard" style="display:none;">
-  Balance: <span id="balance"></span>
-  Profits: <span id="profits"></span>
-  Package: <span id="package"></span>
+  <h3>Dashboard</h3>
 
-  <input id="refLink">
+  Balance: <span id="balance">0</span><br>
+  Profits: <span id="profits">0</span><br>
+  Package: <span id="package">None</span><br><br>
+
+  Referral Link:<br>
+  <input id="refLink" readonly style="width:100%;">
 </div>
 <audio id="tickSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
 <audio id="winSound" src="https://www.soundjay.com/button/beep-10.wav"></audio>
