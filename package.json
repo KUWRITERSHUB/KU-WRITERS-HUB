@@ -1,12 +1,9 @@
 {
-  "name": "uk-writers-hub",
+  "name": "mpesa-server",
   "version": "1.0.0",
   "main": "server.js",
   "dependencies": {
     "express": "^4.18.2",
-    "axios": "^1.4.0"
-  },
-  "scripts": {
-    "start": "node server.js"
+    "cors": "^2.8.5"
   }
 }
