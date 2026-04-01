@@ -215,7 +215,44 @@ function startLiveUsers(){
       "User " + id + " earned KES " + amt + " from " + services[Math.floor(Math.random()*services.length)];
   },1500);
 }
+function openDashboard(){
+ alert("Dashboard opened");
+}
 
+function showDeposit(){
+ alert("Deposit via M-PESA");
+}
+
+function showPackages(){
+ alert("Select package to activate");
+}
+
+function openService(type){
+ alert("Opening " + type + " service");
+}
+
+function openGames(){
+ alert("Opening Crash & Spin games");
+}
+
+function openChat(){
+ if(!user.chat){
+   if(confirm("Pay KES 5000 to unlock Chat Jobs?")){
+     user.chat = true;
+     user.balance -= 5000;
+     save();
+   }
+ } else {
+   user.balance += 1500;
+   save();
+   alert("You earned KES 1500");
+ }
+}
+
+function logout(){
+ localStorage.removeItem("currentUser");
+ location.reload();
+  }
 </script>
 
 </body>
