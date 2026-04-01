@@ -31,7 +31,37 @@ button{
 </head>
 
 <body>
+<!-- SIDE MENU -->
+<div id="sideMenu" class="side-menu">
+  <div class="menu-header">
+    <h3>UK WRITERS HUB</h3>
+  </div>
 
+  <p onclick="openDashboard()">🏠 Dashboard</p>
+  <p onclick="showDeposit()">💰 Deposit</p>
+  <p onclick="showPackages()">📦 Packages</p>
+
+  <p onclick="openService('academic')">📚 Academic Writing</p>
+  <p onclick="openService('blog')">✍️ Blog Writing</p>
+  <p onclick="openService('article')">📰 Article Writing</p>
+
+  <p onclick="openService('survey')">📊 Surveys</p>
+  <p onclick="openService('affiliate')">🔗 Affiliate Program</p>
+  <p onclick="openService('ecommerce')">🛒 E-commerce</p>
+
+  <p onclick="openService('trading')">📈 Binary Trading</p>
+  <p onclick="openService('bot')">🤖 AI Trading Bot</p>
+
+  <p onclick="openGames()">🎮 Games (Crash & Spin)</p>
+  <p onclick="openChat()">💬 Chat with Foreigners</p>
+
+  <p onclick="showHistory()">📜 Transactions</p>
+  <p onclick="showNotifications()">🔔 Notifications</p>
+
+  <p onclick="joinGroup()">👥 WhatsApp Group</p>
+
+  <p onclick="logout()">🚪 Logout</p>
+</div>
 <h2>UK WRITERS HUB</h2>
 
 <div id="liveWins">Loading activity...</div>
