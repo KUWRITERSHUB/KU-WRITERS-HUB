@@ -5,65 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-  @keyframes pulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.2);}
-  100%{transform:scale(1);}
-  }
 body{
-  margin:0;
   font-family:Arial;
+  text-align:center;
   background:linear-gradient(135deg,#0ea5e9,#22c55e,#f97316);
   color:white;
 }
 
-.header{
-  display:flex;
-  justify-content:space-between;
-  padding:15px;
-  background:black;
-}
-  <div class="card" style="text-align:center; font-weight:bold;">
-  ACADEMIC WRITING | BLOG WRITING | ARTICLE WRITING | REFERRALS |
-  E-COMMERCE | BINARY TRADING | SURVEYS | CHAT JOBS
-</div>
-
-.logo{color:#22c55e;font-weight:bold;}
-
-.card{
-  background:rgba(0,0,0,0.6);
-  padding:15px;
-  margin:10px;
-  border-radius:12px;
-}
-
-.features{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
+input{
   padding:10px;
-}
-
-.box{
-  padding:15px;
-  border-radius:10px;
-  background:linear-gradient(45deg,#ff0000,#00ffff,#ff00ff);
-  text-align:center;
-  cursor:pointer;
-}
-
-#menu{
-  display:none;
-  background:black;
-  padding:10px;
+  margin:5px;
+  width:80%;
 }
 
 button{
   padding:10px;
-  border:none;
-  border-radius:8px;
+  margin:5px;
   background:#22c55e;
+  border:none;
+  color:white;
 }
+
+#dashboard{display:none;}
 </style>
 </head>
 
@@ -71,117 +34,32 @@ button{
 
 <h2>UK WRITERS HUB</h2>
 
-<!-- LIVE USERS -->
 <div id="liveWins">Loading activity...</div>
 
-<!-- AUTH -->
+<br>
+
 <div id="authBox">
-  <input id="email" placeholder="Enter Email"><br><br>
-  <input id="password" type="password" placeholder="Enter Password"><br><br>
+  <input id="email" placeholder="Email"><br>
+  <input id="password" type="password" placeholder="Password"><br>
 
   <button onclick="register()">Register</button>
   <button onclick="login()">Login</button>
 </div>
 
-<!-- DASHBOARD -->
-<div id="dashboard" style="display:none;">
+<div id="dashboard">
   <h3>Dashboard</h3>
 
   Balance: <span id="balance">0</span><br>
   Profits: <span id="profits">0</span><br>
   Package: <span id="package">None</span><br><br>
 
-  Referral Link:<br>
-  <input id="refLink" readonly style="width:100%;">
-</div>
-<audio id="tickSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
-<audio id="winSound" src="https://www.soundjay.com/button/beep-10.wav"></audio>
-<audio id="loseSound" src="https://www.soundjay.com/button/beep-09.wav"></audio>
-<div class="header">
-  <div class="logo">UK WRITERS HUB</div>
-  <div onclick="toggleMenu()">⋮</div>
+  <input id="refLink" readonly style="width:90%">
 </div>
 
-<!-- MENU -->
-<div id="menu">
-  <p onclick="chatJobs()">💬 Chat With Foreigners</p>
-  <p onclick="joinGroup()">WhatsApp Group</p>
-  <p onclick="showHistory()">Transactions</p>
-  <p onclick="openAdmin()">Admin Panel</p>
+<!-- ✅ SCRIPT MUST BE HERE -->
+<script>
 
-  <hr>
-
-  <p onclick="openCrash()">🎮 Crash Game</p>
-  <p onclick="openSpin()">🎡 Spin Game</p>
-</div>
-
-<div id="live" class="card" style="
-  text-align:center;
-  font-weight:bold;
-  font-size:18px;
-  background:linear-gradient(45deg,#22c55e,#3b82f6,#f97316);
-  animation: pulse 2s infinite;
-">
-Loading activity...
-</div>
-
-<!-- LOGIN -->
-<div id="authBox" class="card">
-  <input id="email" placeholder="Email"><br><br>
-  <input id="password" type="password" placeholder="Password"><br><br>
-  <button onclick="register()">Register</button>
-  <button onclick="login()">Login</button>
-</div>
-
-<!-- DASHBOARD -->
-<div id="dashboard" style="display:none;">
-
-<div class="card">
-Balance: <span id="balance">0</span><br>
-Package: <span id="package">None</span>
-</div>
-
-<div class="card">
-<input id="refLink" readonly>
-</div>
-
-<!-- PACKAGES -->
-<div class="card">
-<h3>Activate Package</h3>
-<button onclick="buyPackage('standard')">Standard - 500</button><br><br>
-<button onclick="buyPackage('intermediate')">Intermediate - 1500</button><br><br>
-<button onclick="buyPackage('premium')">Premium - 2500</button>
-</div>
-  if(!isAdmin() && user.package !== "premium"){
-  alert("Upgrade to premium");
-  return;
-}
-
-<!-- FEATURES -->
-<div class="features">
-
-<div class="box" onclick="survey()">Surveys</div>
-<div class="box" onclick="referral()">Affiliate Marketing</div>
-
-<div class="box" onclick="academic()">Academic Writing</div>
-<div class="box" onclick="blog()">Blog Writing</div>
-
-<div class="box" onclick="article()">Article Writing</div>
-<div class="box" onclick="ecommerce()">E-commerce</div>
-
-<div class="box" onclick="training()">Training</div>
-<div class="box" onclick="binary()">Binany Trading</div>
-
-<div class="box" onclick="buyBot()">AI Trading Bot</div>
-
-</div>
-
-<button onclick="withdraw()">Withdraw</button>
-
-</div>
-  <script>
-
-// STORAGE
+// USERS
 let users = JSON.parse(localStorage.getItem("users")) || {};
 let currentUser = localStorage.getItem("currentUser");
 let user = null;
@@ -224,8 +102,6 @@ function login(){
   let email = document.getElementById("email").value.trim();
   let password = document.getElementById("password").value.trim();
 
-  let users = JSON.parse(localStorage.getItem("users")) || {};
-
   if(!users[email]){
     alert("User not found");
     return;
@@ -249,19 +125,10 @@ function showDashboard(){
   document.getElementById("authBox").style.display = "none";
   document.getElementById("dashboard").style.display = "block";
 
-  updateUI();
-  generateRef();
-}
-
-// UPDATE
-function updateUI(){
   document.getElementById("balance").innerText = user.balance;
   document.getElementById("profits").innerText = user.profits;
   document.getElementById("package").innerText = user.package || "None";
-}
 
-// REF LINK
-function generateRef(){
   document.getElementById("refLink").value =
     location.origin + "?ref=" + currentUser;
 }
@@ -279,47 +146,7 @@ function startLiveUsers(){
   },1500);
 }
 
-                                         </script>
-<!-- ADMIN PANEL -->
-<div id="adminPanel" style="display:none; background:black; color:white; padding:20px;">
-  <h2>Admin Dashboard</h2>
+</script>
 
-  <button onclick="viewUsers()">View Users</button>
-  <button onclick="viewWithdrawals()">View Withdrawals</button>
-
-  <div id="adminContent" style="margin-top:15px;"></div>
-</div>
-  <!-- CRASH GAME PANEL -->
-<div id="crashGame" style="display:none; background:black; color:white; padding:20px;">
-  <h2>🚀 Crash Game</h2>
-
-  <div id="crashMultiplier" style="
-  font-size:45px;
-  text-align:center;
-  color:#00ffcc;
-  text-shadow:0 0 20px #00ffcc;
-  animation:pulse 1s infinite;
-">
-1.00x
-  </div>
-
-  if(!isAdmin() && user.balance < 50){
-  alert("Minimum deposit 50");
-  return;
-}
-  <button onclick="cashOut()">Cash Out</button>
-</div>
-
-<!-- SPIN GAME PANEL -->
-<div id="spinGame" style="display:none; background:black; color:white; padding:20px;">
-  <h2>🎡 Spin Game</h2>
-
-  <div id="spinResult" style="font-size:30px; text-align:center;">🎡</div>
-
-  if(!isAdmin() && user.balance < 50){
-  alert("Minimum deposit 50");
-  return;
-}
-</div>
 </body>
 </html>
