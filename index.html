@@ -345,7 +345,10 @@ function startLiveUsers(){
 
   <div id="spinResult" style="font-size:30px; text-align:center;">🎡</div>
 
-  <button onclick="spinNow()">Spin (KES 50)</button>
+  if(!isAdmin() && user.balance < 50){
+  alert("Minimum deposit 50");
+  return;
+}
 </div>
 </body>
 </html>
