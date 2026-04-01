@@ -192,9 +192,6 @@ window.onload = function(){
   if(currentUser && users[currentUser]){
     user = users[currentUser];
     showDashboard();
-  } else {
-    document.getElementById("authBox").style.display = "block";
-    document.getElementById("dashboard").style.display = "none";
   }
 
   startLiveUsers();
@@ -210,21 +207,15 @@ function register(){
     return;
   }
 
-  if(users[email]){
-    alert("Account already exists");
-    return;
-  }
-
   users[email] = {
     password: password,
     balance: 0,
     profits: 0,
-    package: null,
-    referrals: 0,
-    isAdmin: false
+    package: null
   };
 
   localStorage.setItem("users", JSON.stringify(users));
+
   alert("Registered successfully ✅");
 }
 
@@ -232,6 +223,8 @@ function register(){
 function login(){
   let email = document.getElementById("email").value.trim();
   let password = document.getElementById("password").value.trim();
+
+  let users = JSON.parse(localStorage.getItem("users")) || {};
 
   if(!users[email]){
     alert("User not found");
@@ -248,11 +241,6 @@ function login(){
 
   user = users[email];
 
-  // ADMIN
-  if(email === "admin@gmail.com"){
-    user.isAdmin = true;
-  }
-
   showDashboard();
 }
 
@@ -265,60 +253,33 @@ function showDashboard(){
   generateRef();
 }
 
-// UPDATE UI
+// UPDATE
 function updateUI(){
   document.getElementById("balance").innerText = user.balance;
   document.getElementById("profits").innerText = user.profits;
   document.getElementById("package").innerText = user.package || "None";
 }
 
-// SAVE
-function save(){
-  users[currentUser] = user;
-  localStorage.setItem("users", JSON.stringify(users));
-  updateUI();
-}
-
 // REF LINK
 function generateRef(){
-  let ref = document.getElementById("refLink");
-  if(ref){
-    ref.value = location.origin + "?ref=" + currentUser;
-  }
-}
-
-// ADMIN CHECK
-function isAdmin(){
-  return user && user.isAdmin === true;
+  document.getElementById("refLink").value =
+    location.origin + "?ref=" + currentUser;
 }
 
 // LIVE USERS
 function startLiveUsers(){
-
-  let services = [
-    "Academic Writing",
-    "Blog Writing",
-    "Article Writing",
-    "Surveys",
-    "Affiliate",
-    "E-commerce",
-    "Binary Trading",
-    "Chat Jobs",
-    "Crash Game",
-    "Spin Game"
-  ];
+  let services = ["Academic Writing","Blog Writing","Surveys","Affiliate"];
 
   setInterval(()=>{
     let id = Math.floor(Math.random()*10000);
-    let amount = Math.floor(Math.random()*5000)+50;
-    let service = services[Math.floor(Math.random()*services.length)];
+    let amt = Math.floor(Math.random()*5000);
 
     document.getElementById("liveWins").innerText =
-      "User " + id + " earned KES " + amount + " from " + service;
+      "User " + id + " earned KES " + amt + " from " + services[Math.floor(Math.random()*services.length)];
   },1500);
 }
 
-      </script>
+                                         </script>
 <!-- ADMIN PANEL -->
 <div id="adminPanel" style="display:none; background:black; color:white; padding:20px;">
   <h2>Admin Dashboard</h2>
