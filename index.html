@@ -119,6 +119,15 @@ button{
 
 <!-- ✅ SCRIPT MUST BE HERE -->
 <script>
+  function toggleMenu() {
+  let menu = document.getElementById("sideMenu");
+
+  if (menu.style.left === "0px") {
+    menu.style.left = "-260px";
+  } else {
+    menu.style.left = "0px";
+  }
+  }
 
 // USERS
 let users = JSON.parse(localStorage.getItem("users")) || {};
