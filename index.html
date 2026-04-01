@@ -216,8 +216,10 @@ function register(){
 
 // LOGIN
 function login(){
-  let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
+  let email = document.getElementById("email").value.trim();
+  let password = document.getElementById("password").value.trim();
+
+  let users = JSON.parse(localStorage.getItem("users")) || {};
 
   if(!users[email]){
     alert("User not found");
@@ -233,6 +235,14 @@ function login(){
   localStorage.setItem("currentUser", email);
 
   user = users[email];
+
+  // ✅ ADMIN DETECTION
+  if(email === "admin@gmail.com"){
+    user.isAdmin = true;
+  }
+
+  showDashboard();
+}
 
   showDashboard();
 }
