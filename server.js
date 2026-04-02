@@ -1,3 +1,6 @@
+app.get("/", (req, res) => {
+  res.send("M-PESA Server Running ✅");
+});
 const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
