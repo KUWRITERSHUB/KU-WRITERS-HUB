@@ -6,36 +6,38 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// ROOT TEST
+// ✅ TEST ROUTE (VERY IMPORTANT)
 app.get("/", (req, res) => {
   res.send("M-PESA Server Running ✅");
 });
 
-// 🔐 KEYS
+// 🔐 YOUR KEYS
 const consumerKey = "gOUZezG5Exdmm4ruD2A8Imq0rj1SpYQAahUDhq9BYygTmXNi";
 const consumerSecret = "Zu3jB2r3HBeXmqUxn4GdPMskwq1DaINOtnE1XLRYBCt3HAcgR8JmcG4n1AgMpOFK";
 const shortCode = "174379";
 const passKey = "foiHJaXT1enHnPiQiIrxFOHNwoxw7x3ek/Nz3tDdxsRkIe2UWpLAdN42G6siYzYZo4YjSY6JCw8Q2qcZIQfai91dwrMWFJ/7vz/WBuuKarfAHZtucoEzvqOFqzXVRGYzenDUid9yN5eRw7XHk088R4H+GRx3Wy8ZZFVKlqBULylBNOFal8ElxZl3ZQ1Kk6kNfHlXASd1IV1M3mfnkZ6i5iVlV+MzMzZ1bboGPqqSoIcuxEGvhLco76wuXBBCPWmAZcCDl4EdcOVO9UzQXfPEbMKnm+0iodV+FypJt1RFucaD3q8A0YZ37Z6AicOTpwFaluL6Iw828LaOLZBSnixqlw==";
 
-// GET TOKEN
+// 🔑 GET TOKEN
 async function getAccessToken() {
-  const url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
   const auth = Buffer.from(`${consumerKey}:${consumerSecret}`).toString("base64");
 
-  const res = await axios.get(url, {
-    headers: { Authorization: `Basic ${auth}` }
-  });
+  const res = await axios.get(
+    "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
+    {
+      headers: { Authorization: `Basic ${auth}` }
+    }
+  );
 
   return res.data.access_token;
 }
 
-// STK PUSH
+// 💰 STK PUSH ROUTE
 app.post("/stk", async (req, res) => {
   try {
     const token = await getAccessToken();
     const { phone, amount } = req.body;
 
-    const timestamp = new Date().toISOString().replace(/[-:.TZ]/g, "").slice(0, 14);
+    const timestamp = new Date().toISOString().replace(/[-:.TZ]/g, "").slice(0,14);
     const password = Buffer.from(shortCode + passKey + timestamp).toString("base64");
 
     const response = await axios.post(
@@ -49,7 +51,7 @@ app.post("/stk", async (req, res) => {
         PartyA: phone,
         PartyB: shortCode,
         PhoneNumber: phone,
-        CallBackURL: "https://example.com/callback",
+        CallBackURL: "https://websocket-server-production-f3d4.up.railway.app/callback",
         AccountReference: "UK HUB",
         TransactionDesc: "Payment"
       },
@@ -66,8 +68,12 @@ app.post("/stk", async (req, res) => {
   }
 });
 
-// START SERVER
+// 📩 CALLBACK (IMPORTANT)
+app.post("/callback", (req, res) => {
+  console.log("MPESA CALLBACK:", req.body);
+  res.json({ message: "Received" });
+});
+
+// 🚀 START SERVER
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Server running on " + PORT));
-
-  
