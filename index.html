@@ -760,6 +760,13 @@ setInterval(loadLeaderboard, 4000);
   if(user.balance >= 1000) return "VIP 1 🔥";
   return "Normal";
   }
+  setInterval(() => {
+  let user = "user" + Math.floor(Math.random()*10000);
+  let amount = Math.floor(Math.random()*15000)+500;
+
+  document.getElementById("withdrawFeed").innerHTML =
+    `💸 ${user} withdrew KES ${amount}`;
+}, 2500);
 </script>
 
 </body>
