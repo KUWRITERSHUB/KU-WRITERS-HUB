@@ -403,6 +403,28 @@ async function deposit() {
     alert("Error connecting to server");
   }
   }
+  function deposit(){
+  let amount = prompt("Enter amount you deposited:");
+  let code = prompt("Enter M-PESA Transaction Code:");
+
+  if(!amount || !code){
+    alert("Fill all details");
+    return;
+  }
+
+  let deposits = JSON.parse(localStorage.getItem("deposits")) || [];
+
+  deposits.push({
+    user: localStorage.getItem("currentUser"),
+    amount: amount,
+    code: code,
+    status: "pending"
+  });
+
+  localStorage.setItem("deposits", JSON.stringify(deposits));
+
+  alert("Deposit submitted. Await admin approval.");
+  }
 </script>
 
 </body>
