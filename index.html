@@ -425,6 +425,26 @@ async function deposit() {
 
   alert("Deposit submitted. Await admin approval.");
   }
+  function viewDeposits(){
+  let deposits = JSON.parse(localStorage.getItem("deposits")) || [];
+
+  let html = "<h3>Deposits</h3>";
+
+  deposits.forEach((d, i) => {
+    html += `
+      <div style="background:#222;padding:10px;margin:5px;">
+        User: ${d.user} <br>
+        Amount: ${d.amount} <br>
+        Code: ${d.code} <br>
+        Status: ${d.status} <br>
+
+        <button onclick="approveDeposit(${i})">Approve</button>
+      </div>
+    `;
+  });
+
+  document.getElementById("adminContent").innerHTML = html;
+  }
 </script>
 
 </body>
