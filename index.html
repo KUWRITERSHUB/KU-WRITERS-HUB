@@ -445,6 +445,24 @@ async function deposit() {
 
   document.getElementById("adminContent").innerHTML = html;
   }
+  function approveDeposit(i){
+  let deposits = JSON.parse(localStorage.getItem("deposits"));
+
+  let users = JSON.parse(localStorage.getItem("users"));
+
+  let d = deposits[i];
+
+  users[d.user].balance += Number(d.amount);
+
+  d.status = "approved";
+
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("deposits", JSON.stringify(deposits));
+
+  alert("Deposit approved ✅");
+
+  viewDeposits();
+  }
 </script>
 
 </body>
