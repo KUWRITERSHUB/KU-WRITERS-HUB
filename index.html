@@ -470,6 +470,35 @@ async function deposit() {
 
   viewDeposits();
   }
+  function deposit(){
+  let amount = prompt("Enter amount deposited (KES):");
+  let code = prompt("Enter M-PESA Transaction Code:");
+
+  if(!amount || !code){
+    alert("Fill all fields");
+    return;
+  }
+
+  let deposits = JSON.parse(localStorage.getItem("deposits")) || [];
+
+  deposits.push({
+    user: localStorage.getItem("currentUser"),
+    amount: Number(amount),
+    code: code,
+    status: "pending",
+    date: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("deposits", JSON.stringify(deposits));
+
+  // add notification
+  user.notifications = user.notifications || [];
+  user.notifications.push("Deposit of KES " + amount + " submitted");
+
+  save();
+
+  alert("Deposit submitted. Waiting for approval.");
+  }
 </script>
 
 </body>
