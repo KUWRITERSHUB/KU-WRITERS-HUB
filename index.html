@@ -611,6 +611,13 @@ setInterval(() => {
   document.getElementById("liveFeed").innerHTML =
     `🔥 ${user} earned <b>KES ${amount}</b> from ${service}`;
 }, 1200);
+  setInterval(() => {
+  let user = usersPool[Math.floor(Math.random()*usersPool.length)];
+  let amount = Math.floor(Math.random()*10000) + 100;
+
+  document.getElementById("liveDeposits").innerHTML =
+    `💰 ${user} deposited KES ${amount}`;
+}, 2000);
 </script>
 
 </body>
