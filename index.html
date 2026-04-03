@@ -754,6 +754,12 @@ setInterval(loadLeaderboard, 4000);
   }
   document.getElementById("package").innerText =
   (user.package || "None") + " | " + getVIP();
+  function getVIP(){
+  if(user.balance >= 10000) return "VIP 3 🏆";
+  if(user.balance >= 5000) return "VIP 2 ⭐";
+  if(user.balance >= 1000) return "VIP 1 🔥";
+  return "Normal";
+  }
 </script>
 
 </body>
