@@ -111,7 +111,17 @@ input{
   <div class="logo">UK WRITERS HUB</div>
   <div class="menu-btn" onclick="toggleMenu()">⋮</div>
 </div>
+<div class="header">
+  <div class="logo">UK WRITERS HUB</div>
+  <div onclick="toggleMenu()" style="cursor:pointer;">⋮</div>
+</div>
 
+<div id="menu" style="display:none;">
+  <p onclick="openAdmin()">Admin</p>
+  <p onclick="viewDeposits()">Deposits</p>
+  <p onclick="viewWithdrawals()">Withdrawals</p>
+  <p onclick="viewNotifications()">Notifications</p>
+</div>
 <!-- SIDE MENU -->
 <div id="menu">
   <p onclick="openGame()">🎮 Games</p>
