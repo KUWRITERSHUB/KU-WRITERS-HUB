@@ -544,6 +544,27 @@ async function deposit() {
 
   viewDeposits();
   }
+  function viewHistory(){
+  let deposits = JSON.parse(localStorage.getItem("deposits")) || [];
+  let email = localStorage.getItem("currentUser");
+
+  let html = "<h3>Your Transactions</h3>";
+
+  deposits.forEach(d => {
+    if(d.user === email){
+      html += `
+        <div style="background:#222;padding:10px;margin:5px;border-radius:8px;">
+          Amount: KES ${d.amount} <br>
+          Code: ${d.code} <br>
+          Status: ${d.status} <br>
+          Date: ${d.date}
+        </div>
+      `;
+    }
+  });
+
+  document.getElementById("dashboard").innerHTML += html;
+  }
 </script>
 
 </body>
