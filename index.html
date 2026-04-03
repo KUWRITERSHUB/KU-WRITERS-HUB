@@ -670,6 +670,15 @@ setInterval(() => {
   let m = document.getElementById("menu");
   m.style.display = m.style.display === "block" ? "none" : "block";
   }
+  function openAdmin(){
+  let email = localStorage.getItem("currentUser");
+
+  if(email === "muindithomas16@gmail.com"){
+    document.getElementById("adminPanel").style.display = "block";
+  }else{
+    alert("Access denied");
+  }
+  }
 </script>
 
 </body>
