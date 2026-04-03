@@ -641,6 +641,9 @@ setInterval(() => {
   let value = Math.floor(Math.random()*100);
   document.getElementById("spinResult").innerText = value;
 }, 1000);
+  if(amount > 3000){
+  document.getElementById("winSound").play();
+    }
 </script>
 
 </body>
