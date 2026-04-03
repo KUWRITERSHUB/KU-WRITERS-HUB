@@ -708,6 +708,22 @@ setInterval(loadLeaderboard, 4000);
 
   viewWithdrawals();
   }
+  function viewWithdrawals(){
+  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+
+  let html = "<h3>Withdrawals</h3>";
+
+  withdrawals.forEach((w,i)=>{
+    html += `
+      <div style="background:#111;padding:10px;margin:5px;">
+        ${w.user} - KES ${w.amount} - ${w.status}
+        ${w.status==="pending" ? `<button onclick="approveWithdrawal(${i})">Approve</button>` : ""}
+      </div>
+    `;
+  });
+
+  document.getElementById("adminContent").innerHTML = html;
+                         }
 </script>
 
 </body>
