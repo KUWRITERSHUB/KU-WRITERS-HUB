@@ -576,6 +576,34 @@ async function deposit() {
 
   alert(msg);
     }
+  let services = [
+  "Academic Writing",
+  "Blog Writing",
+  "Article Writing",
+  "Referrals",
+  "E-commerce",
+  "Binary Trading",
+  "Surveys",
+  "Chat Jobs",
+  "Crash Game",
+  "Spin Game"
+];
+
+// generate many users
+let usersPool = [];
+for(let i = 1; i <= 10000; i++){
+  usersPool.push("user" + i);
+}
+
+// live activity
+setInterval(() => {
+  let user = usersPool[Math.floor(Math.random()*usersPool.length)];
+  let service = services[Math.floor(Math.random()*services.length)];
+  let amount = Math.floor(Math.random()*5000) + 50;
+
+  document.getElementById("liveFeed").innerHTML =
+    `🔥 ${user} earned <b>KES ${amount}</b> from ${service}`;
+}, 1200);
 </script>
 
 </body>
