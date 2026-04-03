@@ -566,6 +566,13 @@ async function deposit() {
 
   document.getElementById("dashboard").innerHTML += html;
   }
+  function viewNotifications(){
+  let notes = user.notifications || [];
+
+  let msg = notes.length ? notes.join("\n") : "No notifications";
+
+  alert(msg);
+    }
 </script>
 
 </body>
