@@ -521,6 +521,28 @@ async function deposit() {
 
   document.getElementById("adminContent").innerHTML = html;
                          }
+  function approveDeposit(i){
+  let deposits = JSON.parse(localStorage.getItem("deposits"));
+  let users = JSON.parse(localStorage.getItem("users"));
+
+  let d = deposits[i];
+
+  if(d.status === "approved") return;
+
+  users[d.user].balance += d.amount;
+  d.status = "approved";
+
+  // notification
+  users[d.user].notifications = users[d.user].notifications || [];
+  users[d.user].notifications.push("Deposit of KES " + d.amount + " approved ✅");
+
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("deposits", JSON.stringify(deposits));
+
+  alert("Deposit approved successfully");
+
+  viewDeposits();
+  }
 </script>
 
 </body>
