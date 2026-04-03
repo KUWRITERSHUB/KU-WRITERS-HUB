@@ -637,6 +637,10 @@ setInterval(() => {
 
   document.getElementById("crashValue").innerText = crash.toFixed(2) + "x";
 }, 300);
+  setInterval(() => {
+  let value = Math.floor(Math.random()*100);
+  document.getElementById("spinResult").innerText = value;
+}, 1000);
 </script>
 
 </body>
