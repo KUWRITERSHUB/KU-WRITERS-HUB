@@ -724,6 +724,34 @@ setInterval(loadLeaderboard, 4000);
 
   document.getElementById("adminContent").innerHTML = html;
                          }
+  function withdraw(){
+  let amount = prompt("Enter amount to withdraw:");
+
+  if(!amount || amount < 50){
+    alert("Minimum withdrawal is 50");
+    return;
+  }
+
+  if(user.balance < amount){
+    alert("Insufficient balance");
+    return;
+  }
+
+  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+
+  withdrawals.push({
+    user: localStorage.getItem("currentUser"),
+    amount: Number(amount),
+    status: "pending"
+  });
+
+  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+
+  user.balance -= amount;
+  save();
+
+  alert("Withdrawal request submitted");
+  }
 </script>
 
 </body>
