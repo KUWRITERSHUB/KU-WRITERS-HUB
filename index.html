@@ -622,6 +622,17 @@ setInterval(() => {
   document.getElementById("liveDeposits").innerHTML =
     `💰 ${user} deposited KES ${amount}`;
 }, 2000);
+  let crash = 1.00;
+
+setInterval(() => {
+  crash += Math.random() * 0.5;
+
+  if(crash > 5){
+    crash = 1.00;
+  }
+
+  document.getElementById("crashValue").innerText = crash.toFixed(2) + "x";
+}, 300);
 </script>
 
 </body>
