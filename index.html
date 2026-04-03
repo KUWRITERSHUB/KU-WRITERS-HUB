@@ -697,6 +697,17 @@ setInterval(() => {
 }
 
 setInterval(loadLeaderboard, 4000);
+  function approveWithdrawal(i){
+  let withdrawals = JSON.parse(localStorage.getItem("withdrawals"));
+
+  withdrawals[i].status = "approved";
+
+  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+
+  alert("Withdrawal approved ✅");
+
+  viewWithdrawals();
+  }
 </script>
 
 </body>
