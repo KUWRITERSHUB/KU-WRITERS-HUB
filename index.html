@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UK WRITERS HUB</title>
-  
+
 <style>
 body{
   margin:0;
@@ -21,23 +21,23 @@ body{
 }
 
 .logo{color:#22c55e;font-weight:bold;}
+.menu-btn{cursor:pointer;font-size:22px}
 
-.menu-btn{cursor:pointer;font-size:20px}
-
-/* SIDE MENU */
+/* MENU */
 #menu{
   position:fixed;
-  right:-250px;
+  right:-260px;
   top:0;
-  width:250px;
+  width:260px;
   height:100%;
   background:#111;
   transition:0.3s;
   padding:15px;
+  z-index:999;
 }
 
 #menu p{
-  padding:10px;
+  padding:12px;
   border-bottom:1px solid #333;
   cursor:pointer;
 }
@@ -50,193 +50,119 @@ body{
   border-radius:12px;
 }
 
-/* FEATURES GRID */
+/* GRID */
 .features{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:15px;
-  padding:10px;
+  gap:12px;
 }
 
 .box{
-  padding:20px;
-  border-radius:15px;
+  padding:15px;
+  border-radius:12px;
   text-align:center;
   font-weight:bold;
   background: linear-gradient(135deg,#ff512f,#dd2476);
-  box-shadow:0 5px 15px rgba(0,0,0,0.4);
-  }
+}
+
 /* BUTTON */
 button{
   padding:10px;
   border:none;
   border-radius:8px;
   background:#22c55e;
-  color:black;
   font-weight:bold;
 }
 
 /* INPUT */
 input{
-  width:90%;
+  width:95%;
   padding:10px;
   border-radius:8px;
   border:none;
-}
-  #liveFeed{
-  animation: pulse 1.5s infinite;
+  margin-bottom:10px;
 }
 
+/* LIVE FEED */
+#liveFeed{
+  animation: pulse 1.5s infinite;
+}
 @keyframes pulse{
   0%{opacity:0.7;}
   50%{opacity:1;}
   100%{opacity:0.7;}
-          }
+}
 </style>
 </head>
 
 <body>
-<audio id="winSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+
 <!-- HEADER -->
 <div class="header">
   <div class="logo">UK WRITERS HUB</div>
   <div class="menu-btn" onclick="toggleMenu()">⋮</div>
 </div>
-<div class="header">
-  <div class="logo">UK WRITERS HUB</div>
-  <div onclick="toggleMenu()" style="cursor:pointer;">⋮</div>
-</div>
-<div class="card">
-  <h3>🏆 Top Earners</h3>
-  <div id="leaderboard"></div>
-</div>
-<div id="menu" style="display:none;">
-  <p onclick="openAdmin()">Admin</p>
-  <p onclick="viewDeposits()">Deposits</p>
-  <p onclick="viewWithdrawals()">Withdrawals</p>
-  <p onclick="viewNotifications()">Notifications</p>
-</div>
-<!-- SIDE MENU -->
+
+<!-- MENU -->
 <div id="menu">
-  <p onclick="openGame()">🎮 Games</p>
-  <p onclick="joinGroup()">📱 WhatsApp Group</p>
-  <p onclick="showHistory()">📜 Transactions</p>
+  <p onclick="openAdmin()">👑 Admin</p>
+  <p onclick="viewDeposits()">💰 Deposits</p>
+  <p onclick="viewWithdrawals()">💸 Withdrawals</p>
   <p onclick="logout()">🚪 Logout</p>
 </div>
-<h3>Balance: <span id="balance">KES 0</span></h3>
-<h3>Package: <span id="package">free</span></h3>
-<!-- LIVE USERS -->
-<div class="card" id="live">
-Loading activity...
-</div>
-  <div id="liveFeed" class="card" style="font-weight:bold;">
-  🔴 Live Activity Loading...
-  </div>
-  <div id="liveDeposits" class="card"></div>
-<div class="card" id="authBox">
-<input id="email" placeholder="Enter Email"><br><br>
-<input id="password" type="password" placeholder="Enter Password"><br><br>
-<button onclick="register()">Register</button>
-<button onclick="login()">Login</button>
-  <button onclick="deposit()">Deposit Money</button>
-</div>
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="password" placeholder="Password">
 
-<button onclick="register()">Register</button>
-<button onclick="login()">Login</button>
+<!-- AUTH -->
+<div id="authBox" class="card">
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="register()">Register</button>
+  <button onclick="login()">Login</button>
+</div>
+
 <!-- DASHBOARD -->
 <div id="dashboard" style="display:none;">
-  <div id="withdrawFeed" class="card"></div>
-<div class="card">
-  <h3>Deposit Instructions</h3>
-  <p>Go to M-PESA → Lipa na M-PESA</p>
-  <p><b>TILL NUMBER: 6892947</b></p>
-  <p>Enter amount and complete payment</p>
-  <p>Then submit transaction code</p>
-</div>
+
 <div class="card">
 Balance: KES <span id="balance">0</span><br>
 Package: <span id="package">None</span>
 </div>
 
+<div class="card" id="liveFeed">Loading activity...</div>
+
 <div class="card">
-<input id="refLink" readonly>
+<h3>Deposit (Manual)</h3>
+<button onclick="deposit()">Submit Deposit</button>
 </div>
-  <div class="card">
-  <h3>🚀 Live Crash Multiplier</h3>
-  <h1 id="crashValue">1.00x</h1>
-  </div>
-  <div class="card">
-  <h3>🎡 Live Spin Result</h3>
-  <h2 id="spinResult">0</h2>
-  </div>
-  <div class="card">
-  <h3>Deposit (M-PESA)</h3>
-  <input id="phone" placeholder="2547XXXXXXXX"><br><br>
-  <input id="amount" placeholder="Amount"><br><br>
-  <button onclick="deposit()">Deposit Now</button>
-  </div>
+
 <div class="card">
 <h3>Activate Package</h3>
 <button onclick="buyPackage('standard',500)">Standard - 500</button><br><br>
 <button onclick="buyPackage('intermediate',1500)">Intermediate - 1500</button><br><br>
 <button onclick="buyPackage('premium',2500)">Premium - 2500</button>
-  <button onclick="deposit()" style="background:#22c55e;">Deposit Money</button>
-  <button onclick="viewDeposits()">View Deposits</button>
-  <button onclick="viewHistory()">Transaction History</button>
-  <button onclick="viewNotifications()">Notifications</button>
 </div>
 
 <div class="features">
-<div class="box" onclick="survey()">Surveys</div>
-<div class="box" onclick="referral()">Affiliate</div>
-<div class="box" onclick="academic()">Academic</div>
-<div class="box" onclick="blog()">Blog</div>
-<div class="box" onclick="article()">Article</div>
-<div class="box" onclick="ecommerce()">E-commerce</div>
-<div class="box" onclick="binary()">Binary</div>
-<div class="box" onclick="bot()">AI Bot</div>
+<div class="box" onclick="earn(50)">Surveys</div>
+<div class="box" onclick="earn(150)">Affiliate</div>
+<div class="box" onclick="earn(200)">Academic</div>
+<div class="box" onclick="earn(200)">Blog</div>
+<div class="box" onclick="earn(200)">Article</div>
+<div class="box" onclick="earn(500)">E-commerce</div>
+<div class="box" onclick="earn(500)">Binary</div>
+<div class="box" onclick="earn(800)">AI Bot</div>
 </div>
 
+<br>
 <button onclick="withdraw()">Withdraw</button>
 
 </div>
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAlYW28t4ZM6rjiWxFADPWpCy62j8LtIEM",
-  authDomain: "uk-writers-hub.firebaseapp.com",
-  projectId: "uk-writers-hub",
-  storageBucket: "uk-writers-hub.firebasestorage.app",
-  messagingSenderId: "721980018728",
-  appId: "1:721980018728:web:1ddd3016cc3b26ad97651d",
-  measurementId: "G-4HNYV851V8"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 <script>
 
 /* DATABASE */
 let users = JSON.parse(localStorage.getItem("users")) || {};
 let currentUser = localStorage.getItem("currentUser");
-
-/* INIT USER */
-let user = {
-  email:"",
-  password:"",
-  balance:0,
-  package:null,
-  history:[]
-};
+let user = {};
 
 /* SAVE */
 function save(){
@@ -251,26 +177,18 @@ function register(){
   let email = document.getElementById("email").value.trim();
   let password = document.getElementById("password").value.trim();
 
-  if(email=="" || password==""){
+  if(!email || !password){
     alert("Fill all fields");
     return;
   }
 
   if(users[email]){
-    alert("User already exists");
+    alert("User exists");
     return;
   }
 
-  user = {
-    email,
-    password,
-    balance:0,
-    package:null,
-    history:[]
-  };
-
+  user = {email,password,balance:0,package:null};
   save();
-  alert("Registered successfully");
   showDashboard();
 }
 
@@ -290,17 +208,13 @@ function login(){
   }
 
   user = users[email];
-  localStorage.setItem("currentUser", email);
-
   showDashboard();
 }
 
-/* SHOW DASHBOARD */
+/* DASHBOARD */
 function showDashboard(){
   document.getElementById("authBox").style.display="none";
   document.getElementById("dashboard").style.display="block";
-
-  generateRef();
   updateUI();
 }
 
@@ -316,10 +230,20 @@ function logout(){
   location.reload();
 }
 
-/* REF LINK */
-function generateRef(){
-  document.getElementById("refLink").value =
-  location.href + "?ref=" + user.email;
+/* MENU */
+function toggleMenu(){
+  let m = document.getElementById("menu");
+  m.style.right = m.style.right==="0px"?"-260px":"0px";
+}
+
+/* EARNING */
+function earn(amount){
+  if(!user.package){
+    alert("Activate package first");
+    return;
+  }
+  user.balance += amount;
+  save();
 }
 
 /* PACKAGE */
@@ -327,7 +251,6 @@ function buyPackage(name,price){
   if(user.email==="admin@gmail.com"){
     user.package=name;
     save();
-    alert("Admin access granted");
     return;
   }
 
@@ -341,198 +264,10 @@ function buyPackage(name,price){
   save();
 }
 
-/* FEATURES */
-function survey(){
-  if(user.package!=="standard"){
-    alert("Only Standard package");
-    return;
-  }
-  user.balance+=10;
-  save();
-}
-
-function referral(){
-  user.balance+=150;
-  save();
-}
-
-function academic(){
-  if(user.package!=="intermediate"){
-    alert("Upgrade package");
-    return;
-  }
-  user.balance+=200;
-  save();
-}
-
-function blog(){ academic(); }
-function article(){ academic(); }
-
-function ecommerce(){
-  if(user.package!=="premium"){
-    alert("Upgrade to premium");
-    return;
-  }
-  user.balance+=500;
-  save();
-}
-
-function binary(){ ecommerce(); }
-
-function bot(){
-  alert("Buy AI bot for 15000");
-}
-
-/* WITHDRAW */
-function withdraw(){
-  if(user.balance < 50){
-    alert("Minimum withdrawal 50");
-    return;
-  }
-  alert("Withdrawal requested");
-  user.balance=0;
-  save();
-}
-
-/* MENU */
-function toggleMenu(){
-  let m=document.getElementById("menu");
-  m.style.right = m.style.right==="0px"?"-250px":"0px";
-}
-
-/* WHATSAPP */
-function joinGroup(){
-  window.open("https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou?mode=gi_t");
-}
-
-/* HISTORY */
-function showHistory(){
-  alert(user.history.join("\n"));
-}
-
-/* GAMES */
-function openGame(){
-  alert("Crash & Spin games here (next step)");
-}
-
-/* LIVE USERS (10,000 USERS SYSTEM) */
-setInterval(()=>{
-  let services = [
-    "Academic Writing","Blog Writing","Article Writing",
-    "Referrals","E-commerce","Binary Trading",
-    "Surveys","Chatting","Crash Game","Spin Game"
-  ];
-
-  let userNum = Math.floor(Math.random()*10000);
-  let service = services[Math.floor(Math.random()*services.length)];
-  let amount = Math.floor(Math.random()*5000);
-
-  document.getElementById("live").innerText =
-  "User "+userNum+" earned KES "+amount+" from "+service;
-},1000);
-
-/* AUTO LOGIN */
-window.onload = function(){
-  if(currentUser && users[currentUser]){
-    user = users[currentUser];
-    showDashboard();
-  }
-};
-async function deposit() {
-  const phone = document.getElementById("phone").value;
-  const amount = document.getElementById("amount").value;
-
-  if (!phone || !amount) {
-    alert("Enter phone and amount");
-    return;
-  }
-
-  try {
-    const res = await fetch("https://websocket-server-production-f3d4.up.railway.app/stk", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ phone, amount })
-    });
-
-    const data = await res.json();
-
-    console.log(data);
-
-    if (data.ResponseCode === "0") {
-      alert("STK Push Sent! Check your phone 📲");
-    } else {
-      alert("Failed: " + JSON.stringify(data));
-    }
-
-  } catch (err) {
-    alert("Error connecting to server");
-  }
-  }
-  function deposit(){
-  let amount = prompt("Enter amount you deposited:");
-  let code = prompt("Enter M-PESA Transaction Code:");
-
-  if(!amount || !code){
-    alert("Fill all details");
-    return;
-  }
-
-  let deposits = JSON.parse(localStorage.getItem("deposits")) || [];
-
-  deposits.push({
-    user: localStorage.getItem("currentUser"),
-    amount: amount,
-    code: code,
-    status: "pending"
-  });
-
-  localStorage.setItem("deposits", JSON.stringify(deposits));
-
-  alert("Deposit submitted. Await admin approval.");
-  }
-  function viewDeposits(){
-  let deposits = JSON.parse(localStorage.getItem("deposits")) || [];
-
-  let html = "<h3>Deposits</h3>";
-
-  deposits.forEach((d, i) => {
-    html += `
-      <div style="background:#222;padding:10px;margin:5px;">
-        User: ${d.user} <br>
-        Amount: ${d.amount} <br>
-        Code: ${d.code} <br>
-        Status: ${d.status} <br>
-
-        <button onclick="approveDeposit(${i})">Approve</button>
-      </div>
-    `;
-  });
-
-  document.getElementById("adminContent").innerHTML = html;
-  }
-  function approveDeposit(i){
-  let deposits = JSON.parse(localStorage.getItem("deposits"));
-
-  let users = JSON.parse(localStorage.getItem("users"));
-
-  let d = deposits[i];
-
-  users[d.user].balance += Number(d.amount);
-
-  d.status = "approved";
-
-  localStorage.setItem("users", JSON.stringify(users));
-  localStorage.setItem("deposits", JSON.stringify(deposits));
-
-  alert("Deposit approved ✅");
-
-  viewDeposits();
-  }
-  function deposit(){
-  let amount = prompt("Enter amount deposited (KES):");
-  let code = prompt("Enter M-PESA Transaction Code:");
+/* DEPOSIT */
+function deposit(){
+  let amount = prompt("Enter amount:");
+  let code = prompt("Enter M-PESA code:");
 
   if(!amount || !code){
     alert("Fill all fields");
@@ -542,248 +277,88 @@ async function deposit() {
   let deposits = JSON.parse(localStorage.getItem("deposits")) || [];
 
   deposits.push({
-    user: localStorage.getItem("currentUser"),
-    amount: Number(amount),
-    code: code,
-    status: "pending",
-    date: new Date().toLocaleString()
+    user:user.email,
+    amount:Number(amount),
+    code,
+    status:"pending"
   });
 
   localStorage.setItem("deposits", JSON.stringify(deposits));
+  alert("Deposit submitted");
+}
 
-  // add notification
-  user.notifications = user.notifications || [];
-  user.notifications.push("Deposit of KES " + amount + " submitted");
-
-  save();
-
-  alert("Deposit submitted. Waiting for approval.");
+/* ADMIN */
+function openAdmin(){
+  if(user.email !== "muindithomas16@gmail.com"){
+    alert("Access denied");
+    return;
   }
-  function viewDeposits(){
+
+  viewDeposits();
+}
+
+function viewDeposits(){
   let deposits = JSON.parse(localStorage.getItem("deposits")) || [];
+  let html = "<h3>Deposits</h3>";
 
-  let html = "<h3>Deposit Requests</h3>";
-
-  deposits.forEach((d, i) => {
+  deposits.forEach((d,i)=>{
     html += `
-      <div style="background:#111;padding:10px;margin:5px;border-radius:10px;">
-        👤 User: ${d.user} <br>
-        💰 Amount: KES ${d.amount} <br>
-        🔑 Code: ${d.code} <br>
-        📅 Date: ${d.date} <br>
-        📌 Status: ${d.status} <br>
-
-        ${d.status === "pending" ? `<button onclick="approveDeposit(${i})">Approve</button>` : ""}
-      </div>
-    `;
+    <div class="card">
+    ${d.user} - KES ${d.amount} - ${d.status}
+    ${d.status==="pending" ? `<button onclick="approveDeposit(${i})">Approve</button>`:""}
+    </div>`;
   });
 
-  document.getElementById("adminContent").innerHTML = html;
-                         }
-  function approveDeposit(i){
+  document.body.innerHTML += html;
+}
+
+function approveDeposit(i){
   let deposits = JSON.parse(localStorage.getItem("deposits"));
   let users = JSON.parse(localStorage.getItem("users"));
 
   let d = deposits[i];
 
-  if(d.status === "approved") return;
-
   users[d.user].balance += d.amount;
   d.status = "approved";
-
-  // notification
-  users[d.user].notifications = users[d.user].notifications || [];
-  users[d.user].notifications.push("Deposit of KES " + d.amount + " approved ✅");
 
   localStorage.setItem("users", JSON.stringify(users));
   localStorage.setItem("deposits", JSON.stringify(deposits));
 
-  alert("Deposit approved successfully");
-
-  viewDeposits();
-  }
-  function viewHistory(){
-  let deposits = JSON.parse(localStorage.getItem("deposits")) || [];
-  let email = localStorage.getItem("currentUser");
-
-  let html = "<h3>Your Transactions</h3>";
-
-  deposits.forEach(d => {
-    if(d.user === email){
-      html += `
-        <div style="background:#222;padding:10px;margin:5px;border-radius:8px;">
-          Amount: KES ${d.amount} <br>
-          Code: ${d.code} <br>
-          Status: ${d.status} <br>
-          Date: ${d.date}
-        </div>
-      `;
-    }
-  });
-
-  document.getElementById("dashboard").innerHTML += html;
-  }
-  function viewNotifications(){
-  let notes = user.notifications || [];
-
-  let msg = notes.length ? notes.join("\n") : "No notifications";
-
-  alert(msg);
-    }
-  let services = [
-  "Academic Writing",
-  "Blog Writing",
-  "Article Writing",
-  "Referrals",
-  "E-commerce",
-  "Binary Trading",
-  "Surveys",
-  "Chat Jobs",
-  "Crash Game",
-  "Spin Game"
-];
-
-// generate many users
-let usersPool = [];
-for(let i = 1; i <= 10000; i++){
-  usersPool.push("user" + i);
+  alert("Approved");
+  location.reload();
 }
 
-// live activity
-setInterval(() => {
-  let user = usersPool[Math.floor(Math.random()*usersPool.length)];
-  let service = services[Math.floor(Math.random()*services.length)];
-  let amount = Math.floor(Math.random()*5000) + 50;
-
-  document.getElementById("liveFeed").innerHTML =
-    `🔥 ${user} earned <b>KES ${amount}</b> from ${service}`;
-}, 1200);
-  setInterval(() => {
-  let user = usersPool[Math.floor(Math.random()*usersPool.length)];
-  let amount = Math.floor(Math.random()*10000) + 100;
-
-  document.getElementById("liveDeposits").innerHTML =
-    `💰 ${user} deposited KES ${amount}`;
-}, 2000);
-  let crash = 1.00;
-
-setInterval(() => {
-  crash += Math.random() * 0.5;
-
-  if(crash > 5){
-    crash = 1.00;
-  }
-
-  document.getElementById("crashValue").innerText = crash.toFixed(2) + "x";
-}, 300);
-  setInterval(() => {
-  let value = Math.floor(Math.random()*100);
-  document.getElementById("spinResult").innerText = value;
-}, 1000);
-  if(amount > 3000){
-  document.getElementById("winSound").play();
-    }
-  function toggleMenu(){
-  let m = document.getElementById("menu");
-  m.style.display = m.style.display === "block" ? "none" : "block";
-  }
-  function openAdmin(){
-  let email = localStorage.getItem("currentUser");
-
-  if(email === "muindithomas16@gmail.com"){
-    document.getElementById("adminPanel").style.display = "block";
-  }else{
-    alert("Access denied");
-  }
-  }
-  function loadLeaderboard(){
-  let html = "";
-
-  for(let i=1;i<=10;i++){
-    let amount = Math.floor(Math.random()*20000)+1000;
-
-    html += `
-      <div class="leader-item">
-        user${i} - KES ${amount}
-      </div>
-    `;
-  }
-
-  document.getElementById("leaderboard").innerHTML = html;
-}
-
-setInterval(loadLeaderboard, 4000);
-  function approveWithdrawal(i){
-  let withdrawals = JSON.parse(localStorage.getItem("withdrawals"));
-
-  withdrawals[i].status = "approved";
-
-  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-
-  alert("Withdrawal approved ✅");
-
-  viewWithdrawals();
-  }
-  function viewWithdrawals(){
-  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-  let html = "<h3>Withdrawals</h3>";
-
-  withdrawals.forEach((w,i)=>{
-    html += `
-      <div style="background:#111;padding:10px;margin:5px;">
-        ${w.user} - KES ${w.amount} - ${w.status}
-        ${w.status==="pending" ? `<button onclick="approveWithdrawal(${i})">Approve</button>` : ""}
-      </div>
-    `;
-  });
-
-  document.getElementById("adminContent").innerHTML = html;
-                         }
-  function withdraw(){
-  let amount = prompt("Enter amount to withdraw:");
-
-  if(!amount || amount < 50){
-    alert("Minimum withdrawal is 50");
-    return;
-  }
+/* WITHDRAW */
+function withdraw(){
+  let amount = prompt("Amount:");
 
   if(user.balance < amount){
     alert("Insufficient balance");
     return;
   }
 
-  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-  withdrawals.push({
-    user: localStorage.getItem("currentUser"),
-    amount: Number(amount),
-    status: "pending"
-  });
-
-  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-
   user.balance -= amount;
   save();
 
-  alert("Withdrawal request submitted");
-  }
-  document.getElementById("package").innerText =
-  (user.package || "None") + " | " + getVIP();
-  function getVIP(){
-  if(user.balance >= 10000) return "VIP 3 🏆";
-  if(user.balance >= 5000) return "VIP 2 ⭐";
-  if(user.balance >= 1000) return "VIP 1 🔥";
-  return "Normal";
-  }
-  setInterval(() => {
-  let user = "user" + Math.floor(Math.random()*10000);
-  let amount = Math.floor(Math.random()*15000)+500;
+  alert("Withdrawal requested");
+}
 
-  document.getElementById("withdrawFeed").innerHTML =
-    `💸 ${user} withdrew KES ${amount}`;
-}, 2500);
+/* LIVE USERS */
+setInterval(()=>{
+  let num = Math.floor(Math.random()*10000);
+  let amount = Math.floor(Math.random()*5000);
+
+  document.getElementById("liveFeed").innerHTML =
+  `🔥 user${num} earned KES ${amount}`;
+},1500);
+
+/* AUTO LOGIN */
+if(currentUser && users[currentUser]){
+  user = users[currentUser];
+  showDashboard();
+}
+
 </script>
 
 </body>
-</html>
+  </html>
