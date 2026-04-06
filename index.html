@@ -110,12 +110,15 @@ input{
 
 <!-- MENU -->
 <div id="menu">
-  <h3 style="color:#22c55e;">MENU</h3>
+  <div class="menu-header">
+    <h3>Menu</h3>
+    <span onclick="toggleMenu()">✖</span>
+  </div>
 
   <p onclick="showDashboard()">🏠 Dashboard</p>
-  <p onclick="openGames()">🎮 Games</p>
   <p onclick="openVIP()">💎 VIP Dashboard</p>
-  <p onclick="openAdmin()">⚙ Admin Dashboard</p>
+  <p onclick="openGames()">🎮 Games</p>
+  <p onclick="openAdmin()">⚙ Admin</p>
   <p onclick="logout()">🚪 Logout</p>
 </div>
 
