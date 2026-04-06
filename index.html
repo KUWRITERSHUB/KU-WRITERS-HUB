@@ -529,6 +529,27 @@ setInterval(()=>{
   let val = Math.floor(Math.random()*100);
   document.getElementById("spinValue").innerText = val;
 },1000);
+  function loadLeaderboard(){
+  let html = "";
+
+  for(let i=1;i<=10;i++){
+    let amt = Math.floor(Math.random()*20000)+1000;
+    html += `user${i} - KES ${amt}<br>`;
+  }
+
+  document.getElementById("leaderboard").innerHTML = html;
+}
+
+setInterval(loadLeaderboard,3000);
+
+// withdrawals feed
+setInterval(()=>{
+  let user = "user"+Math.floor(Math.random()*10000);
+  let amt = Math.floor(Math.random()*15000)+500;
+
+  document.getElementById("withdrawFeed").innerHTML =
+    `💸 ${user} withdrew KES ${amt}`;
+},2500);
 </script>
 
 </body>
