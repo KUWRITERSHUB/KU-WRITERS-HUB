@@ -74,28 +74,56 @@ input{
   border:none;
 }
   .menu-btn{
-  font-size:24px;
+  font-size:26px;
   cursor:pointer;
   color:white;
 }
 
-/* RIGHT SIDE MENU */
+/* MENU FIX */
 #menu{
   position:fixed;
   top:0;
-  right:-270px;
-  width:270px;
+  right:-300px; /* hidden completely */
+  width:280px;
   height:100%;
-  background:#111;
-  transition:0.4s;
-  padding:20px;
-  z-index:999;
+  background:linear-gradient(180deg,#0ea5e9,#22c55e);
+  transition:0.4s ease;
+  padding:15px;
+  z-index:1000;
+  box-shadow:-5px 0 20px rgba(0,0,0,0.5);
 }
 
+/* MENU HEADER */
+.menu-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-weight:bold;
+  margin-bottom:20px;
+}
+
+.menu-header span{
+  cursor:pointer;
+  font-size:20px;
+}
+
+/* MENU ITEMS */
 #menu p{
   padding:12px;
-  border-bottom:1px solid #333;
+  border-radius:8px;
+  margin:5px 0;
+  background:rgba(255,255,255,0.1);
   cursor:pointer;
+  transition:0.3s;
+}
+
+#menu p:hover{
+  background:rgba(255,255,255,0.3);
+}
+
+/* REMOVE ANY DARK OVERLAY BUG */
+body{
+  overflow-x:hidden;
   }
 </style>
 </head>
