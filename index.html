@@ -440,6 +440,39 @@ function openAdmin(){
     alert("Access denied");
   }
     }
+  function hideAll(){
+  document.getElementById("dashboard").style.display="none";
+  document.getElementById("vipPanel").style.display="none";
+  document.getElementById("gamesPanel").style.display="none";
+  document.getElementById("adminPanel").style.display="none";
+}
+
+function showDashboard(){
+  hideAll();
+  document.getElementById("dashboard").style.display="block";
+}
+
+function openVIP(){
+  hideAll();
+  document.getElementById("vipPanel").style.display="block";
+}
+
+function openGames(){
+  hideAll();
+  document.getElementById("gamesPanel").style.display="block";
+}
+
+function openAdmin(){
+  let email = localStorage.getItem("currentUser");
+
+  if(email === "admin@gmail.com"){
+    hideAll();
+    document.getElementById("adminPanel").style.display="block";
+    loadDeposits();
+  } else {
+    alert("Admin only");
+  }
+  }
 </script>
 
 </body>
