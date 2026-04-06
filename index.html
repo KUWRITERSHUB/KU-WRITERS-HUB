@@ -12,7 +12,6 @@ body{
   color:white;
 }
 
-/* HEADER */
 .header{
   display:flex;
   justify-content:space-between;
@@ -21,9 +20,9 @@ body{
 }
 
 .logo{color:#22c55e;font-weight:bold;}
+
 .menu-btn{cursor:pointer;font-size:22px}
 
-/* SIDE MENU */
 #menu{
   position:fixed;
   right:-260px;
@@ -36,13 +35,12 @@ body{
   z-index:999;
 }
 
-.menu-item{
+#menu p{
   padding:12px;
   border-bottom:1px solid #333;
   cursor:pointer;
 }
 
-/* CARDS */
 .card{
   background:rgba(0,0,0,0.6);
   margin:10px;
@@ -50,22 +48,6 @@ body{
   border-radius:12px;
 }
 
-/* GRID */
-.features{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.box{
-  padding:15px;
-  border-radius:12px;
-  text-align:center;
-  font-weight:bold;
-  background:linear-gradient(135deg,#ff512f,#dd2476);
-}
-
-/* BUTTON */
 button{
   padding:10px;
   border:none;
@@ -74,7 +56,6 @@ button{
   font-weight:bold;
 }
 
-/* INPUT */
 input{
   width:90%;
   padding:10px;
@@ -91,74 +72,70 @@ input{
   <div class="logo">UK WRITERS HUB</div>
   <div class="menu-btn" onclick="toggleMenu()">⋮</div>
 </div>
-<div id="panel">
 
-<h2>Dashboard</h2>
-
-<div class="panel-section">
-  <p><b>Email:</b> <span id="userEmail"></span></p>
-  <p><b>Balance:</b> KES <span id="userBalance"></span></p>
-  <p><b>VIP:</b> <span id="vipLevel"></span></p>
-</div
-<!-- MENU -->
-<div class="menu-btn" onclick="openPanel()">⋮</div>
-  <div class="menu-item" onclick="showLeaderboard()">🏆 Top Earners</div>
-  <div class="menu-item" onclick="openVIP()">💎 VIP Dashboard</div>
-  <div class="menu-item" onclick="openGames()">🎮 Games</div>
-  <div class="menu-item" onclick="showDeposits()">💰 Deposits</div>
-  <div class="menu-item" onclick="showWithdrawals()">💸 Withdrawals</div>
-  <div class="menu-item" onclick="logout()">🚪 Logout</div>
+<!-- SIDE MENU (FIXED) -->
+<div id="menu">
+  <p onclick="showDashboard()">🏠 Dashboard</p>
+  <p onclick="showVIP()">💎 VIP Dashboard</p>
+  <p onclick="showGames()">🎮 Games</p>
+  <p onclick="showDeposits()">💰 Deposits</p>
+  <p onclick="showWithdrawals()">💸 Withdrawals</p>
+  <p onclick="logout()">🚪 Logout</p>
 </div>
 
 <!-- AUTH -->
-<div id="authBox" class="card">
-<input id="email" placeholder="Email"><br><br>
-<input id="password" type="password" placeholder="Password"><br><br>
-<button onclick="register()">Register</button>
-<button onclick="login()">Login</button>
+<div class="card" id="authBox">
+  <input id="email" placeholder="Email"><br><br>
+  <input id="password" type="password" placeholder="Password"><br><br>
+  <button onclick="register()">Register</button>
+  <button onclick="login()">Login</button>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashboard" style="display:none;">
 
 <div class="card">
-Balance: KES <span id="balance">0</span><br>
-Package: <span id="package">None</span>
+  Balance: KES <span id="balance">0</span><br>
+  Package: <span id="package">None</span>
 </div>
 
-<div class="card" id="liveFeed">Loading activity...</div>
-
-<!-- MANUAL DEPOSIT -->
 <div class="card">
-<h3>Deposit (Manual)</h3>
-<p>Lipa na M-PESA → Buy Goods</p>
-<p><b>TILL: 6892947</b></p>
-<button onclick="deposit()">Submit Deposit</button>
+  <h3>Deposit (Manual)</h3>
+  <p>Lipa na M-PESA → Buy Goods</p>
+  <p><b>TILL: 6892947</b></p>
+  <button onclick="deposit()">Submit Deposit</button>
 </div>
 
-<!-- PACKAGES -->
 <div class="card">
-<h3>Activate Package</h3>
-<button onclick="buyPackage('standard',500)">Standard - 500</button><br><br>
-<button onclick="buyPackage('intermediate',1500)">Intermediate - 1500</button><br><br>
-<button onclick="buyPackage('premium',2500)">Premium - 2500</button>
+  <h3>Activate Package</h3>
+  <button onclick="buyPackage('standard',500)">Standard - 500</button><br><br>
+  <button onclick="buyPackage('intermediate',1500)">Intermediate - 1500</button><br><br>
+  <button onclick="buyPackage('premium',2500)">Premium - 2500</button>
 </div>
 
-<!-- FEATURES -->
-<div class="features">
-<div class="box" onclick="earn(50)">Surveys</div>
-<div class="box" onclick="earn(150)">Affiliate</div>
-<div class="box" onclick="earn(200)">Academic</div>
-<div class="box" onclick="earn(200)">Blog</div>
-<div class="box" onclick="earn(200)">Article</div>
-<div class="box" onclick="earn(500)">E-commerce</div>
-<div class="box" onclick="earn(500)">Binary</div>
-<div class="box" onclick="chatService()">AI Bot</div>
-</div>
-
-<br>
 <button onclick="withdraw()">Withdraw</button>
 
+</div>
+
+<!-- VIP DASHBOARD -->
+<div id="vip" style="display:none;">
+  <div class="card">
+    <h3>🏆 Top Earners</h3>
+    <div id="leaderboard"></div>
+  </div>
+</div>
+
+<!-- GAMES -->
+<div id="games" style="display:none;">
+  <div class="card">
+    <h3>🎡 Spin</h3>
+    <h2 id="spin">0</h2>
+  </div>
+
+  <div class="card">
+    <h3>🚀 Crash</h3>
+    <h2 id="crash">1.00x</h2>
+  </div>
 </div>
 
 <script>
@@ -168,30 +145,28 @@ let users = JSON.parse(localStorage.getItem("users")) || {};
 let currentUser = localStorage.getItem("currentUser");
 let user = {};
 
-/* SAVE */
-function save(){
-  users[user.email] = user;
-  localStorage.setItem("users", JSON.stringify(users));
-  updateUI();
+/* MENU FIX */
+function toggleMenu(){
+  let m = document.getElementById("menu");
+  m.style.right = m.style.right === "0px" ? "-260px" : "0px";
 }
 
-/* REGISTER */
+/* AUTH */
 function register(){
-  let email = emailInput();
-  let password = passInput();
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
 
   if(users[email]) return alert("User exists");
 
-  user = {email,password,balance:0,package:null};
-  save();
-  localStorage.setItem("currentUser", email);
-  showDashboard();
+  users[email] = {email,password,balance:0,package:null};
+  localStorage.setItem("users", JSON.stringify(users));
+
+  alert("Registered");
 }
 
-/* LOGIN */
 function login(){
-  let email = emailInput();
-  let password = passInput();
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
 
   if(!users[email] || users[email].password !== password){
     return alert("Invalid login");
@@ -199,14 +174,32 @@ function login(){
 
   user = users[email];
   localStorage.setItem("currentUser", email);
+
   showDashboard();
 }
 
-/* DASHBOARD */
+/* NAVIGATION */
 function showDashboard(){
-  document.getElementById("authBox").style.display="none";
+  hideAll();
   document.getElementById("dashboard").style.display="block";
+  document.getElementById("authBox").style.display="none";
   updateUI();
+}
+
+function showVIP(){
+  hideAll();
+  document.getElementById("vip").style.display="block";
+}
+
+function showGames(){
+  hideAll();
+  document.getElementById("games").style.display="block";
+}
+
+function hideAll(){
+  document.getElementById("dashboard").style.display="none";
+  document.getElementById("vip").style.display="none";
+  document.getElementById("games").style.display="none";
 }
 
 /* UPDATE UI */
@@ -215,112 +208,66 @@ function updateUI(){
   document.getElementById("package").innerText = user.package || "None";
 }
 
-/* INPUTS */
-function emailInput(){ return document.getElementById("email").value.trim(); }
-function passInput(){ return document.getElementById("password").value.trim(); }
+/* FEATURES */
+function buyPackage(name,price){
+  if(user.balance < price) return alert("Insufficient balance");
 
-/* MENU */
-function toggleMenu(){
-  let m = document.getElementById("menu");
-  m.style.right = m.style.right === "0px" ? "-260px" : "0px";
+  user.balance -= price;
+  user.package = name;
+
+  save();
 }
 
-/* DEPOSIT */
 function deposit(){
   let amount = prompt("Enter amount:");
   let code = prompt("Enter M-PESA code:");
 
-  if(!amount || !code) return alert("Fill all");
-
-  user.balance += Number(amount);
-  save();
-
-  alert("Deposit added (manual)");
+  alert("Submitted (Admin approval needed)");
 }
 
-/* WITHDRAW */
 function withdraw(){
-  let amount = prompt("Enter amount");
+  if(user.balance < 50) return alert("Min 50");
 
-  if(amount > user.balance) return alert("Insufficient");
-
-  user.balance -= amount;
+  user.balance = 0;
   save();
 
   alert("Withdrawal requested");
 }
 
-/* PACKAGE */
-function buyPackage(name,price){
-  if(user.balance < price) return alert("Insufficient");
-
-  user.balance -= price;
-  user.package = name;
-  save();
-}
-
-/* EARN */
-function earn(amount){
-  user.balance += amount;
-  save();
-}
-
-/* CHAT SERVICE (LOCKED) */
-function chatService(){
-  if(user.balance < 5000){
-    alert("Pay KES 5000 to unlock chatting");
-    return;
-  }
-  alert("Chat unlocked ✅");
-}
-
-/* LIVE FEED */
-setInterval(()=>{
-  let services = ["Survey","Blog","Binary","Academic","Chatting"];
-  let u = Math.floor(Math.random()*9000);
-  let s = services[Math.floor(Math.random()*services.length)];
-  let a = Math.floor(Math.random()*5000);
-
-  document.getElementById("liveFeed").innerText =
-  `🔥 user${u} earned KES ${a} from ${s}`;
-},1500);
-
-/* LEADERBOARD */
-function showLeaderboard(){
-  let html="🏆 Top Earners\n";
-  for(let i=1;i<=10;i++){
-    html += `user${i} - KES ${Math.floor(Math.random()*20000)}\n`;
-  }
-  alert(html);
-}
-
-/* VIP */
-function openVIP(){
-  let vip = user.balance > 10000 ? "VIP 3" :
-            user.balance > 5000 ? "VIP 2" :
-            user.balance > 1000 ? "VIP 1" : "Normal";
-
-  alert("Your VIP Level: " + vip);
-}
-
-/* GAMES */
-function openGames(){
-  alert("Crash + Spin running live 🎮");
-}
-
-/* LOGOUT */
-function logout(){
-  localStorage.removeItem("currentUser");
-  location.reload();
+/* SAVE */
+function save(){
+  users[user.email] = user;
+  localStorage.setItem("users", JSON.stringify(users));
+  updateUI();
 }
 
 /* AUTO LOGIN */
-window.onload = function(){
+window.onload = ()=>{
   if(currentUser && users[currentUser]){
     user = users[currentUser];
     showDashboard();
   }
-};
+}
+
+/* FAKE LIVE SYSTEM */
+setInterval(()=>{
+  document.getElementById("spin").innerText = Math.floor(Math.random()*100);
+},1000);
+
+setInterval(()=>{
+  let c = parseFloat(document.getElementById("crash").innerText);
+  c += Math.random();
+  if(c>5) c=1;
+  document.getElementById("crash").innerText = c.toFixed(2)+"x";
+},500);
+
+setInterval(()=>{
+  let html="";
+  for(let i=1;i<=5;i++){
+    html += "user"+i+" - KES "+(Math.floor(Math.random()*10000))+"<br>";
+  }
+  document.getElementById("leaderboard").innerHTML = html;
+},2000);
 
 </script>
 
