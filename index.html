@@ -473,6 +473,44 @@ function openAdmin(){
     alert("Admin only");
   }
   }
+  function loadDeposits(){
+  let deposits = JSON.parse(localStorage.getItem("deposits")) || [];
+
+  let html = "<h4>Deposit Requests</h4>";
+
+  deposits.forEach((d,i)=>{
+    html += `
+      <div style="background:#111;padding:10px;margin:5px;border-radius:8px;">
+        👤 ${d.user}<br>
+        💰 KES ${d.amount}<br>
+        🔑 ${d.code}<br>
+        📌 ${d.status}<br>
+
+        ${d.status==="pending" ? `<button onclick="approveDeposit(${i})">Approve</button>` : ""}
+      </div>
+    `;
+  });
+
+  document.getElementById("adminContent").innerHTML = html;
+}
+
+function approveDeposit(i){
+  let deposits = JSON.parse(localStorage.getItem("deposits"));
+  let users = JSON.parse(localStorage.getItem("users"));
+
+  let d = deposits[i];
+
+  if(d.status==="approved") return;
+
+  users[d.user].balance += Number(d.amount);
+  d.status = "approved";
+
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("deposits", JSON.stringify(deposits));
+
+  alert("Deposit Approved ✅");
+  loadDeposits();
+  }
 </script>
 
 </body>
