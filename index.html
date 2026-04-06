@@ -511,6 +511,24 @@ function approveDeposit(i){
   alert("Deposit Approved ✅");
   loadDeposits();
   }
+  // CRASH GAME
+let crash = 1.00;
+
+setInterval(()=>{
+  crash += Math.random()*0.3;
+
+  if(crash > 5){
+    crash = 1.00;
+  }
+
+  document.getElementById("crashValue").innerText = crash.toFixed(2)+"x";
+},200);
+
+// SPIN GAME
+setInterval(()=>{
+  let val = Math.floor(Math.random()*100);
+  document.getElementById("spinValue").innerText = val;
+},1000);
 </script>
 
 </body>
