@@ -391,6 +391,23 @@ function toggleMenu(){
     alert("Access denied");
   }
   }
+  function openVIP(){
+  alert("VIP Dashboard (connect next)");
+}
+
+function openGames(){
+  alert("Crash & Spin (next step)");
+}
+
+function openAdmin(){
+  let email = localStorage.getItem("currentUser");
+
+  if(email === "admin@gmail.com"){
+    alert("Admin dashboard opening...");
+  } else {
+    alert("Access denied");
+  }
+    }
 </script>
 
 </body>
