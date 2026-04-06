@@ -19,9 +19,7 @@ body{
   background:black;
 }
 
-.logo{color:#22c55e;font-weight:bold;}
-
-.menu-btn{cursor:pointer;font-size:22px}
+.menu-btn{font-size:22px;cursor:pointer;}
 
 #menu{
   position:fixed;
@@ -32,7 +30,6 @@ body{
   background:#111;
   transition:0.3s;
   padding:15px;
-  z-index:999;
 }
 
 #menu p{
@@ -46,6 +43,20 @@ body{
   margin:10px;
   padding:15px;
   border-radius:12px;
+}
+
+.features{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.box{
+  padding:15px;
+  border-radius:10px;
+  text-align:center;
+  background:linear-gradient(135deg,#ff512f,#dd2476);
+  cursor:pointer;
 }
 
 button{
@@ -69,22 +80,19 @@ input{
 
 <!-- HEADER -->
 <div class="header">
-  <div class="logo">UK WRITERS HUB</div>
+  <div>UK WRITERS HUB</div>
   <div class="menu-btn" onclick="toggleMenu()">⋮</div>
 </div>
 
-<!-- SIDE MENU (FIXED) -->
+<!-- MENU -->
 <div id="menu">
-  <p onclick="showDashboard()">🏠 Dashboard</p>
-  <p onclick="showVIP()">💎 VIP Dashboard</p>
-  <p onclick="showGames()">🎮 Games</p>
-  <p onclick="showDeposits()">💰 Deposits</p>
-  <p onclick="showWithdrawals()">💸 Withdrawals</p>
+  <p onclick="showSection('dashboard')">🏠 Dashboard</p>
+  <p onclick="showSection('vip')">💎 VIP</p>
   <p onclick="logout()">🚪 Logout</p>
 </div>
 
 <!-- AUTH -->
-<div class="card" id="authBox">
+<div id="auth" class="card">
   <input id="email" placeholder="Email"><br><br>
   <input id="password" type="password" placeholder="Password"><br><br>
   <button onclick="register()">Register</button>
@@ -92,50 +100,51 @@ input{
 </div>
 
 <!-- DASHBOARD -->
-<div id="dashboard" style="display:none;">
+<div id="dashboard" style="display:none">
 
 <div class="card">
-  Balance: KES <span id="balance">0</span><br>
-  Package: <span id="package">None</span>
+Balance: KES <span id="balance">0</span><br>
+Package: <span id="package">None</span>
 </div>
 
 <div class="card">
-  <h3>Deposit (Manual)</h3>
-  <p>Lipa na M-PESA → Buy Goods</p>
-  <p><b>TILL: 6892947</b></p>
-  <button onclick="deposit()">Submit Deposit</button>
+🔥 <span id="liveFeed">Loading activity...</span>
 </div>
 
 <div class="card">
-  <h3>Activate Package</h3>
-  <button onclick="buyPackage('standard',500)">Standard - 500</button><br><br>
-  <button onclick="buyPackage('intermediate',1500)">Intermediate - 1500</button><br><br>
-  <button onclick="buyPackage('premium',2500)">Premium - 2500</button>
+<h3>Deposit</h3>
+<p>TILL: <b>6892947</b></p>
+<button onclick="deposit()">Submit Deposit</button>
+</div>
+
+<div class="card">
+<h3>Activate Package</h3>
+<button onclick="buyPackage('standard',500)">Standard - 500</button><br><br>
+<button onclick="buyPackage('intermediate',1500)">Intermediate - 1500</button><br><br>
+<button onclick="buyPackage('premium',2500)">Premium - 2500</button>
+</div>
+
+<div class="features">
+<div class="box" onclick="survey()">Surveys</div>
+<div class="box" onclick="referral()">Affiliate</div>
+<div class="box" onclick="academic()">Academic</div>
+<div class="box" onclick="blog()">Blog</div>
+<div class="box" onclick="article()">Article</div>
+<div class="box" onclick="ecommerce()">E-commerce</div>
+<div class="box" onclick="binary()">Binary</div>
+<div class="box" onclick="chat()">Chat Foreigners</div>
 </div>
 
 <button onclick="withdraw()">Withdraw</button>
 
 </div>
 
-<!-- VIP DASHBOARD -->
-<div id="vip" style="display:none;">
-  <div class="card">
-    <h3>🏆 Top Earners</h3>
-    <div id="leaderboard"></div>
-  </div>
+<!-- VIP -->
+<div id="vip" style="display:none">
+<div class="card">
+<h3>🏆 Top Earners</h3>
+<div id="leaderboard"></div>
 </div>
-
-<!-- GAMES -->
-<div id="games" style="display:none;">
-  <div class="card">
-    <h3>🎡 Spin</h3>
-    <h2 id="spin">0</h2>
-  </div>
-
-  <div class="card">
-    <h3>🚀 Crash</h3>
-    <h2 id="crash">1.00x</h2>
-  </div>
 </div>
 
 <script>
@@ -145,32 +154,40 @@ let users = JSON.parse(localStorage.getItem("users")) || {};
 let currentUser = localStorage.getItem("currentUser");
 let user = {};
 
-/* MENU FIX */
-function toggleMenu(){
-  let m = document.getElementById("menu");
-  m.style.right = m.style.right === "0px" ? "-260px" : "0px";
-}
-
-/* AUTH */
-function register(){
-  let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
-
-  if(users[email]) return alert("User exists");
-
-  users[email] = {email,password,balance:0,package:null};
+/* SAVE */
+function save(){
+  users[user.email] = user;
   localStorage.setItem("users", JSON.stringify(users));
-
-  alert("Registered");
+  localStorage.setItem("currentUser", user.email);
 }
 
-function login(){
-  let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
+/* REGISTER */
+function register(){
+  let email = document.getElementById("email").value.trim();
+  let pass = document.getElementById("password").value.trim();
 
-  if(!users[email] || users[email].password !== password){
-    return alert("Invalid login");
-  }
+  if(!email || !pass) return alert("Fill all fields");
+
+  if(users[email]) return alert("User already exists");
+
+  user = {
+    email,
+    password:pass,
+    balance:0,
+    package:null
+  };
+
+  save();
+  showDashboard();
+}
+
+/* LOGIN */
+function login(){
+  let email = document.getElementById("email").value.trim();
+  let pass = document.getElementById("password").value.trim();
+
+  if(!users[email]) return alert("User not found");
+  if(users[email].password !== pass) return alert("Wrong password");
 
   user = users[email];
   localStorage.setItem("currentUser", email);
@@ -178,98 +195,117 @@ function login(){
   showDashboard();
 }
 
-/* NAVIGATION */
+/* SHOW */
 function showDashboard(){
-  hideAll();
+  document.getElementById("auth").style.display="none";
   document.getElementById("dashboard").style.display="block";
-  document.getElementById("authBox").style.display="none";
   updateUI();
 }
 
-function showVIP(){
-  hideAll();
-  document.getElementById("vip").style.display="block";
-}
-
-function showGames(){
-  hideAll();
-  document.getElementById("games").style.display="block";
-}
-
-function hideAll(){
-  document.getElementById("dashboard").style.display="none";
-  document.getElementById("vip").style.display="none";
-  document.getElementById("games").style.display="none";
-}
-
-/* UPDATE UI */
+/* UI */
 function updateUI(){
   document.getElementById("balance").innerText = user.balance;
   document.getElementById("package").innerText = user.package || "None";
 }
 
-/* FEATURES */
-function buyPackage(name,price){
-  if(user.balance < price) return alert("Insufficient balance");
-
-  user.balance -= price;
-  user.package = name;
-
-  save();
+/* MENU */
+function toggleMenu(){
+  let m = document.getElementById("menu");
+  m.style.right = (m.style.right === "0px") ? "-260px" : "0px";
 }
 
+function showSection(id){
+  document.getElementById("dashboard").style.display="none";
+  document.getElementById("vip").style.display="none";
+  document.getElementById(id).style.display="block";
+}
+
+/* LOGOUT */
+function logout(){
+  localStorage.removeItem("currentUser");
+  location.reload();
+}
+
+/* FEATURES */
+function survey(){
+  if(user.package!=="standard") return alert("Standard only");
+  user.balance+=10; save(); updateUI();
+}
+
+function referral(){
+  user.balance+=150; save(); updateUI();
+}
+
+function academic(){
+  if(user.package!=="intermediate") return alert("Upgrade");
+  user.balance+=200; save(); updateUI();
+}
+
+function blog(){ academic(); }
+function article(){ academic(); }
+
+function ecommerce(){
+  if(user.package!=="premium") return alert("Premium only");
+  user.balance+=500; save(); updateUI();
+}
+
+function binary(){ ecommerce(); }
+
+function chat(){
+  if(user.balance < 5000) return alert("Requires 5000 activation");
+  alert("Chat access granted");
+}
+
+/* PACKAGE */
+function buyPackage(name,price){
+  if(user.balance < price) return alert("Insufficient balance");
+  user.balance -= price;
+  user.package = name;
+  save(); updateUI();
+}
+
+/* DEPOSIT */
 function deposit(){
   let amount = prompt("Enter amount:");
   let code = prompt("Enter M-PESA code:");
-
-  alert("Submitted (Admin approval needed)");
+  if(!amount || !code) return;
+  alert("Submitted for approval");
 }
 
+/* WITHDRAW */
 function withdraw(){
-  if(user.balance < 50) return alert("Min 50");
-
-  user.balance = 0;
-  save();
-
+  let amt = prompt("Amount:");
+  if(amt > user.balance) return alert("Insufficient");
+  user.balance -= amt;
+  save(); updateUI();
   alert("Withdrawal requested");
 }
 
-/* SAVE */
-function save(){
-  users[user.email] = user;
-  localStorage.setItem("users", JSON.stringify(users));
-  updateUI();
-}
-
-/* AUTO LOGIN */
-window.onload = ()=>{
-  if(currentUser && users[currentUser]){
-    user = users[currentUser];
-    showDashboard();
-  }
-}
-
-/* FAKE LIVE SYSTEM */
+/* LIVE USERS */
 setInterval(()=>{
-  document.getElementById("spin").innerText = Math.floor(Math.random()*100);
-},1000);
+  let services=["Academic","Blog","Affiliate","E-commerce","Survey","Binary","Chat"];
+  let u="user"+Math.floor(Math.random()*10000);
+  let amt=Math.floor(Math.random()*5000);
+  document.getElementById("liveFeed").innerText =
+  `${u} earned KES ${amt} from ${services[Math.floor(Math.random()*services.length)]}`;
+},1500);
 
-setInterval(()=>{
-  let c = parseFloat(document.getElementById("crash").innerText);
-  c += Math.random();
-  if(c>5) c=1;
-  document.getElementById("crash").innerText = c.toFixed(2)+"x";
-},500);
-
+/* LEADERBOARD */
 setInterval(()=>{
   let html="";
-  for(let i=1;i<=5;i++){
-    html += "user"+i+" - KES "+(Math.floor(Math.random()*10000))+"<br>";
+  for(let i=1;i<=10;i++){
+    html+=`user${i} - KES ${Math.floor(Math.random()*20000)}<br>`;
   }
-  document.getElementById("leaderboard").innerHTML = html;
-},2000);
+  document.getElementById("leaderboard").innerHTML=html;
+},3000);
+
+/* AUTO LOGIN */
+if(currentUser && users[currentUser]){
+  user = users[currentUser];
+  showDashboard();
+}
 
 </script>
 
 </body>
-  </html>
+</html>
