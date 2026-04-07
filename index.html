@@ -579,6 +579,15 @@ setInterval(()=>{
     `💸 ${user} withdrew KES ${amt}`;
 },2500);
   document.getElementById("dashboard").style.display = "block";
+  window.onload = function(){
+  if(currentUser && users[currentUser]){
+    user = users[currentUser];
+    showDashboard();
+  } else {
+    document.getElementById("authBox").style.display = "block";
+    document.getElementById("dashboard").style.display = "none";
+  }
+};
 </script>
 
 </body>
