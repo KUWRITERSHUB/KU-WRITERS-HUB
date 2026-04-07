@@ -605,6 +605,13 @@ setInterval(()=>{
 
   alert("Deposit submitted.\nPay via TILL: 6892947");
   }
+  function checkAccess(){
+  if(!user.package){
+    alert("⚠️ Activate your account first!");
+    return false;
+  }
+  return true;
+  }
 </script>
 
 </body>
