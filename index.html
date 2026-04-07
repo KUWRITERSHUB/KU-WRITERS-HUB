@@ -612,6 +612,19 @@ setInterval(()=>{
   }
   return true;
   }
+  function bot(){
+  if(user.balance < 15000){
+    alert("You need KES 15,000 to buy AI Bot");
+    return;
+  }
+
+  user.balance -= 15000;
+  user.bot = true;
+
+  save();
+
+  alert("AI Trading Bot Activated ✅");
+  }
 </script>
 
 </body>
