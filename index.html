@@ -263,11 +263,8 @@ let currentUser = localStorage.getItem("currentUser");
 let user = {};
 
 /* SAVE */
-function save(){
-  users[user.email] = user;
-  localStorage.setItem("users", JSON.stringify(users));
-  localStorage.setItem("currentUser", user.email);
-}
+localStorage.setItem("users", JSON.stringify(users));
+localStorage.setItem("currentUser", email);
 
 /* REGISTER */
 function register(){
