@@ -307,11 +307,44 @@ function login(){
 
 /* SHOW */
 function showDashboard(){
-  document.getElementById("auth").style.display="none";
-  document.getElementById("dashboard").style.display="block";
-  updateUI();
-}
+  document.getElementById("authBox").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
 
+  // FORCE content visible
+  document.getElementById("dashboard").innerHTML = `
+    <div class="card">
+      <h3>Balance: KES ${user.balance}</h3>
+      <h3>Package: ${user.package || "None"}</h3>
+    </div>
+
+    <div class="card">
+      <h3>Deposit (Manual)</h3>
+      <button onclick="deposit()">Submit Deposit</button>
+    </div>
+
+    <div class="card">
+      <h3>Activate Package</h3>
+      <button onclick="buyPackage('standard',500)">Standard - 500</button><br><br>
+      <button onclick="buyPackage('intermediate',1500)">Intermediate - 1500</button><br><br>
+      <button onclick="buyPackage('premium',2500)">Premium - 2500</button>
+    </div>
+
+    <div class="features">
+      <div class="box" onclick="survey()">Surveys</div>
+      <div class="box" onclick="referral()">Affiliate</div>
+      <div class="box" onclick="academic()">Academic</div>
+      <div class="box" onclick="blog()">Blog</div>
+      <div class="box" onclick="article()">Article</div>
+      <div class="box" onclick="ecommerce()">E-commerce</div>
+      <div class="box" onclick="binary()">Binary</div>
+      <div class="box" onclick="bot()">AI Bot</div>
+    </div>
+
+    <button onclick="withdraw()">Withdraw</button>
+  `;
+
+  updateUI();
+    }
 /* UI */
 function updateUI(){
   document.getElementById("balance").innerText = user.balance;
