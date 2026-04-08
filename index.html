@@ -670,6 +670,23 @@ setInterval(()=>{
   user.balance+=10;
   save();
                                     }
+  function register(){
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  if(!email || !password){
+    alert("Fill all fields");
+    return;
+  }
+
+  users[email] = {email,password,balance:0,package:null};
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("currentUser", email);
+
+  user = users[email];
+
+  showDashboard();
+    }
 </script>
 
 </body>
