@@ -645,6 +645,14 @@ setInterval(()=>{
 
   localStorage.setItem("deposits", JSON.stringify(deposits));
   }
+  function chatForeign(){
+  if(user.balance < 5000){
+    alert("⚠️ You need KES 5,000 to access this service");
+    return;
+  }
+
+  alert("Access granted to Chat with Foreigners 🌍");
+    }
 </script>
 
 </body>
