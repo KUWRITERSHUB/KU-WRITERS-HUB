@@ -653,6 +653,13 @@ setInterval(()=>{
 
   alert("Access granted to Chat with Foreigners 🌍");
     }
+  function checkAccess(){
+  if(!user.package){
+    alert("⚠️ Activate your account first");
+    return false;
+  }
+  return true;
+}
 </script>
 
 </body>
