@@ -151,9 +151,24 @@ body{
 <div id="authBox">...</div>
 
 <!-- DASHBOARD -->
-<div id="dashboard">
+<div id="dashboard" style="display:none; padding:10px;">
 
-  <!-- FEATURES -->
+  <div class="card">
+    <h3>Balance: KES <span id="balance">0</span></h3>
+    <h4>Package: <span id="package">None</span></h4>
+  </div>
+
+  <div class="card" id="liveBox">
+    🔥 <span id="liveText">Users earning...</span>
+  </div>
+
+  <div class="card">
+    <h3>Activate Package</h3>
+    <button onclick="buyPackage('standard',500)">Standard - 500</button><br><br>
+    <button onclick="buyPackage('intermediate',1500)">Intermediate - 1500</button><br><br>
+    <button onclick="buyPackage('premium',2500)">Premium - 2500</button>
+  </div>
+
   <div class="features">
     <div class="box" onclick="survey()">Surveys</div>
     <div class="box" onclick="referral()">Affiliate</div>
@@ -163,30 +178,9 @@ body{
     <div class="box" onclick="ecommerce()">E-commerce</div>
     <div class="box" onclick="binary()">Binary</div>
     <div class="box" onclick="bot()">AI Bot</div>
+    <div class="box" onclick="chatForeign()">Chat Foreigners</div>
   </div>
 
-</div>
-
-<div class="card">
-Balance: KES <span id="balance">0</span><br>
-Package: <span id="package">None</span>
-</div>
-
-<div class="card">
-🔥 <span id="liveFeed">Loading activity...</span>
-</div>
-
-<div class="card">
-<h3>Deposit</h3>
-<p>TILL: <b>6892947</b></p>
-<button onclick="deposit()">Submit Deposit</button>
-</div>
-
-<div class="card">
-<h3>Activate Package</h3>
-<button onclick="buyPackage('standard',500)">Standard - 500</button><br><br>
-<button onclick="buyPackage('intermediate',1500)">Intermediate - 1500</button><br><br>
-<button onclick="buyPackage('premium',2500)">Premium - 2500</button>
 </div>
 
 
