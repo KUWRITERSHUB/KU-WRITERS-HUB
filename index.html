@@ -12,6 +12,7 @@ body{
   color:white;
 }
 
+/* HEADER */
 .header{
   display:flex;
   justify-content:space-between;
@@ -19,30 +20,42 @@ body{
   background:black;
 }
 
-.menu-btn{font-size:22px;cursor:pointer;}
+.menu-btn{
+  font-size:22px;
+  cursor:pointer;
+}
 
+/* SIDE MENU */
 #menu{
   position:fixed;
+  right:-280px;
   top:0;
-  right:-250px;
-  width:250px;
+  width:280px;
   height:100%;
-  background:#1e293b;
-  color:white;
-  transition:0.3s;
-  z-index:1000;
+  background:#111;
+  transition:0.4s;
+  padding:20px;
+  z-index:999;
 }
 
 #menu p{
-  padding:15px;
-  border-bottom:1px solid #444;
+  padding:12px;
+  border-bottom:1px solid #333;
+  cursor:pointer;
 }
 
-.card{
-  background:rgba(0,0,0,0.6);
-  margin:10px;
-  padding:15px;
-  border-radius:12px;
+/* LOGIN */
+#authBox{
+  margin:30px;
+  background:#00000080;
+  padding:20px;
+  border-radius:15px;
+}
+
+/* DASHBOARD */
+#dashboard{
+  display:none;
+  padding:10px;
 }
 
 .features{
@@ -53,78 +66,19 @@ body{
 
 .box{
   padding:15px;
-  border-radius:10px;
+  border-radius:12px;
   text-align:center;
   background:linear-gradient(135deg,#ff512f,#dd2476);
   cursor:pointer;
 }
 
-button{
-  padding:10px;
-  border:none;
-  border-radius:8px;
-  background:#22c55e;
-  font-weight:bold;
-}
-
-input{
-  width:90%;
-  padding:10px;
-  border-radius:8px;
-  border:none;
-}
-  .menu-btn{
-  font-size:26px;
-  cursor:pointer;
-  color:white;
-}
-
-/* MENU FIX */
-#menu{
-  position:fixed;
-  top:0;
-  right:-300px; /* hidden completely */
-  width:280px;
-  height:100%;
-  background:linear-gradient(180deg,#0ea5e9,#22c55e);
-  transition:0.4s ease;
+/* CARDS */
+.card{
+  background:#00000070;
+  margin:10px;
   padding:15px;
-  z-index:1000;
-  box-shadow:-5px 0 20px rgba(0,0,0,0.5);
+  border-radius:12px;
 }
-
-/* MENU HEADER */
-.menu-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  font-weight:bold;
-  margin-bottom:20px;
-}
-
-.menu-header span{
-  cursor:pointer;
-  font-size:20px;
-}
-
-/* MENU ITEMS */
-#menu p{
-  padding:12px;
-  border-radius:8px;
-  margin:5px 0;
-  background:rgba(255,255,255,0.1);
-  cursor:pointer;
-  transition:0.3s;
-}
-
-#menu p:hover{
-  background:rgba(255,255,255,0.3);
-}
-
-/* REMOVE ANY DARK OVERLAY BUG */
-body{
-  overflow-x:hidden;
-  }
 </style>
 </head>
 
@@ -132,23 +86,22 @@ body{
 
 <!-- HEADER -->
 <div class="header">
-  <div class="logo">UK WRITERS HUB</div>
+  <b>UK WRITERS HUB</b>
   <div class="menu-btn" onclick="toggleMenu()">☰</div>
 </div>
 
-<!-- MENU -->
+<!-- SIDE MENU -->
 <div id="menu">
   <h3>Menu</h3>
-  <p onclick="closeMenu()">❌ Close</p>
   <p onclick="showDashboard()">🏠 Dashboard</p>
-  <p onclick="manualActivation()">💰 Manual Activation</p>
+  <p onclick="manualDeposit()">💰 Manual Activation</p>
   <p onclick="withdraw()">💸 Withdraw</p>
-  <p onclick="openVIP()">💎 VIP</p>
-  <p onclick="openGame()">🎮 Games</p>
+  <p onclick="showRef()">🔗 Referral (KES 150)</p>
+  <p onclick="openAdmin()">⚙ Admin</p>
   <p onclick="logout()">🚪 Logout</p>
 </div>
 
-<!-- AUTH -->
+<!-- LOGIN -->
 <div id="authBox">
   <input id="email" placeholder="Email"><br><br>
   <input id="password" type="password" placeholder="Password"><br><br>
@@ -157,176 +110,162 @@ body{
 </div>
 
 <!-- DASHBOARD -->
-<div id="dashboard" style="display:none; padding:10px;">
+<div id="dashboard">
 
-  <div class="card">
-    <h3>Balance: KES <span id="balance">0</span></h3>
-    <h4>Package: <span id="package">None</span></h4>
-  </div>
-
-  <div class="card" id="liveBox">
-    🔥 <span id="liveText">Users earning...</span>
-  </div>
-
-  <div class="card">
-    <h3>Activate Package</h3>
-    <button onclick="buyPackage('standard',500)">Standard - 500</button><br><br>
-    <button onclick="buyPackage('intermediate',1500)">Intermediate - 1500</button><br><br>
-    <button onclick="buyPackage('premium',2500)">Premium - 2500</button>
-  </div>
-
-  <div class="features">
-    <div class="box" onclick="survey()">Surveys</div>
-    <div class="box" onclick="referral()">Affiliate</div>
-    <div class="box" onclick="academic()">Academic</div>
-    <div class="box" onclick="blog()">Blog</div>
-    <div class="box" onclick="article()">Article</div>
-    <div class="box" onclick="ecommerce()">E-commerce</div>
-    <div class="box" onclick="binary()">Binary</div>
-    <div class="box" onclick="bot()">AI Bot</div>
-    <div class="box" onclick="chatForeign()">Chat Foreigners</div>
-  </div>
-
+<div class="features">
+  <div class="box" onclick="checkPackage('standard')">Surveys</div>
+  <div class="box" onclick="referral()">Affiliate</div>
+  <div class="box" onclick="checkPackage('intermediate')">Academic</div>
+  <div class="box" onclick="checkPackage('intermediate')">Blog</div>
+  <div class="box" onclick="checkPackage('intermediate')">Article</div>
+  <div class="box" onclick="checkPackage('premium')">E-commerce</div>
+  <div class="box" onclick="checkPackage('premium')">Binary</div>
+  <div class="box" onclick="buyBot()">AI BOT (15,000)</div>
+  <div class="box" onclick="chatForeign()">Chat Foreigners (5,000)</div>
 </div>
 
-
-
-<!-- VIP -->
-<div id="vip" style="display:none">
 <div class="card">
-<h3>🏆 Top Earners</h3>
-<div id="leaderboard"></div>
-</div>
-</div>
-<div id="adminPanel" style="display:none;">
-  <div class="card">
-    <h3>⚙ ADMIN DASHBOARD</h3>
-    <div id="adminContent">No data</div>
-  </div>
-</div>
-  <!-- VIP DASHBOARD -->
-<div id="vipPanel" style="display:none;">
-  <div class="card">
-    <h3>🏆 Top Earners</h3>
-    <div id="leaderboard"></div>
-  </div>
-
-  <div class="card">
-    <h3>💸 Live Withdrawals</h3>
-    <div id="withdrawFeed"></div>
-  </div>
+Balance: KES <span id="balance">0</span><br>
+Package: <span id="package">None</span>
 </div>
 
-<!-- GAMES -->
-<div id="gamesPanel" style="display:none;">
-  <div class="card">
-    <h3>🚀 Crash Game</h3>
-    <h1 id="crashValue">1.00x</h1>
-  </div>
+<div class="card" id="live">🔥 Loading activity...</div>
+<div class="card" id="withdrawLive">💸 Loading withdrawals...</div>
 
-  <div class="card">
-    <h3>🎡 Spin Game</h3>
-    <h2 id="spinValue">0</h2>
-  </div>
+<div class="card">
+<h3>Activate Package</h3>
+<button onclick="buyPackage('standard',500)">Standard - 500</button><br><br>
+<button onclick="buyPackage('intermediate',1500)">Intermediate - 1500</button><br><br>
+<button onclick="buyPackage('premium',2500)">Premium - 2500</button>
 </div>
 
-<!-- ADMIN PANEL -->
-<div id="adminPanel" style="display:none;">
-  <div class="card">
-    <h3>⚙ Admin Dashboard</h3>
-    <div id="adminContent"></div>
-  </div>
 </div>
+
 <script>
 
-/* DATABASE */
+/* STORAGE */
 let users = JSON.parse(localStorage.getItem("users")) || {};
 let currentUser = localStorage.getItem("currentUser");
 let user = {};
 
 /* SAVE */
-localStorage.setItem("users", JSON.stringify(users));
-localStorage.setItem("currentUser", email);
+function save(){
+  users[user.email] = user;
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("currentUser", user.email);
+}
 
 /* REGISTER */
 function register(){
-  let email = document.getElementById("email").value.trim();
-  let pass = document.getElementById("password").value.trim();
+  let email = emailInput();
+  let pass = passInput();
 
-  if(!email || !pass) return alert("Fill all fields");
+  if(users[email]) return alert("User exists");
 
-  if(users[email]) return alert("User already exists");
-
-  user = {
-    email,
-    password:pass,
-    balance:0,
-    package:null
-  };
-
+  user = {email, password:pass, balance:0, package:null, referrals:0};
   save();
   showDashboard();
 }
 
 /* LOGIN */
 function login(){
-  let email = document.getElementById("email").value.trim();
-  let pass = document.getElementById("password").value.trim();
+  let email = emailInput();
+  let pass = passInput();
 
-  if(!users[email]) return alert("User not found");
-  if(users[email].password !== pass) return alert("Wrong password");
+  if(!users[email] || users[email].password !== pass){
+    return alert("Invalid login");
+  }
 
   user = users[email];
-  localStorage.setItem("currentUser", email);
+  showDashboard();
+}
 
-  function showDashboard(){
-  document.getElementById("authBox").style.display = "none";
-  document.getElementById("dashboard").style.display = "block";
+/* SHOW DASHBOARD */
+function showDashboard(){
+  document.getElementById("authBox").style.display="none";
+  document.getElementById("dashboard").style.display="block";
+  updateUI();
+}
 
-  document.getElementById("dashboard").innerHTML = `
-    <div class="card">
-      <h3>Balance: KES ${user.balance}</h3>
-      <h3>Package: ${user.package || "Not Activated"}</h3>
-    </div>
-
-    <div class="card">
-      <h3>Activate Package</h3>
-      <button onclick="buyPackage('standard',500)">Standard - 500</button><br><br>
-      <button onclick="buyPackage('intermediate',1500)">Intermediate - 1500</button><br><br>
-      <button onclick="buyPackage('premium',2500)">Premium - 2500</button>
-    </div>
-
-    <div class="features">
-      <div class="box" onclick="survey()">Surveys</div>
-      <div class="box" onclick="referral()">Affiliate</div>
-      <div class="box" onclick="academic()">Academic</div>
-      <div class="box" onclick="blog()">Blog</div>
-      <div class="box" onclick="article()">Article</div>
-      <div class="box" onclick="ecommerce()">E-commerce</div>
-      <div class="box" onclick="binary()">Binary</div>
-      <div class="box" onclick="bot()">AI Bot (15,000)</div>
-    </div>
-  `;
-  }
 /* UI */
 function updateUI(){
-  document.getElementById("balance").innerText = user.balance;
-  document.getElementById("package").innerText = user.package || "None";
+  document.getElementById("balance").innerText=user.balance;
+  document.getElementById("package").innerText=user.package||"None";
 }
 
 /* MENU */
 function toggleMenu(){
-  document.getElementById("menu").style.right = "0";
+  let m=document.getElementById("menu");
+  m.style.right = m.style.right==="0px" ? "-280px" : "0px";
 }
 
-function closeMenu(){
-  document.getElementById("menu").style.right = "-250px";
+/* PACKAGE CHECK */
+function checkPackage(type){
+  if(!user.package){
+    alert("Activate account first");
+    return;
   }
+  alert("Service opened");
+}
 
-function showSection(id){
-  document.getElementById("dashboard").style.display="none";
-  document.getElementById("vip").style.display="none";
-  document.getElementById(id).style.display="block";
+/* BUY PACKAGE */
+function buyPackage(name,price){
+  if(user.balance < price) return alert("Insufficient balance");
+
+  user.balance -= price;
+  user.package = name;
+  save();
+  updateUI();
+}
+
+/* REFERRAL */
+function referral(){
+  user.balance += 150;
+  save();
+  updateUI();
+}
+
+function showRef(){
+  alert("Earn KES 150 per referral\nLink: "+location.href+"?ref="+user.email);
+}
+
+/* BOT */
+function buyBot(){
+  if(user.balance < 15000) return alert("Need KES 15000");
+  user.balance -= 15000;
+  save();
+  alert("AI BOT activated");
+}
+
+/* CHAT FOREIGN */
+function chatForeign(){
+  if(user.balance < 5000) return alert("Requires KES 5000");
+  user.balance -= 5000;
+  save();
+  alert("Chat unlocked");
+}
+
+/* DEPOSIT */
+function manualDeposit(){
+  let amount = prompt("Enter amount:");
+  user.balance += Number(amount);
+  save();
+  updateUI();
+}
+
+/* WITHDRAW */
+function withdraw(){
+  let amt = prompt("Enter amount:");
+  if(user.balance < amt) return alert("Insufficient");
+  user.balance -= amt;
+  save();
+  updateUI();
+}
+
+/* ADMIN */
+function openAdmin(){
+  if(user.email !== "admin@gmail.com") return alert("No access");
+  alert("Admin panel (approve deposits)");
 }
 
 /* LOGOUT */
@@ -335,359 +274,35 @@ function logout(){
   location.reload();
 }
 
-/* FEATURES */
-function survey(){
-  if(user.package!=="standard") return alert("Standard only");
-  user.balance+=10; save(); updateUI();
-}
-
-function referral(){
-  user.balance+=150; save(); updateUI();
-}
-
-function academic(){
-  if(user.package!=="intermediate") return alert("Upgrade");
-  user.balance+=200; save(); updateUI();
-}
-
-function blog(){ academic(); }
-function article(){ academic(); }
-
-function ecommerce(){
-  if(user.package!=="premium") return alert("Premium only");
-  user.balance+=500; save(); updateUI();
-}
-
-function binary(){ ecommerce(); }
-
-function chat(){
-  if(user.balance < 5000) return alert("Requires 5000 activation");
-  alert("Chat access granted");
-}
-
-/* PACKAGE */
-function buyPackage(name,price){
-  if(user.balance < price) return alert("Insufficient balance");
-  user.balance -= price;
-  user.package = name;
-  save(); updateUI();
-}
-
-/* DEPOSIT */
-function deposit(){
-  let amount = prompt("Enter amount:");
-  let code = prompt("Enter M-PESA code:");
-  if(!amount || !code) return;
-  alert("Submitted for approval");
-}
-
-/* WITHDRAW */
-function withdraw(){
-  let amt = prompt("Amount:");
-  if(amt > user.balance) return alert("Insufficient");
-  user.balance -= amt;
-  save(); updateUI();
-  alert("Withdrawal requested");
-}
-
-/* LIVE USERS */
+/* LIVE SYSTEM */
 setInterval(()=>{
-  let services=["Academic","Blog","Affiliate","E-commerce","Survey","Binary","Chat"];
+  let services=["Academic","Blog","Article","E-commerce","Binary","Bot","Chat"];
   let u="user"+Math.floor(Math.random()*10000);
   let amt=Math.floor(Math.random()*5000);
-  document.getElementById("liveFeed").innerText =
-  `${u} earned KES ${amt} from ${services[Math.floor(Math.random()*services.length)]}`;
+
+  document.getElementById("live").innerText=
+  `🔥 ${u} earned KES ${amt} from ${services[Math.floor(Math.random()*services.length)]}`;
 },1500);
 
-/* LEADERBOARD */
 setInterval(()=>{
-  let html="";
-  for(let i=1;i<=10;i++){
-    html+=`user${i} - KES ${Math.floor(Math.random()*20000)}<br>`;
-  }
-  document.getElementById("leaderboard").innerHTML=html;
-},3000);
+  let u="user"+Math.floor(Math.random()*10000);
+  let amt=Math.floor(Math.random()*10000);
+
+  document.getElementById("withdrawLive").innerText=
+  `💸 ${u} withdrew KES ${amt}`;
+},2000);
+
+/* HELPERS */
+function emailInput(){return document.getElementById("email").value;}
+function passInput(){return document.getElementById("password").value;}
 
 /* AUTO LOGIN */
 if(currentUser && users[currentUser]){
   user = users[currentUser];
   showDashboard();
 }
-function toggleMenu(){
-  let m = document.getElementById("menu");
-  m.style.right = "0";
-}
 
-function closeMenu(){
-  document.getElementById("menu").style.right = "-250px";
-  }
-  function showDashboard(){
-  document.getElementById("dashboard").style.display = "block";
-  document.getElementById("adminPanel").style.display = "none";
-    }
-  function openAdmin(){
-  let email = localStorage.getItem("currentUser");
-
-  if(email === "admin@gmail.com"){
-    document.getElementById("adminPanel").style.display = "block";
-    document.getElementById("dashboard").style.display = "none";
-  }else{
-    alert("Access denied");
-  }
-  }
-  function openVIP(){
-  alert("VIP Dashboard (connect next)");
-}
-
-function openGames(){
-  alert("Crash & Spin (next step)");
-}
-
-function openAdmin(){
-  let email = localStorage.getItem("currentUser");
-
-  if(email === "admin@gmail.com"){
-    alert("Admin dashboard opening...");
-  } else {
-    alert("Access denied");
-  }
-    }
-  function hideAll(){
-  document.getElementById("dashboard").style.display="none";
-  document.getElementById("vipPanel").style.display="none";
-  document.getElementById("gamesPanel").style.display="none";
-  document.getElementById("adminPanel").style.display="none";
-}
-
-function showDashboard(){
-  hideAll();
-  document.getElementById("dashboard").style.display="block";
-}
-
-function openVIP(){
-  hideAll();
-  document.getElementById("vipPanel").style.display="block";
-}
-
-function openGames(){
-  hideAll();
-  document.getElementById("gamesPanel").style.display="block";
-}
-
-function openAdmin(){
-  let email = localStorage.getItem("currentUser");
-
-  if(email === "admin@gmail.com"){
-    hideAll();
-    document.getElementById("adminPanel").style.display="block";
-    loadDeposits();
-  } else {
-    alert("Admin only");
-  }
-  }
-  function loadDeposits(){
-  let deposits = JSON.parse(localStorage.getItem("deposits")) || [];
-
-  let html = "<h4>Deposit Requests</h4>";
-
-  deposits.forEach((d,i)=>{
-    html += `
-      <div style="background:#111;padding:10px;margin:5px;border-radius:8px;">
-        👤 ${d.user}<br>
-        💰 KES ${d.amount}<br>
-        🔑 ${d.code}<br>
-        📌 ${d.status}<br>
-
-        ${d.status==="pending" ? `<button onclick="approveDeposit(${i})">Approve</button>` : ""}
-      </div>
-    `;
-  });
-
-  document.getElementById("adminContent").innerHTML = html;
-}
-
-function approveDeposit(i){
-  let deposits = JSON.parse(localStorage.getItem("deposits"));
-  let users = JSON.parse(localStorage.getItem("users"));
-
-  let d = deposits[i];
-
-  if(d.status==="approved") return;
-
-  users[d.user].balance += Number(d.amount);
-  d.status = "approved";
-
-  localStorage.setItem("users", JSON.stringify(users));
-  localStorage.setItem("deposits", JSON.stringify(deposits));
-
-  alert("Deposit Approved ✅");
-  loadDeposits();
-  }
-  // CRASH GAME
-let crash = 1.00;
-
-setInterval(()=>{
-  crash += Math.random()*0.3;
-
-  if(crash > 5){
-    crash = 1.00;
-  }
-
-  document.getElementById("crashValue").innerText = crash.toFixed(2)+"x";
-},200);
-
-// SPIN GAME
-setInterval(()=>{
-  let val = Math.floor(Math.random()*100);
-  document.getElementById("spinValue").innerText = val;
-},1000);
-  function loadLeaderboard(){
-  let html = "";
-
-  for(let i=1;i<=10;i++){
-    let amt = Math.floor(Math.random()*20000)+1000;
-    html += `user${i} - KES ${amt}<br>`;
-  }
-
-  document.getElementById("leaderboard").innerHTML = html;
-}
-
-setInterval(loadLeaderboard,3000);
-
-// withdrawals feed
-setInterval(()=>{
-  let user = "user"+Math.floor(Math.random()*10000);
-  let amt = Math.floor(Math.random()*15000)+500;
-
-  document.getElementById("withdrawFeed").innerHTML =
-    `💸 ${user} withdrew KES ${amt}`;
-},2500);
-  document.getElementById("dashboard").style.display = "block";
-  window.onload = function(){
-  if(currentUser && users[currentUser]){
-    user = users[currentUser];
-    showDashboard();
-  } else {
-    document.getElementById("authBox").style.display = "block";
-    document.getElementById("dashboard").style.display = "none";
-  }
-};
-  function manualActivation(){
-  let amount = prompt("Enter amount deposited:");
-  let code = prompt("Enter M-PESA Transaction Code:");
-
-  if(!amount || !code){
-    alert("Fill all details");
-    return;
-  }
-
-  let deposits = JSON.parse(localStorage.getItem("deposits")) || [];
-
-  deposits.push({
-    user: user.email,
-    amount: Number(amount),
-    code: code,
-    status: "pending"
-  });
-
-  localStorage.setItem("deposits", JSON.stringify(deposits));
-
-  alert("Deposit submitted.\nPay via TILL: 6892947");
-  }
-  function checkAccess(){
-  if(!user.package){
-    alert("⚠️ Activate your account first!");
-    return false;
-  }
-  return true;
-  }
-  function bot(){
-  if(user.balance < 15000){
-    alert("You need KES 15,000 to buy AI Bot");
-    return;
-  }
-
-  user.balance -= 15000;
-  user.bot = true;
-
-  save();
-
-  alert("AI Trading Bot Activated ✅");
-  }
-  const services = [
-  "Academic Writing","Blog Writing","Article Writing",
-  "Referrals","E-commerce","Binary Trading",
-  "Surveys","Chat Jobs","AI Bot"
-];
-
-setInterval(()=>{
-  let userNum = Math.floor(Math.random()*10000);
-  let service = services[Math.floor(Math.random()*services.length)];
-  let amount = Math.floor(Math.random()*5000)+50;
-
-  document.getElementById("liveText").innerText =
-    `user${userNum} earned KES ${amount} from ${service}`;
-},1500);
-  function manualActivation(){
-  let amount = prompt("Enter amount deposited:");
-  let code = prompt("Enter M-PESA code:");
-
-  if(!amount || !code){
-    alert("Fill all fields");
-    return;
-  }
-
-  alert("Pay via TILL: 6892947\nThen wait for approval");
-
-  let deposits = JSON.parse(localStorage.getItem("deposits")) || [];
-
-  deposits.push({
-    user:user.email,
-    amount:Number(amount),
-    code:code,
-    status:"pending"
-  });
-
-  localStorage.setItem("deposits", JSON.stringify(deposits));
-  }
-  function chatForeign(){
-  if(user.balance < 5000){
-    alert("⚠️ You need KES 5,000 to access this service");
-    return;
-  }
-
-  alert("Access granted to Chat with Foreigners 🌍");
-    }
-  function checkAccess(){
-  if(!user.package){
-    alert("⚠️ Activate your account first");
-    return false;
-  }
-  return true;
-}
-  function survey(){
-  if(!checkAccess()) return;
-  user.balance+=10;
-  save();
-                                    }
-  function register(){
-  let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
-
-  if(!email || !password){
-    alert("Fill all fields");
-    return;
-  }
-
-  users[email] = {email,password,balance:0,package:null};
-  localStorage.setItem("users", JSON.stringify(users));
-  localStorage.setItem("currentUser", email);
-
-  user = users[email];
-
-  showDashboard();
-    }
 </script>
 
 </body>
-</html>
+  </html>
