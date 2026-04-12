@@ -159,13 +159,20 @@ function save(){
 
 /* REGISTER */
 function register(){
-  let email = emailInput();
-  let pass = passInput();
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
 
-  if(users[email]) return alert("User exists");
+  if(!email || !password){
+    alert("Fill all fields");
+    return;
+  }
 
-  user = {email, password:pass, balance:0, package:null, referrals:0};
-  save();
+  users[email] = {email,password,balance:0,package:null};
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("currentUser", email);
+
+  user = users[email];
+
   showDashboard();
 }
 
