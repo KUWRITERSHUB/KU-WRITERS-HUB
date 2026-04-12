@@ -242,13 +242,9 @@ function updateUI(){
 }
 
 /* MENU */
-function toggleMenu(){
-  document.getElementById("menu").style.right = "0";
-}
-
-function closeMenu(){
-  document.getElementById("menu").style.right = "-250px";
-}
+  function toggleMenu(){
+  document.getElementById("menu").classList.toggle("active");
+  }
 
 /* PACKAGE CHECK */
 function checkPackage(type){
