@@ -115,6 +115,30 @@ body{
   body{
   overflow-x:hidden;
   }
+  /* FIX MENU OVERLAY */
+#menuOverlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+  display:none;
+  z-index:9;
+}
+
+#menu{
+  position:fixed;
+  top:0;
+  right:-280px;
+  width:260px;
+  height:100%;
+  background:linear-gradient(135deg,#0ea5e9,#22c55e);
+  transition:0.3s;
+  z-index:10;
+  padding:20px;
+  border-radius:20px 0 0 20px;
+  }
 </style>
 </head>
 
