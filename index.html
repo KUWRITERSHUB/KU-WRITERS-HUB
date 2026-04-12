@@ -419,6 +419,19 @@ setInterval(()=>{
   alert("AI BOT Activated 🚀");
   save();
   }
+  function checkAccess(requiredPackage){
+  if(!user.package){
+    alert("Activate your account first");
+    return false;
+  }
+
+  if(requiredPackage && user.package !== requiredPackage){
+    alert("Upgrade your package");
+    return false;
+  }
+
+  return true;
+  }
 </script>
 
 </body>
