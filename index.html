@@ -443,6 +443,19 @@ setInterval(()=>{
 
   alert("Submitted for approval");
       }
+  function showDashboard(){
+  document.getElementById("authBox").style.display = "none";
+  document.getElementById("mainContent").style.display = "block";
+}
+
+window.onload = function(){
+  if(currentUser && users[currentUser]){
+    user = users[currentUser];
+    showDashboard();
+  } else {
+    document.getElementById("mainContent").style.display = "none";
+  }
+  }
 </script>
 
 </body>
