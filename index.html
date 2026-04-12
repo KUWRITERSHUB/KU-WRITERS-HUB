@@ -484,6 +484,15 @@ window.onload = function(){
     document.getElementById("mainContent").style.display = "none";
   }
   }
+  window.onload = function(){
+  if(currentUser && users[currentUser]){
+    user = users[currentUser];
+    showDashboard();
+  }else{
+    document.getElementById("authBox").style.display = "block";
+    document.getElementById("dashboard").style.display = "none";
+  }
+  }
 </script>
 
 </body>
