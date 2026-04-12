@@ -269,9 +269,15 @@ function updateUI(){
 }
 
 /* MENU */
-  function toggleMenu(){
-  document.getElementById("menu").classList.toggle("active");
-  }
+  function openMenu(){
+  document.getElementById("menu").style.right = "0";
+  document.getElementById("menuOverlay").style.display = "block";
+}
+
+function closeMenu(){
+  document.getElementById("menu").style.right = "-280px";
+  document.getElementById("menuOverlay").style.display = "none";
+}
 
 /* PACKAGE CHECK */
 function checkPackage(type){
