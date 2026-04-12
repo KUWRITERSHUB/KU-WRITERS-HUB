@@ -401,6 +401,14 @@ setInterval(()=>{
   user.balance+=10;
   save();
   }
+  setInterval(()=>{
+  let services = ["Academic","Blog","Article","Forex","E-commerce"];
+  let userNum = Math.floor(Math.random()*10000);
+  let amount = Math.floor(Math.random()*5000);
+
+  document.getElementById("live").innerHTML =
+  `🔥 user${userNum} earned KES ${amount} from ${services[Math.floor(Math.random()*services.length)]}`;
+},2000);
 </script>
 
 </body>
