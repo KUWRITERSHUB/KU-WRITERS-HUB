@@ -351,6 +351,11 @@ setInterval(()=>{
   }
   return true;
   }
+  function survey(){
+  if(!checkAccess()) return;
+  user.balance+=10;
+  save();
+  }
 </script>
 
 </body>
