@@ -25,17 +25,45 @@ body{
   cursor:pointer;
 }
 
-/* SIDE MENU */
+/* SIDE MENU FIXED */
 #menu{
   position:fixed;
-  right:-280px;
   top:0;
+  right:-280px;
   width:280px;
   height:100%;
-  background:#111;
-  transition:0.4s;
+  background:linear-gradient(180deg,#0f172a,#1e293b);
+  box-shadow:-5px 0 20px rgba(0,0,0,0.5);
+  transition:0.3s ease;
+  z-index:1000;
   padding:20px;
-  z-index:999;
+}
+
+/* MENU ACTIVE */
+#menu.active{
+  right:0;
+}
+
+/* MENU ITEMS */
+.menu-item{
+  padding:15px;
+  margin:10px 0;
+  background:rgba(255,255,255,0.05);
+  border-radius:12px;
+  cursor:pointer;
+  font-size:16px;
+}
+
+.menu-item:hover{
+  background:#22c55e;
+  color:black;
+}
+
+/* CLOSE BUTTON */
+.close-btn{
+  font-size:22px;
+  float:right;
+  cursor:pointer;
 }
 
 #menu p{
