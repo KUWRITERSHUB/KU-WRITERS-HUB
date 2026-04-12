@@ -251,11 +251,27 @@ function chatForeign(){
 }
 
 /* DEPOSIT */
-function manualDeposit(){
-  let amount = prompt("Enter amount:");
-  user.balance += Number(amount);
-  save();
-  updateUI();
+function manualActivation(){
+  let amount = prompt("Enter amount deposited:");
+  let code = prompt("Enter M-PESA code:");
+
+  if(!amount || !code){
+    alert("Fill all fields");
+    return;
+  }
+
+  alert("Pay via TILL: 6892947\nThen wait for approval");
+
+  let deposits = JSON.parse(localStorage.getItem("deposits")) || [];
+
+  deposits.push({
+    user:user.email,
+    amount:Number(amount),
+    code:code,
+    status:"pending"
+  });
+
+  localStorage.setItem("deposits", JSON.stringify(deposits));
 }
 
 /* WITHDRAW */
