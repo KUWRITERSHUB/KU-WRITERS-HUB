@@ -409,6 +409,16 @@ setInterval(()=>{
   document.getElementById("live").innerHTML =
   `🔥 user${userNum} earned KES ${amount} from ${services[Math.floor(Math.random()*services.length)]}`;
 },2000);
+  function bot(){
+  if(user.balance < 15000){
+    alert("You need KES 15,000 to activate AI BOT");
+    return;
+  }
+
+  user.balance -= 15000;
+  alert("AI BOT Activated 🚀");
+  save();
+  }
 </script>
 
 </body>
