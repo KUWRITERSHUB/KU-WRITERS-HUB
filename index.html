@@ -303,7 +303,20 @@ if(currentUser && users[currentUser]){
   user = users[currentUser];
   showDashboard();
 }
+const services = [
+  "Academic Writing","Blog Writing","Article Writing",
+  "Referrals","E-commerce","Binary Trading",
+  "Surveys","Chat Jobs","AI Bot"
+];
 
+setInterval(()=>{
+  let userNum = Math.floor(Math.random()*10000);
+  let service = services[Math.floor(Math.random()*services.length)];
+  let amount = Math.floor(Math.random()*5000)+50;
+
+  document.getElementById("liveText").innerText =
+    `user${userNum} earned KES ${amount} from ${service}`;
+},1500);
 </script>
 
 </body>
