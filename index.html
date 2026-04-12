@@ -432,6 +432,17 @@ setInterval(()=>{
 
   return true;
   }
+  function manualDeposit(){
+  let amount = prompt("Enter amount deposited:");
+  let code = prompt("Enter M-PESA code:");
+
+  if(!amount || !code){
+    alert("Fill all details");
+    return;
+  }
+
+  alert("Submitted for approval");
+      }
 </script>
 
 </body>
