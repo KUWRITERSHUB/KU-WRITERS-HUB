@@ -92,14 +92,15 @@ body{
 
 <!-- SIDE MENU -->
 <div id="menu">
-  <h3>Menu</h3>
-  <p onclick="closeMenu()">❌ Close</p>
-  <p onclick="showDashboard()">🏠 Dashboard</p>
-  <p onclick="manualActivation()">💰 Manual Activation</p>
-  <p onclick="withdraw()">💸 Withdraw</p>
-  <p onclick="openVIP()">💎 VIP</p>
-  <p onclick="openGame()">🎮 Games</p>
-  <p onclick="logout()">🚪 Logout</p>
+  <div class="close-btn" onclick="toggleMenu()">✖</div>
+
+  <div class="menu-item" onclick="goDashboard()">🏠 Dashboard</div>
+  <div class="menu-item" onclick="manualDeposit()">💰 Manual Activation</div>
+  <div class="menu-item" onclick="withdraw()">💸 Withdraw</div>
+  <div class="menu-item" onclick="openVIP()">💎 VIP</div>
+  <div class="menu-item" onclick="openGames()">🎮 Games</div>
+  <div class="menu-item" onclick="openAdmin()">⚙️ Admin</div>
+  <div class="menu-item" onclick="logout()">🚪 Logout</div>
 </div>
 
 <!-- LOGIN -->
