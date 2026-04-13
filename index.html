@@ -341,6 +341,16 @@ function passEl(){return document.getElementById("password")}
 function joinWhatsApp(){
     window.open("https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou?mode=gi_t", "_blank");
   }
+  function openAdmin(){
+    let user = localStorage.getItem("userEmail");
+
+    // simple admin check (you can change email)
+    if(user === "admin@ukwriters.com"){
+        window.location.href = "admin.html";
+    } else {
+        alert("Access denied. Admins only.");
+    }
+  }
 </script>
 
 </body>
