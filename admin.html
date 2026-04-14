@@ -1,6 +1,52 @@
-<li onclick="openAdmin()">Admin Dashboard</li>
-<script>
-function openAdmin(){
-  window.location.href = "admin.html";
-}
-</script>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <style>
+    body{
+      background:#0c1f3f;
+      color:white;
+      font-family:Arial;
+      text-align:center;
+    }
+
+    .card{
+      background:#142b5c;
+      margin:15px;
+      padding:20px;
+      border-radius:10px;
+      box-shadow:0 0 10px rgba(0,0,0,0.5);
+    }
+
+    button{
+      padding:10px 20px;
+      margin-top:10px;
+      border:none;
+      border-radius:8px;
+      background:#00c853;
+      color:white;
+      cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h1>⚙️ Admin Dashboard</h1>
+
+<div class="card">
+  <h3>Approve Deposits</h3>
+  <button>View Requests</button>
+</div>
+
+<div class="card">
+  <h3>View Users</h3>
+  <button>Open Users</button>
+</div>
+
+<div class="card">
+  <h3>Manage Withdrawals</h3>
+  <button>Approve Withdrawals</button>
+</div>
+
+</body>
+</html>
