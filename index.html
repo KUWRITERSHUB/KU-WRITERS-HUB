@@ -102,20 +102,43 @@ button{
   <div class="menu-btn" onclick="openMenu()">☰</div>
 </div>
 
-<div id="menuOverlay" onclick="closeMenu()"></div>
+<!-- MENU OVERLAY -->
+<div id="menuOverlay" class="menu-overlay"></div>
 
-<div id="menu">
-  <h3>Menu</h3>
-  <ul>
-    <li onclick="copyRef()">🔗 Referral Link</li>
-    <li onclick="showMembers()">👥 Members</li>
-    <li onclick="joinWhatsApp()">💬 WhatsApp Group</li>
-    <li onclick="openGames()">🎮 Games</li>
-    <li onclick="openManual()">💰 Manual Activation</li>
-    <li onclick="openWithdraw()">💸 Withdraw</li>
-    <li onclick="openAdmin()">⚙️ Admin</li>
-    <li onclick="logout()">🚪 Logout</li>
-  </ul>
+<!-- SIDE MENU -->
+<div id="sideMenu" class="side-menu">
+
+  <h2>Menu</h2>
+
+  <div class="menu-item" onclick="openReferral()">
+    🔗 Referral Link
+  </div>
+
+  <div class="menu-item" onclick="openMembers()">
+    👥 Members
+  </div>
+
+  <div class="menu-item" onclick="showManualActivation()">
+    💰 Manual Activation
+  </div>
+
+  <div class="menu-item" onclick="withdrawPage()">
+    💸 Withdraw
+  </div>
+
+  <div class="menu-item" onclick="joinWhatsApp()">
+    📲 WhatsApp Group
+  </div>
+
+  <div class="menu-item" onclick="openAdmin()">
+    ⚙️ Admin Dashboard
+  </div>
+
+  <div class="menu-item logout" onclick="logout()">
+    🚪 Logout
+  </div>
+
+</div>
 
 <!-- LOGIN -->
 <div id="authBox" class="card">
