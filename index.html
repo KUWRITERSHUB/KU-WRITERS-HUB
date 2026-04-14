@@ -417,10 +417,53 @@ function joinWhatsApp(){
         alert("Access denied. Admins only.");
     }
   }
-  function toggleMenu(){
-    document.querySelector(".side-menu").classList.toggle("active");
-    document.querySelector(".overlay").classList.toggle("active");
-  }
+  // TOGGLE MENU
+function toggleMenu() {
+  document.getElementById("sideMenu").classList.toggle("active");
+  document.getElementById("menuOverlay").style.display = "block";
+}
+
+// CLOSE MENU
+document.getElementById("menuOverlay").onclick = function () {
+  document.getElementById("sideMenu").classList.remove("active");
+  this.style.display = "none";
+};
+
+// WHATSAPP GROUP
+function joinWhatsApp() {
+  window.open("https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou?mode=gi_t", "_blank");
+}
+
+// MANUAL ACTIVATION (SHOW TILL CLEARLY)
+function showManualActivation() {
+  alert("LIPA NA M-PESA\n\nBuy Goods & Services\nTill Number: 6892947");
+}
+
+// ADMIN DASHBOARD
+function openAdmin() {
+  window.location.href = "admin.html"; // create this file
+}
+
+// REFERRAL PAGE
+function openReferral() {
+  alert("Your referral link:\n\n" + localStorage.getItem("refLink"));
+}
+
+// MEMBERS PAGE
+function openMembers() {
+  alert("Members section coming soon...");
+}
+
+// WITHDRAW PAGE
+function withdrawPage() {
+  document.querySelector("html, body").scrollTop = document.body.scrollHeight;
+}
+
+// LOGOUT
+function logout() {
+  localStorage.clear();
+  window.location.reload();
+    }
 </script>
 
 </body>
