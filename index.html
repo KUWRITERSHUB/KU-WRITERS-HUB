@@ -69,7 +69,39 @@ body{
 .logout {
   background: red;
 }
+<style>
+.menu-btn {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  font-size: 25px;
+  cursor: pointer;
+  color: white;
+}
 
+.side-menu {
+  position: fixed;
+  top: 0;
+  right: -300px; /* hidden by default */
+  width: 250px;
+  height: 100%;
+  background: #0c1f3f;
+  color: white;
+  padding: 20px;
+  transition: 0.3s;
+  z-index: 1000;
+}
+
+.side-menu.active {
+  right: 0; /* 🔥 slides in */
+}
+
+.side-menu p {
+  padding: 12px;
+  border-bottom: 1px solid #555;
+  cursor: pointer;
+}
+</style>
 /* MENU BUTTON */
   .side-menu {
     position: fixed;
