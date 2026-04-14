@@ -521,6 +521,35 @@ function logout() {
   localStorage.clear();
   window.location.reload();
     }
+  <script>
+function toggleMenu() {
+  document.getElementById("sideMenu").classList.toggle("active");
+}
+
+function openAdmin(){
+  window.location.href = "admin.html";
+}
+
+function openManual(){
+  alert("Lipa na M-PESA\nBuy Goods & Services\nTill: 6892947");
+}
+
+function openWithdraw(){
+  alert("Withdraw section coming soon");
+}
+
+function openReferral(){
+  alert("Your referral link will appear here");
+}
+
+function openMembers(){
+  alert("Members list coming soon");
+}
+
+function logout(){
+  alert("Logged out");
+}
+</script>
 </script>
 
 </body>
