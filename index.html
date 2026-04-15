@@ -177,7 +177,54 @@ let currentUser = localStorage.getItem("currentUser");
 
 let user = null;
 
+/* MENU FUNCTIONS */
 
+function openWhatsApp(){
+  window.location.href = "https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou?mode=gi_t";
+  closeMenu();
+}
+
+function manualDeposit(){
+  alert("LIPA NA M-PESA\nBuy Goods & Services\n\nTILL: 6892947");
+  closeMenu();
+}
+
+function openAdmin(){
+  window.location.href = "admin.html";
+  closeMenu();
+}
+
+function withdraw(){
+  if(user.balance < 600){
+    alert("❌ Minimum withdrawal is KES 600");
+    closeMenu();
+    return;
+  }
+
+  let confirmWithdraw = confirm("Withdraw KES " + user.balance + "?");
+
+  if(confirmWithdraw){
+    alert("✅ Withdrawal successful!");
+    user.balance = 0;
+    save();
+    updateUI();
+  }
+
+  closeMenu();
+}
+
+function copyRef(){
+  let link = window.location.origin + "?ref=" + user.ref;
+  navigator.clipboard.writeText(link);
+  alert("Referral link copied!");
+  closeMenu();
+}
+
+function logout(){
+  localStorage.removeItem("currentUser");
+  location.reload();
+    }
+    
 /* REGISTER */
 function register(){
   let email = emailEl().value;
