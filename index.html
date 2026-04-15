@@ -171,44 +171,13 @@ button{
 
   
   <script>
-
-
 /* DATABASE */
 let users = JSON.parse(localStorage.getItem("users")) || {};
 let currentUser = localStorage.getItem("currentUser");
 
 let user = null;
 
-/* MENU */
-function openMenu(){
-  document.getElementById("menu").style.right="0";
-  document.getElementById("menuOverlay").style.display="block";
-}
-function closeMenu(){
-  document.getElementById("menu").style.right="-280px";
-  document.getElementById("menuOverlay").style.display="none";
-}
-function manualDeposit(){
-  alert("LIPA NA M-PESA\nBuy Goods & Services\n\nTILL: 6892947");
-}
-  /* MENU ACTIONS */
 
-function openWhatsApp(){
-  window.open("https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou?mode=gi_t", "_blank");
-  closeMenu();
-}
-
-
-function copyRef(){
-  let link = window.location.origin + "?ref=" + user.ref;
-  navigator.clipboard.writeText(link);
-  alert("Referral link copied!");
-  closeMenu();
-
-function logout(){
-  localStorage.removeItem("currentUser");
-  location.reload();
-}
 /* REGISTER */
 function register(){
   let email = emailEl().value;
