@@ -296,7 +296,7 @@ function useService(type){
 
 /* REFERRAL */
 function copyRef(){
-  let link = location.href+"?ref="+user.ref;
+  let link = window.location.origin + "?ref=" + user.ref;
   navigator.clipboard.writeText(link);
   alert("Referral link copied!");
 }
