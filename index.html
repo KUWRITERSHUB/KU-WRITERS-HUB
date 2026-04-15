@@ -25,113 +25,41 @@ body{
   font-weight:bold;
   font-size:18px;
 }
-  .menu-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
-  display: none;
-  z-index: 998;
-}
 
-.side-menu {
-  position: fixed;
-  top: 0;
-  left: -260px;
-  width: 260px;
-  height: 100%;
-  background: #0c1f3f;
-  color: white;
-  padding: 20px;
-  transition: 0.3s;
-  z-index: 999;
-  overflow-y: auto;
-}
-
-.side-menu.active {
-  left: 0;
-}
-
-.menu-item {
-  padding: 15px;
-  margin: 10px 0;
-  background: rgba(255,255,255,0.05);
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.menu-item:hover {
-  background: rgba(255,255,255,0.15);
-}
-
-.logout {
-  background: red;
-}
-<style>
-.menu-btn {
-  position: absolute;
-  right: 15px;
-  top: 15px;
-  font-size: 25px;
-  cursor: pointer;
-  color: white;
-}
-
-.side-menu {
-  position: fixed;
-  top: 0;
-  right: -300px; /* hidden by default */
-  width: 250px;
-  height: 100%;
-  background: #0c1f3f;
-  color: white;
-  padding: 20px;
-  transition: 0.3s;
-  z-index: 1000;
-}
-
-.side-menu.active {
-  right: 0; /* 🔥 slides in */
-}
-
-.side-menu p {
-  padding: 12px;
-  border-bottom: 1px solid #555;
-  cursor: pointer;
-}
-</style>
 /* MENU BUTTON */
-  .side-menu {
-    position: fixed;
-    top: 0;
-    right: -260px;
-    width: 260px;
-    height: 100%;
-    background: #0d1b2a; /* clean dark blue */
-    color: white;
-    transition: 0.3s;
-    z-index: 1000;
+.menu-btn{
+  font-size:22px;
+  cursor:pointer;
 }
 
-.side-menu.active {
-    right: 0;
+/* MENU */
+#menuOverlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+  display:none;
+  z-index:9;
 }
 
-/* overlay fix */
-.overlay {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.4);
-    top: 0;
-    left: 0;
-    display: none;
+#menu{
+  position:fixed;
+  top:0;
+  right:-280px;
+  width:260px;
+  height:100%;
+  background:#0f172a;
+  transition:0.3s;
+  z-index:10;
+  padding:20px;
 }
 
-.overlay.active {
-    display: block;
+#menu p{
+  padding:12px;
+  border-bottom:1px solid #333;
+  cursor:pointer;
 }
 
 /* CARDS */
@@ -178,56 +106,15 @@ button{
   <div class="menu-btn" onclick="openMenu()">☰</div>
 </div>
 
-<!-- MENU OVERLAY -->
-<div id="menuOverlay" class="menu-overlay"></div>
-<div onclick="toggleMenu()" style="font-size:24px;cursor:pointer;">
-  ☰
-</div>
-  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+<div id="menuOverlay" onclick="closeMenu()"></div>
 
-<div id="sideMenu" class="side-menu">
-  <h2>Menu</h2>
-
-  <p onclick="openReferral()">🔗 Referral Link</p>
-  <p onclick="openMembers()">👥 Members</p>
-  <p onclick="openManual()">💰 Manual Activation</p>
-  <p onclick="openWithdraw()">💸 Withdraw</p>
-  <p onclick="openAdmin()">⚙️ Admin Dashboard</p>
+<div id="menu">
+  <h3>Menu</h3>
+  <p onclick="copyRef()">📎 Referral Link</p>
+  <p onclick="showMembers()">👥 Members</p>
+  <p onclick="manualDeposit()">💰 Manual Activation</p>
+  <p onclick="withdraw()">💸 Withdraw</p>
   <p onclick="logout()">🚪 Logout</p>
-</div>
-<!-- SIDE MENU -->
-<div id="sideMenu" class="side-menu">
-
-  <h2>Menu</h2>
-
-  <div class="menu-item" onclick="openReferral()">
-    🔗 Referral Link
-  </div>
-
-  <div class="menu-item" onclick="openMembers()">
-    👥 Members
-  </div>
-
-  <div class="menu-item" onclick="showManualActivation()">
-    💰 Manual Activation
-  </div>
-
-  <div class="menu-item" onclick="withdrawPage()">
-    💸 Withdraw
-  </div>
-
-  <div class="menu-item" onclick="joinWhatsApp()">
-    📲 WhatsApp Group
-  </div>
-
-  <div class="menu-item" onclick="openAdmin()">
-    ⚙️ Admin Dashboard
-  </div>
-
-  <div class="menu-item logout" onclick="logout()">
-    🚪 Logout
-  </div>
-
 </div>
 
 <!-- LOGIN -->
@@ -281,18 +168,7 @@ button{
 </div>
 
 </div>
-<style>
-body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden; /* 🔥 removes side dark space */
-}
 
-.container {
-  width: 100%;
-  overflow-x: hidden;
-}
-</style>
 <script>
 
 /* DATABASE */
@@ -460,97 +336,8 @@ window.onload=function(){
 function emailEl(){return document.getElementById("email")}
 function phoneEl(){return document.getElementById("phone")}
 function passEl(){return document.getElementById("password")}
-function joinWhatsApp(){
-    window.open("https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou?mode=gi_t", "_blank");
-  }
-  
-  function openAdmin(){
-    let user = localStorage.getItem("userEmail");
 
-    // simple admin check (you can change email)
-    if(user === "admin@ukwriters.com"){
-        window.location.href = "admin.html";
-    } else {
-        alert("Access denied. Admins only.");
-    }
-  }
-  // TOGGLE MENU
-function toggleMenu() {
-  document.getElementById("sideMenu").classList.toggle("active");
-  document.getElementById("menuOverlay").style.display = "block";
-}
-
-// CLOSE MENU
-document.getElementById("menuOverlay").onclick = function () {
-  document.getElementById("sideMenu").classList.remove("active");
-  this.style.display = "none";
-};
-
-// WHATSAPP GROUP
-function joinWhatsApp() {
-  window.open("https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou?mode=gi_t", "_blank");
-}
-
-// MANUAL ACTIVATION (SHOW TILL CLEARLY)
-function showManualActivation() {
-  alert("LIPA NA M-PESA\n\nBuy Goods & Services\nTill Number: 6892947");
-}
-
-// ADMIN DASHBOARD
-function openAdmin() {
-  window.location.href = "admin.html"; // create this file
-}
-
-// REFERRAL PAGE
-function openReferral() {
-  alert("Your referral link:\n\n" + localStorage.getItem("refLink"));
-}
-
-// MEMBERS PAGE
-function openMembers() {
-  alert("Members section coming soon...");
-}
-
-// WITHDRAW PAGE
-function withdrawPage() {
-  document.querySelector("html, body").scrollTop = document.body.scrollHeight;
-}
-
-// LOGOUT
-function logout() {
-  localStorage.clear();
-  window.location.reload();
-    }
-  <script>
-function toggleMenu() {
-  document.getElementById("sideMenu").classList.toggle("active");
-}
-
-function openAdmin(){
-  window.location.href = "admin.html";
-}
-
-function openManual(){
-  alert("Lipa na M-PESA\nBuy Goods & Services\nTill: 6892947");
-}
-
-function openWithdraw(){
-  alert("Withdraw section coming soon");
-}
-
-function openReferral(){
-  alert("Your referral link will appear here");
-}
-
-function openMembers(){
-  alert("Members list coming soon");
-}
-
-function logout(){
-  alert("Logged out");
-}
-</script>
 </script>
 
 </body>
-</html>
+  </html>
