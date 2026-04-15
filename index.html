@@ -303,13 +303,19 @@ function copyRef(){
 
 /* WITHDRAW */
 function withdraw(){
-  if(user.balance<600){
-    alert("Minimum withdrawal 600");
+  if(user.balance < 600){
+    alert("❌ Minimum withdrawal is KES 600");
     return;
   }
-  user.balance=0;
-  save();
-  alert("Withdrawal successful");
+
+  let confirmWithdraw = confirm("Withdraw KES " + user.balance + "?");
+
+  if(confirmWithdraw){
+    alert("✅ Withdrawal of KES " + user.balance + " successful!");
+    user.balance = 0;
+    save();
+    updateUI();
+  }
 }
 
 /* LIVE ACTIVITY */
