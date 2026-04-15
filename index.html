@@ -195,6 +195,58 @@ function closeMenu(){
 function manualDeposit(){
   alert("LIPA NA M-PESA\nBuy Goods & Services\n\nTILL: 6892947");
 }
+  /* MENU ACTIONS */
+
+function openWhatsApp(){
+  window.open("https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou?mode=gi_t", "_blank");
+  closeMenu();
+}
+
+function manualDeposit(){
+  alert("LIPA NA M-PESA\nBuy Goods & Services\n\nTILL: 6892947");
+  closeMenu();
+}
+
+function withdraw(){
+  if(user.balance < 600){
+    alert("❌ Minimum withdrawal is KES 600");
+    closeMenu();
+    return;
+  }
+
+  let confirmWithdraw = confirm("Withdraw KES " + user.balance + "?");
+
+  if(confirmWithdraw){
+    alert("✅ Withdrawal of KES " + user.balance + " successful!");
+    user.balance = 0;
+    save();
+    updateUI();
+  }
+
+  closeMenu();
+}
+
+function openAdmin(){
+  window.location.href = "admin.html";
+  closeMenu();
+}
+
+function copyRef(){
+  let link = window.location.origin + "?ref=" + user.ref;
+  navigator.clipboard.writeText(link);
+  alert("Referral link copied!");
+  closeMenu();
+}
+
+function showMembers(){
+  alert("Members list coming soon");
+  closeMenu();
+}
+
+function logout(){
+  localStorage.removeItem("currentUser");
+  location.reload();
+}
 /* REGISTER */
 function register(){
   let email = emailEl().value;
