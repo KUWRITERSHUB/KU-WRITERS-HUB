@@ -1,1 +1,12 @@
+<!DOCTYPE html>
+<html>
+<body style="background:black;color:white;text-align:center;">
+<h1>Admin Dashboard</h1>
 
+<script>
+let users = JSON.parse(localStorage.getItem("users")) || {};
+document.write("<pre>"+JSON.stringify(users,null,2)+"</pre>");
+</script>
+
+</body>
+</html>
