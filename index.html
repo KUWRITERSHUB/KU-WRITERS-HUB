@@ -166,6 +166,11 @@ function register(){
   let phone = document.getElementById("phone").value;
   let pass = document.getElementById("password").value;
 
+  if(!email || !pass){
+    alert("Fill all fields");
+    return;
+  }
+
   user = {
     email,
     phone,
@@ -184,12 +189,14 @@ function register(){
 /* LOGIN */
 function login(){
   let email=document.getElementById("email").value;
-  user = users[email];
-  if(user){
-    showDashboard();
-  }else{
+
+  if(!users[email]){
     alert("User not found");
+    return;
   }
+
+  user = users[email];
+  showDashboard();
 }
 
 /* SAVE */
@@ -200,28 +207,38 @@ function save(){
 
 /* DASHBOARD */
 function showDashboard(){
+  if(!user) return;
+
   document.getElementById("authBox").style.display="none";
   document.getElementById("dashboard").style.display="block";
+
   greeting();
   updateUI();
 }
 
 /* GREETING */
 function greeting(){
+  if(!user) return;
+
   let h=new Date().getHours();
   let msg = h<12?"Good morning 🌅":h<18?"Good afternoon ☀️":"Good evening 🌙";
+
   document.getElementById("greeting").innerHTML =
     `${msg}, welcome back ${user.email}`;
 }
 
 /* UPDATE */
 function updateUI(){
+  if(!user) return;
+
   document.getElementById("balance").innerText=user.balance;
   document.getElementById("profits").innerText=user.profits;
 }
 
 /* ACTIVATE */
 function activate(){
+  if(!user) return;
+
   user.activated=true;
   alert("Account Activated ✅");
   save();
@@ -229,6 +246,12 @@ function activate(){
 
 /* SERVICES */
 function useService(type){
+
+  if(!user){
+    alert("Login first");
+    return;
+  }
+
   if(!user.activated){
     alert("Activate account first");
     return;
@@ -266,6 +289,8 @@ function useService(type){
 
 /* REFERRAL */
 function copyRef(){
+  if(!user) return;
+
   let link = window.location.origin + "?ref=" + user.ref;
   navigator.clipboard.writeText(link);
   alert("Copied:\n"+link);
@@ -274,7 +299,7 @@ function copyRef(){
 
 /* MEMBERS */
 function showMembers(){
-  let list = Object.keys(users).join("\n");
+  let list = Object.keys(users).join("\n") || "No users";
   alert("Members:\n\n"+list);
   closeMenu();
 }
@@ -291,10 +316,16 @@ function manualDeposit(){
 
 /* WITHDRAW */
 function withdraw(){
+  if(!user){
+    alert("Login first");
+    return;
+  }
+
   if(user.balance<600){
     alert("Minimum withdrawal KES 600");
     return;
   }
+
   user.balance=0;
   save();
   updateUI();
@@ -303,6 +334,11 @@ function withdraw(){
 
 /* ADMIN */
 function openAdmin(){
+  if(!user){
+    alert("Login first");
+    return;
+  }
+
   if(user.email==="admin@gmail.com"){
     window.open("admin.html");
   }else{
@@ -316,19 +352,25 @@ function logout(){
   location.reload();
 }
 
-/* LIVE */
+/* LIVE SAFE */
 setInterval(()=>{
+  let el = document.getElementById("live");
+  if(!el) return;
+
   let u=Math.floor(Math.random()*10000);
   let amt=Math.floor(Math.random()*5000);
-  document.getElementById("live").innerHTML =
-  `🔥 user${u} earned KES ${amt}`;
+
+  el.innerHTML = `🔥 user${u} earned KES ${amt}`;
 },2000);
 
 setInterval(()=>{
+  let el = document.getElementById("withdrawLive");
+  if(!el) return;
+
   let u=Math.floor(Math.random()*10000);
   let amt=Math.floor(Math.random()*20000);
-  document.getElementById("withdrawLive").innerHTML =
-  `💸 user${u} withdrew KES ${amt}`;
+
+  el.innerHTML = `💸 user${u} withdrew KES ${amt}`;
 },2500);
 
 /* AUTO LOGIN */
@@ -338,6 +380,7 @@ window.onload=function(){
     showDashboard();
   }
 }
+
 </script>
 
 </body>
