@@ -1,1 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UK WRITERS HUB</title>
 
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(135deg,#0ea5e9,#22c55e,#f97316);
+  color:white;
+  overflow-x:hidden; /* FIX DARK EDGE */
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  padding:15px;
+  background:black;
+}
+
+.menu-btn{font-size:22px;cursor:pointer;}
+
+#menuOverlay{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+  display:none;
+}
+
+#menu{
+  position:fixed;
+  right:-270px;
+  top:0;
+  width:270px;
+  height:100%;
+  background:#0f172a;
+  transition:0.3s;
+  padding:20px;
+}
+
+.card{
+  background:rgba(0,0,0,0.6);
+  margin:10px;
+  padding:15px;
+  border-radius:12px;
+}
+
+.features{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:10px;
+}
+
+.box{
+  padding:15px;
+  border-radius:12px;
+  text-align:center;
+  background:linear-gradient(135deg,#ff512f,#dd2476);
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <b>🇬🇧 UK WRITERS HUB</b>
+  <div class="menu-btn" onclick="openMenu()">☰</div>
+</div>
+
+<div id="menuOverlay" onclick="closeMenu()"></div>
+
+<div id="menu">
+<h3>Menu</h3>
+<p onclick="copyRef()">📎 Referral Link</p>
+<p onclick="showMembers()">👥 Members</p>
+<p onclick="openWhatsApp()">💬 WhatsApp Group</p>
+<p onclick="manualDeposit()">💰 Manual Activation</p>
+<p onclick="withdraw()">💸 Withdraw</p>
+<p onclick="openAdmin()">⚙️ Admin Dashboard</p>
+<p onclick="logout()">🚪 Logout</p>
+</div>
+
+<!-- LOGIN -->
+<div id="authBox" class="card">
+<h3>Register / Login</h3>
+<input id="email" placeholder="Email"><br><br>
+<input id="phone" placeholder="Phone"><br><br>
+<input id="password" type="password" placeholder="Password"><br><br>
+<button onclick="register()">Register</button>
+<button onclick="login()">Login</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" style="display:none;">
+
+<div class="card" id="greeting"></div>
+
+<div class="card">Total Profits: KES <span id="profits">0</span></div>
+<div class="card">Withdrawable Balance: KES <span id="balance">0</span></div>
+
+<div class="card" id="live"></div>
+
+<div class="card">
+<h3>Activate Account (KES 500)</h3>
+<input id="phoneInput" placeholder="Enter Phone"><br><br>
+<input id="amountInput" placeholder="Enter Amount"><br><br>
+<input id="codeInput" placeholder="Enter MPESA Code"><br><br>
+<button onclick="activate()">Submit</button>
+</div>
+
+<div class="features">
+<div class="box" onclick="openTasks('academic')">Academic</div>
+<div class="box" onclick="openTasks('blog')">Blog</div>
+<div class="box" onclick="openTasks('article')">Article</div>
+<div class="box" onclick="openTasks('survey')">Surveys</div>
+<div class="box" onclick="openTasks('ecommerce')">E-commerce</div>
+<div class="box" onclick="openTasks('affiliate')">Affiliate</div>
+<div class="box" onclick="openTasks('chat')">Chat Foreigners</div>
+<div class="box" onclick="openTasks('training')">Training</div>
+</div>
+
+<div class="card">
+<button onclick="withdraw()">Withdraw</button>
+</div>
+
+</div>
+
+<script>
+
+/* STORAGE */
+let users = JSON.parse(localStorage.getItem("users")) || {};
+let currentUser = localStorage.getItem("currentUser");
+let user = null;
+
+/* MENU */
+function openMenu(){
+  document.getElementById("menu").style.right="0";
+  document.getElementById("menuOverlay").style.display="block";
+}
+function closeMenu(){
+  document.getElementById("menu").style.right="-270px";
+  document.getElementById("menuOverlay").style.display="none";
+}
+
+/* REGISTER */
+function register(){
+  let email=email.value;
+
+  let id="user"+(1000+Object.keys(users).length);
+  
+  user={
+    email,
+    code:id,
+    balance:0,
+    profits:0,
+    activated:false
+  };
+
+  users[email]=user;
+  save();
+  showDashboard();
+}
+
+/* LOGIN */
+function login(){
+  user=users[email.value];
+  if(user) showDashboard();
+}
+
+/* SAVE */
+function save(){
+  localStorage.setItem("users",JSON.stringify(users));
+  localStorage.setItem("currentUser",user.email);
+}
+
+/* DASHBOARD */
+function showDashboard(){
+  authBox.style.display="none";
+  dashboard.style.display="block";
+
+  greeting.innerHTML="Welcome "+user.code;
+
+  updateUI();
+}
+
+/* UPDATE */
+function updateUI(){
+  balance.innerText=user.balance;
+  profits.innerText=user.profits;
+}
+
+/* ACTIVATE */
+function activate(){
+  user.activated=true;
+  alert("Activated");
+  save();
+}
+
+/* TASKS */
+function openTasks(type){
+
+  if(!user.activated){
+    alert("Activate account first");
+    return;
+  }
+
+  let tasks={
+    academic:["Write essay KES 2000","Research paper KES 3000"],
+    blog:["Write blog KES 100","SEO blog KES 150"],
+    article:["Article KES 200","Rewrite KES 150"],
+    survey:["Survey KES 10","Quiz KES 15"],
+    ecommerce:["Sell item 15%","Upload product"],
+    affiliate:["Share link earn 150"],
+    chat:["Pay 5000 unlock"],
+    training:["Pay 2500 unlock"]
+  };
+
+  alert(tasks[type].join("\n"));
+
+  if(type!=="affiliate"){
+    user.profits+=Math.floor(Math.random()*500);
+    save();
+    updateUI();
+  }
+}
+
+/* REFERRAL */
+function copyRef(){
+  let link=location.href+"?ref="+user.code;
+  navigator.clipboard.writeText(link);
+  alert(link);
+}
+
+/* MEMBERS */
+function showMembers(){
+  alert(Object.keys(users).join("\n"));
+}
+
+/* WHATSAPP */
+function openWhatsApp(){
+  window.location.href="https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou?mode=gi_t";
+}
+
+/* MANUAL */
+function manualDeposit(){
+  alert("LIPA NA M-PESA\nBUY GOODS\nTILL 6892947");
+}
+
+/* WITHDRAW */
+function withdraw(){
+  if(user.balance<600){
+    alert("Minimum 600");
+    return;
+  }
+  user.balance=0;
+  save();
+  updateUI();
+}
+
+/* ADMIN */
+function openAdmin(){
+  alert("Admin panel coming (use Firebase for real system)");
+}
+
+/* LOGOUT */
+function logout(){
+  localStorage.clear();
+  location.reload();
+}
+
+/* LIVE FEED */
+setInterval(()=>{
+  let services=["Academic","Blog","Article","Survey","E-commerce","Affiliate","Chat","Bot"];
+  let u="user"+Math.floor(Math.random()*9000);
+  let amt=Math.floor(Math.random()*5000);
+
+  live.innerHTML="🔥 "+u+" earned KES "+amt+" from "+services[Math.floor(Math.random()*services.length)];
+},2000);
+
+/* AUTO LOGIN */
+window.onload=function(){
+  if(currentUser && users[currentUser]){
+    user=users[currentUser];
+    showDashboard();
+  }
+}
+</script>
+
+</body>
+  </html>
