@@ -10,9 +10,9 @@ body{
   font-family:Arial;
   background:linear-gradient(135deg,#0ea5e9,#22c55e,#f97316);
   color:white;
-  overflow-x:hidden; /* FIX DARK EDGE */
 }
 
+/* HEADER */
 .header{
   display:flex;
   justify-content:space-between;
@@ -20,27 +20,37 @@ body{
   background:black;
 }
 
-.menu-btn{font-size:22px;cursor:pointer;}
+.menu-btn{cursor:pointer;font-size:22px}
 
+/* MENU FIXED */
 #menuOverlay{
   position:fixed;
-  width:100%;
-  height:100%;
+  top:0;left:0;
+  width:100%;height:100%;
   background:rgba(0,0,0,0.5);
   display:none;
+  z-index:5;
 }
 
 #menu{
   position:fixed;
-  right:-270px;
   top:0;
-  width:270px;
+  right:-260px;
+  width:260px;
   height:100%;
   background:#0f172a;
-  transition:0.3s;
+  transition:.3s;
   padding:20px;
+  z-index:6;
 }
 
+#menu p{
+  padding:12px;
+  border-bottom:1px solid #333;
+  cursor:pointer;
+}
+
+/* CARD */
 .card{
   background:rgba(0,0,0,0.6);
   margin:10px;
@@ -48,6 +58,7 @@ body{
   border-radius:12px;
 }
 
+/* BOXES */
 .features{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -57,10 +68,18 @@ body{
 
 .box{
   padding:15px;
-  border-radius:12px;
-  text-align:center;
+  border-radius:10px;
   background:linear-gradient(135deg,#ff512f,#dd2476);
+  text-align:center;
+  font-weight:bold;
   cursor:pointer;
+}
+
+button{
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:#22c55e;
 }
 </style>
 </head>
@@ -79,7 +98,7 @@ body{
 <p onclick="copyRef()">📎 Referral Link</p>
 <p onclick="showMembers()">👥 Members</p>
 <p onclick="openWhatsApp()">💬 WhatsApp Group</p>
-<p onclick="manualDeposit()">💰 Manual Activation</p>
+<p onclick="manual()">💰 Manual Activation</p>
 <p onclick="withdraw()">💸 Withdraw</p>
 <p onclick="openAdmin()">⚙️ Admin Dashboard</p>
 <p onclick="logout()">🚪 Logout</p>
@@ -96,32 +115,39 @@ body{
 </div>
 
 <!-- DASHBOARD -->
-<div id="dashboard" style="display:none;">
+<div id="dashboard" style="display:none">
 
-<div class="card" id="greeting"></div>
+<div class="card" id="greet"></div>
 
-<div class="card">Total Profits: KES <span id="profits">0</span></div>
-<div class="card">Withdrawable Balance: KES <span id="balance">0</span></div>
+<div class="card">
+Total Profits: KES <span id="profits">0</span>
+</div>
+
+<div class="card">
+Withdrawable Balance: KES <span id="balance">0</span>
+</div>
 
 <div class="card" id="live"></div>
 
 <div class="card">
 <h3>Activate Account (KES 500)</h3>
-<input id="phoneInput" placeholder="Enter Phone"><br><br>
-<input id="amountInput" placeholder="Enter Amount"><br><br>
-<input id="codeInput" placeholder="Enter MPESA Code"><br><br>
+<input id="stkPhone" placeholder="2547XXXXXXXX"><br><br>
+<input id="stkAmount" placeholder="500"><br><br>
+<input id="code" placeholder="MPESA Code"><br><br>
 <button onclick="activate()">Submit</button>
 </div>
 
 <div class="features">
-<div class="box" onclick="openTasks('academic')">Academic</div>
-<div class="box" onclick="openTasks('blog')">Blog</div>
-<div class="box" onclick="openTasks('article')">Article</div>
-<div class="box" onclick="openTasks('survey')">Surveys</div>
-<div class="box" onclick="openTasks('ecommerce')">E-commerce</div>
-<div class="box" onclick="openTasks('affiliate')">Affiliate</div>
-<div class="box" onclick="openTasks('chat')">Chat Foreigners</div>
-<div class="box" onclick="openTasks('training')">Training</div>
+<div class="box" onclick="task('survey')">Surveys</div>
+<div class="box" onclick="task('affiliate')">Affiliate</div>
+<div class="box" onclick="task('academic')">Academic</div>
+<div class="box" onclick="task('blog')">Blog</div>
+<div class="box" onclick="task('article')">Article</div>
+<div class="box" onclick="task('ecommerce')">E-commerce</div>
+<div class="box" onclick="task('binary')">Binary</div>
+<div class="box" onclick="task('bot')">AI Bot</div>
+<div class="box" onclick="task('chat')">Chat</div>
+<div class="box" onclick="task('training')">Training</div>
 </div>
 
 <div class="card">
@@ -132,164 +158,176 @@ body{
 
 <script>
 
-/* STORAGE */
-let users = JSON.parse(localStorage.getItem("users")) || {};
-let currentUser = localStorage.getItem("currentUser");
-let user = null;
+/* DATABASE */
+let users=JSON.parse(localStorage.getItem("users"))||{};
+let current=localStorage.getItem("current");
+let user=null;
 
 /* MENU */
 function openMenu(){
-  document.getElementById("menu").style.right="0";
-  document.getElementById("menuOverlay").style.display="block";
+menu.style.right="0";
+menuOverlay.style.display="block";
 }
 function closeMenu(){
-  document.getElementById("menu").style.right="-270px";
-  document.getElementById("menuOverlay").style.display="none";
+menu.style.right="-260px";
+menuOverlay.style.display="none";
 }
 
 /* REGISTER */
 function register(){
-  let email=email.value;
+let email=email.value;
+let phone=phone.value;
+let pass=password.value;
 
-  let id="user"+(1000+Object.keys(users).length);
-  
-  user={
-    email,
-    code:id,
-    balance:0,
-    profits:0,
-    activated:false
-  };
+let code="user"+Math.floor(Math.random()*9000+1000);
 
-  users[email]=user;
-  save();
-  showDashboard();
+user={
+email,phone,password:pass,
+balance:0,profits:0,
+activated:false,
+code:code
+};
+
+users[email]=user;
+save();
+show();
 }
 
 /* LOGIN */
 function login(){
-  user=users[email.value];
-  if(user) showDashboard();
+let emailVal=email.value;
+if(users[emailVal]){
+user=users[emailVal];
+save();
+show();
+}else{
+alert("User not found");
+}
 }
 
-/* SAVE */
+/* SAVE LOGIN */
 function save(){
-  localStorage.setItem("users",JSON.stringify(users));
-  localStorage.setItem("currentUser",user.email);
+localStorage.setItem("users",JSON.stringify(users));
+localStorage.setItem("current",user.email);
 }
 
-/* DASHBOARD */
-function showDashboard(){
-  authBox.style.display="none";
-  dashboard.style.display="block";
+/* SHOW DASHBOARD */
+function show(){
+authBox.style.display="none";
+dashboard.style.display="block";
 
-  greeting.innerHTML="Welcome "+user.code;
+let h=new Date().getHours();
+let msg=h<12?"Morning 🌅":h<18?"Afternoon ☀️":"Evening 🌙";
 
-  updateUI();
+greet.innerHTML=`Good ${msg}, ${user.code}`;
+update();
 }
 
 /* UPDATE */
-function updateUI(){
-  balance.innerText=user.balance;
-  profits.innerText=user.profits;
+function update(){
+balance.innerText=user.balance;
+profits.innerText=user.profits;
 }
 
 /* ACTIVATE */
 function activate(){
-  user.activated=true;
-  alert("Activated");
-  save();
+user.activated=true;
+save();
+alert("Activation submitted. Waiting approval.");
 }
 
-/* TASKS */
-function openTasks(type){
+/* TASK SYSTEM */
+function task(type){
 
-  if(!user.activated){
-    alert("Activate account first");
-    return;
-  }
+if(!user.activated){
+alert("Activate first");
+return;
+}
 
-  let tasks={
-    academic:["Write essay KES 2000","Research paper KES 3000"],
-    blog:["Write blog KES 100","SEO blog KES 150"],
-    article:["Article KES 200","Rewrite KES 150"],
-    survey:["Survey KES 10","Quiz KES 15"],
-    ecommerce:["Sell item 15%","Upload product"],
-    affiliate:["Share link earn 150"],
-    chat:["Pay 5000 unlock"],
-    training:["Pay 2500 unlock"]
-  };
+let pay={
+survey:10,blog:100,article:200,
+academic:2000,ecommerce:500,binary:300
+};
 
-  alert(tasks[type].join("\n"));
+if(type==="chat"){alert("Pay 5000 to unlock");return;}
+if(type==="training"){alert("Pay 2500");return;}
+if(type==="affiliate"){alert("Share link to earn");return;}
 
-  if(type!=="affiliate"){
-    user.profits+=Math.floor(Math.random()*500);
-    save();
-    updateUI();
-  }
+user.profits+=pay[type]||0;
+save();
+update();
 }
 
 /* REFERRAL */
 function copyRef(){
-  let link=location.href+"?ref="+user.code;
-  navigator.clipboard.writeText(link);
-  alert(link);
+let link=location.origin+"?ref="+user.code;
+navigator.clipboard.writeText(link);
+alert(link);
 }
 
 /* MEMBERS */
 function showMembers(){
-  alert(Object.keys(users).join("\n"));
+let list=Object.values(users).map(u=>u.code).join("\n");
+alert(list);
 }
 
 /* WHATSAPP */
 function openWhatsApp(){
-  window.location.href="https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou?mode=gi_t";
+window.open("https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou","_blank");
 }
 
 /* MANUAL */
-function manualDeposit(){
-  alert("LIPA NA M-PESA\nBUY GOODS\nTILL 6892947");
+function manual(){
+alert("LIPA NA MPESA\nBUY GOODS\nTILL: 6892947");
 }
 
 /* WITHDRAW */
 function withdraw(){
-  if(user.balance<600){
-    alert("Minimum 600");
-    return;
-  }
-  user.balance=0;
-  save();
-  updateUI();
+if(user.profits<600){
+alert("Minimum 600");
+return;
+}
+user.balance+=user.profits;
+user.profits=0;
+save();
+update();
+alert("Withdraw successful");
 }
 
-/* ADMIN */
+/* ADMIN DASHBOARD */
 function openAdmin(){
-  alert("Admin panel coming (use Firebase for real system)");
+if(user.email==="admin@gmail.com"){
+let allUsers=Object.values(users).map(u=>u.email+" - "+u.code).join("\n");
+alert("ADMIN PANEL\n\nUsers:\n"+allUsers+"\n\n(Tasks editable in code)");
+}else{
+alert("Admin only");
+}
 }
 
 /* LOGOUT */
 function logout(){
-  localStorage.clear();
-  location.reload();
+localStorage.removeItem("current");
+location.reload();
 }
 
-/* LIVE FEED */
+/* LIVE */
 setInterval(()=>{
-  let services=["Academic","Blog","Article","Survey","E-commerce","Affiliate","Chat","Bot"];
-  let u="user"+Math.floor(Math.random()*9000);
-  let amt=Math.floor(Math.random()*5000);
+let services=["Academic","Blog","Article","Affiliate","Ecommerce","Binary","Bot","Survey","Chat"];
+let u=Math.floor(Math.random()*9000+1000);
+let amt=Math.floor(Math.random()*5000);
 
-  live.innerHTML="🔥 "+u+" earned KES "+amt+" from "+services[Math.floor(Math.random()*services.length)];
+live.innerHTML=`🔥 user${u} earned KES ${amt} from ${services[Math.floor(Math.random()*services.length)]}`;
 },2000);
 
 /* AUTO LOGIN */
-window.onload=function(){
-  if(currentUser && users[currentUser]){
-    user=users[currentUser];
-    showDashboard();
-  }
+window.onload=()=>{
+if(current && users[current]){
+user=users[current];
+show();
 }
+}
+
 </script>
 
 </body>
-  </html>
+</html>
