@@ -156,12 +156,13 @@ let user=null;
 
 /* MENU FIX */
 function openMenu(){
-document.getElementById("menu").style.right="0";
-document.getElementById("menuOverlay").style.display="block";
+  document.getElementById("menu").classList.add("active");
+  document.getElementById("menuOverlay").style.display="block";
 }
+
 function closeMenu(){
-document.getElementById("menu").style.right="-260px";
-document.getElementById("menuOverlay").style.display="none";
+  document.getElementById("menu").classList.remove("active");
+  document.getElementById("menuOverlay").style.display="none";
 }
 
 /* REGISTER */
