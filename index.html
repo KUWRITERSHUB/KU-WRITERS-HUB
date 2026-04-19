@@ -22,17 +22,16 @@ html{
 #menu{
   position:fixed;
   top:0;
-  right:0;
+  left:0; /* 🔥 moved to left */
   width:260px;
   height:100%;
   background:#0f172a;
-  transform:translateX(100%); /* 👈 instead of right:-260px */
-  transition:transform 0.3s ease;
+  transform:translateX(-100%); /* hide left */
+  transition:0.3s ease;
   z-index:101;
   padding:20px;
 }
 
-/* WHEN OPEN */
 #menu.active{
   transform:translateX(0);
 }
