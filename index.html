@@ -252,7 +252,7 @@ return;
 /* PACKAGE CONTROL */
 let basic=["survey","affiliate"];
 let intermediate=["blog","article","ecommerce","binary"];
-let premium=["academic","bot","chat","training"];
+let premium=["academic","bot","chat with foreigners","training"];
 
 /* CHECK PACKAGE */
 if(intermediate.includes(type) && user.package!=="intermediate" && user.package!=="premium"){
@@ -276,7 +276,7 @@ binary:300
 };
 
 /* SPECIAL SERVICES */
-if(type==="chat"){alert("Requires Premium (KES 5000)");return;}
+if(type==="chat with foreigners"){alert("Requires Premium (KES 5000)");return;}
 if(type==="training"){alert("Requires Training Fee (KES 2500)");return;}
 if(type==="affiliate"){alert("Share your link to earn KES 150 per referral ");return;}
 
@@ -340,7 +340,7 @@ location.reload();
 
 /* LIVE EARNINGS */
 setInterval(()=>{
-let services=["Academic","Blog","Article","Affiliate","E-commerce","Binary","AI Bot","Survey","Chat"];
+let services=["Academic","Blog","Article","Affiliate","E-commerce","Binary","AI Bot","Survey","Chat with Foreigners"];
 let u=Math.floor(Math.random()*9000+1000);
 let amt=Math.floor(Math.random()*5000)+100;
 
