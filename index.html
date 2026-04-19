@@ -296,9 +296,17 @@ update();
 
 /* REFERRAL */
 function copyRef(){
-let link=location.origin+"?ref="+user.code;
+
+if(!user || !user.code){
+alert("User not ready. Please login again.");
+return;
+}
+
+let link = location.origin + "?ref=" + user.code;
+
 navigator.clipboard.writeText(link);
-alert("Copied:\n"+link);
+
+alert("Referral link copied:\n" + link);
 }
 
 /* MEMBERS */
