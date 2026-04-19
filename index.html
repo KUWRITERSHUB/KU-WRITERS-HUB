@@ -233,24 +233,50 @@ alert("Activation submitted");
 
 /* TASK */
 function task(type){
+
+/* NOT ACTIVATED */
 if(!user.activated){
-alert("Activate first");
+alert("Activate your account first");
 return;
 }
 
+/* PACKAGE CONTROL */
+let basic=["survey","affiliate"];
+let intermediate=["blog","article","ecommerce","binary"];
+let premium=["academic","bot","chat","training"];
+
+/* CHECK PACKAGE */
+if(intermediate.includes(type) && user.package!=="intermediate" && user.package!=="premium"){
+alert("Upgrade to Intermediate package");
+return;
+}
+
+if(premium.includes(type) && user.package!=="premium"){
+alert("Upgrade to Premium package");
+return;
+}
+
+/* EARNINGS */
 let pay={
-survey:10,blog:100,article:200,
-academic:2000,ecommerce:500,binary:300
+survey:10,
+blog:100,
+article:200,
+academic:2000,
+ecommerce:500,
+binary:300
 };
 
-if(type==="chat"){alert("Pay 5000 to unlock");return;}
-if(type==="training"){alert("Pay 2500");return;}
-if(type==="affiliate"){alert("Share link to earn KES 150");return;}
+/* SPECIAL SERVICES */
+if(type==="chat"){alert("Requires Premium (KES 5000)");return;}
+if(type==="training"){alert("Requires Training Fee (KES 2500)");return;}
+if(type==="affiliate"){alert("Share your link to earn");return;}
 
-user.profits+=pay[type]||0;
+/* ADD MONEY */
+user.profits += pay[type] || 0;
+
 save();
 update();
-}
+  }
 
 /* REFERRAL */
 function copyRef(){
