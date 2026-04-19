@@ -201,13 +201,18 @@ show();
 
 /* LOGIN */
 function login(){
-let emailVal=email.value;
+let emailVal = emailEl().value;
+
 if(users[emailVal]){
-user=users[emailVal];
-save();
-show();
-}else{
-alert("User not found");
+  user = users[emailVal];
+
+  /* FIX OLD USERS WITHOUT CODE */
+  if(!user.code){
+    user.code = "user" + Math.floor(1000 + Math.random()*9000);
+    save();
+  }
+
+  show();
 }
 }
 
