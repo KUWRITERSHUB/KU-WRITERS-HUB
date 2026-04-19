@@ -256,12 +256,12 @@ let premium=["academic","bot","chat","training"];
 
 /* CHECK PACKAGE */
 if(intermediate.includes(type) && user.package!=="intermediate" && user.package!=="premium"){
-alert("Upgrade to Intermediate package");
+alert("Activate your account first ");
 return;
 }
 
 if(premium.includes(type) && user.package!=="premium"){
-alert("Upgrade to Premium package");
+alert("Activate your account first ");
 return;
 }
 
@@ -278,7 +278,7 @@ binary:300
 /* SPECIAL SERVICES */
 if(type==="chat"){alert("Requires Premium (KES 5000)");return;}
 if(type==="training"){alert("Requires Training Fee (KES 2500)");return;}
-if(type==="affiliate"){alert("Share your link to earn");return;}
+if(type==="affiliate"){alert("Share your link to earn KES 150 per referral ");return;}
 
 /* ADD MONEY */
 user.profits += pay[type] || 0;
