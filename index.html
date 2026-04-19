@@ -171,6 +171,16 @@ let phoneVal=phone.value;
 let passVal=password.value;
 
 let code="user"+Math.floor(Math.random()*9000+1000);
+  user={
+email:emailVal,
+phone:phoneVal,
+password:passVal,
+balance:0,
+profits:0,
+activated:false,
+package:"basic", // 🔥 IMPORTANT
+code:code
+};
 
 user={
 email:emailVal,
