@@ -482,6 +482,18 @@ ${u.code} - ${u.email}
 
 document.getElementById("pendingPayments").innerHTML = html;
   }
+  function approve(email){
+
+users[email].activated = true;
+users[email].pending = false;
+
+localStorage.setItem("users", JSON.stringify(users));
+
+loadPending();
+loadUsers();
+
+alert("Approved ✅");
+  }
   
 /* LOGOUT */
 function logout(){
