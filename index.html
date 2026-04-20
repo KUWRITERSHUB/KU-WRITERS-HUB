@@ -543,11 +543,13 @@ document.getElementById("liveWithdraw").innerHTML=
 },2500);
 
 /* AUTO LOGIN */
-window.onload=()=>{
-if(current && users[current]){
-user=users[current];
-show();
-}
+window.onload = function(){
+  let savedUser = localStorage.getItem("currentUser");
+
+  if(savedUser && users[savedUser]){
+    user = users[savedUser];
+    showDashboard();
+  }
 }
   
 </script>
