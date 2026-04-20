@@ -268,11 +268,12 @@ function login(){
 
   user = users[email];
 
-  // ✅ SAVE SESSION (THIS IS WHAT YOU WERE MISSING)
+  // SAVE LOGIN SESSION (VERY IMPORTANT)
   localStorage.setItem("currentUser", email);
 
-  show();
-}
+  alert("Login successful ✅");
+  showDashboard();
+  }
 
 /* SAVE */
 function save(){
