@@ -401,7 +401,26 @@ if(user.email === "muindithomas16@gmail.com"){  // 🔥 your admin email
 
 closeMenu();
 }
+function loadUsers(){
 
+let html="";
+
+for(let key in users){
+let u = users[key];
+
+html += `
+<div style="border-bottom:1px solid #333;padding:10px">
+<b>${u.code}</b><br>
+${u.email}<br>
+Balance: ${u.balance}<br>
+Activated: ${u.activated ? "✅" : "❌"}
+</div>
+`;
+}
+
+document.getElementById("userList").innerHTML = html;
+  }
+  
 /* LOGOUT */
 function logout(){
 localStorage.removeItem("current");
