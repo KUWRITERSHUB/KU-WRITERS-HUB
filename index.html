@@ -462,6 +462,26 @@ alert("Task added ✅");
 document.getElementById("taskName").value="";
 document.getElementById("taskPay").value="";
   }
+  function loadPending(){
+
+let html="";
+
+for(let key in users){
+let u = users[key];
+
+if(u.pending){
+html += `
+<div style="padding:10px;border-bottom:1px solid #333">
+${u.code} - ${u.email}
+<br>
+<button onclick="approve('${key}')">Approve</button>
+</div>
+`;
+}
+}
+
+document.getElementById("pendingPayments").innerHTML = html;
+  }
   
 /* LOGOUT */
 function logout(){
