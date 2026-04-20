@@ -420,6 +420,10 @@ Activated: ${u.activated ? "✅" : "❌"}
 
 document.getElementById("userList").innerHTML = html;
   }
+  function backToUser(){
+document.getElementById("adminPanel").style.display="none";
+document.getElementById("dashboard").style.display="block";
+  }
   
 /* LOGOUT */
 function logout(){
