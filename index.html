@@ -494,7 +494,22 @@ loadUsers();
 
 alert("Approved ✅");
   }
-  
+  function openAdmin(){
+
+if(user.email === "muindithomas16@gmail.com"){
+
+dashboard.style.display="none";
+adminPanel.style.display="block";
+
+loadUsers();
+loadPending();
+
+}else{
+alert("Admin only");
+}
+
+closeMenu();
+  }
 /* LOGOUT */
 function logout(){
 localStorage.removeItem("current");
