@@ -253,19 +253,25 @@ show();
 
 /* LOGIN */
 function login(){
-let emailVal = emailEl().value;
+  let email = emailEl().value;
+  let pass = passEl().value;
 
-if(users[emailVal]){
-  user = users[emailVal];
-
-  /* FIX OLD USERS WITHOUT CODE */
-  if(!user.code){
-    user.code = "user" + Math.floor(1000 + Math.random()*9000);
-    save();
+  if(!users[email]){
+    alert("User not found");
+    return;
   }
 
+  if(users[email].password !== pass){
+    alert("Wrong password");
+    return;
+  }
+
+  user = users[email];
+
+  // ✅ SAVE SESSION (THIS IS WHAT YOU WERE MISSING)
+  localStorage.setItem("currentUser", email);
+
   show();
-}
 }
 
 /* SAVE */
