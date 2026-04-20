@@ -285,7 +285,19 @@ let msg=h<12?"Good morning 🌅":h<18?"Good afternoon ☀️":"Good evening 🌙
 greet.innerHTML=`${msg}, welcome back <b>${user.email}</b>`;
 update();
 }
+function loadTasks(){
 
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+let html = "<h3>📝 Extra Tasks</h3>";
+
+tasks.forEach(t=>{
+html += `<p>• ${t.name} - KES ${t.pay}</p>`;
+});
+
+document.getElementById("extraTasks").innerHTML = html;
+  }
+  
 /* UPDATE */
 function update(){
 balance.innerText=user.balance;
