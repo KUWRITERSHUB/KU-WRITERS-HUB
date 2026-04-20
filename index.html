@@ -307,9 +307,12 @@ profits.innerText=user.profits;
 
 /* ACTIVATE */
 function activate(){
-user.activated=true;
+
+user.pending = true; // 🔥 mark as pending
+
 save();
-alert("Activation submitted");
+
+alert("Payment submitted. Waiting for admin approval.");
 }
 
 /* TASK */
