@@ -364,11 +364,15 @@ alert("Withdrawal successful");
 
 /* ADMIN */
 function openAdmin(){
-if(user.email==="admin@gmail.com"){
-alert("Admin Dashboard Active");
+
+if(user.email === "muindithomas16@gmail.com"){  // 🔥 your admin email
+  document.getElementById("dashboard").style.display="none";
+  document.getElementById("adminPanel").style.display="block";
 }else{
-alert("Admin only");
+  alert("Access denied. Admin only.");
 }
+
+closeMenu();
 }
 
 /* LOGOUT */
