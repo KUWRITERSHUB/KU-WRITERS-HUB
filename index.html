@@ -424,6 +424,27 @@ document.getElementById("userList").innerHTML = html;
 document.getElementById("adminPanel").style.display="none";
 document.getElementById("dashboard").style.display="block";
   }
+  let extraTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+function addTask(){
+
+let name = document.getElementById("taskName").value;
+let pay = document.getElementById("taskPay").value;
+
+if(!name || !pay){
+alert("Enter task details");
+return;
+}
+
+extraTasks.push({name, pay});
+
+localStorage.setItem("tasks", JSON.stringify(extraTasks));
+
+alert("Task added ✅");
+
+document.getElementById("taskName").value="";
+document.getElementById("taskPay").value="";
+  }
   
 /* LOGOUT */
 function logout(){
