@@ -146,7 +146,34 @@ button{
 </div>
 
 </div>
+<div id="adminPanel" style="display:none">
 
+<div class="card">
+<h2>⚙️ Admin Dashboard</h2>
+</div>
+
+<div class="card">
+<h3>👥 Users</h3>
+<div id="userList"></div>
+</div>
+
+<div class="card">
+<h3>💰 Approve Activations</h3>
+<div id="pendingPayments"></div>
+</div>
+
+<div class="card">
+<h3>➕ Add Task</h3>
+<input id="taskName" placeholder="Task name"><br><br>
+<input id="taskPay" placeholder="Amount"><br><br>
+<button onclick="addTask()">Add Task</button>
+</div>
+
+<div class="card">
+<button onclick="backToUser()">⬅ Back to Dashboard</button>
+</div>
+
+</div>
 <script>
 
 /* DATABASE */
