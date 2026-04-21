@@ -269,33 +269,10 @@ function login(){
 
   user = users[email];
 
-  // SAVE LOGIN SESSION (VERY IMPORTANT)
+  // SAVE SESSION PROPERLY
   localStorage.setItem("currentUser", email);
 
-  alert("Login successful ✅");
   showDashboard();
-  }
-function forgotPassword(){
-  let email = prompt("Enter your registered email");
-
-  if(!users[email]){
-    alert("User not found");
-    return;
-  }
-
-  let phone = prompt("Enter your registered phone number");
-
-  if(users[email].phone !== phone){
-    alert("Details do not match");
-    return;
-  }
-
-  let newPass = prompt("Enter new password");
-
-  users[email].password = newPass;
-  localStorage.setItem("users", JSON.stringify(users));
-
-  alert("Password reset successful ✅");
   }
   
 /* SAVE */
