@@ -255,8 +255,13 @@ show();
 
 /* LOGIN */
 function login(){
-  let email = emailEl().value;
-  let pass = passEl().value;
+  let email = emailEl().value.trim();
+  let pass = passEl().value.trim();
+
+  if(!email || !pass){
+    alert("Enter email and password");
+    return;
+  }
 
   if(!users[email]){
     alert("User not found");
@@ -270,8 +275,7 @@ function login(){
 
   user = users[email];
 
-  // SAVE SESSION PROPERLY
-  localStorage.setItem("currentUser", email);
+  localStorage.setItem("currentUser", JSON.stringify(user));
 
   showDashboard();
   }
