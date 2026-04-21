@@ -271,23 +271,36 @@ function login(){
     return;
   }
 
-  if(!users[email]){
-    alert("User not found");
+  let existingUser = users[email];
+
+  if(!existingUser){
+    alert("Account not found. Please register.");
     return;
   }
 
-  if(users[email].password !== pass){
-    alert("Wrong password");
+  // Fix old accounts without password
+  if(!existingUser.password){
+    existingUser.password = pass;
+  }
+
+  if(existingUser.password !== pass){
+    alert("Incorrect password");
     return;
   }
 
-  user = users[email];
+  user = existingUser;
 
-  localStorage.setItem("currentUser", JSON.stringify(user));
+  // Ensure code exists
+  if(!user.code){
+    user.code = "user" + Math.floor(Math.random()*9000 + 1000);
+  }
 
+  saveSession();
+
+  alert("Login successful ✅");
   showDashboard();
-  }
-  
+}
+    
 /* SAVE */
 function save(){
 localStorage.setItem("users",JSON.stringify(users));
