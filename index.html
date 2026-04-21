@@ -545,13 +545,37 @@ document.getElementById("liveWithdraw").innerHTML=
 
 /* AUTO LOGIN */
 window.onload = function(){
+
   let saved = localStorage.getItem("currentUser");
 
-  if(saved && users[saved]){
-    user = users[saved];
-    showDashboard();
+  if(saved){
+    try{
+      let parsed = JSON.parse(saved);
+
+      // if stored as object
+      if(parsed && parsed.email && users[parsed.email]){
+        user = users[parsed.email];
+        showDashboard();
+        return;
+      }
+
+      // if stored as string (OLD VERSION FIX)
+      if(typeof parsed === "string" && users[parsed]){
+        user = users[parsed];
+        showDashboard();
+        return;
+      }
+
+    }catch(e){
+      // fallback if JSON fails
+      if(users[saved]){
+        user = users[saved];
+        showDashboard();
+        return;
+      }
+    }
   }
-}
+  }
   
 </script>
 
