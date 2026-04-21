@@ -219,39 +219,41 @@ Upgrade your package to unlock more earning opportunities.`
 }
   
 /* REGISTER */
-function register(){
+  function register(){
+  let email = emailEl().value.trim();
+  let phone = phoneEl().value.trim();
+  let pass = passEl().value.trim();
 
-let emailVal = emailEl().value;
-let phoneVal = phoneEl().value;
-let passVal = passEl().value;
-
-/* GENERATE UNIQUE USER CODE */
-let code = "user" + Math.floor(1000 + Math.random()*9000);
-
-/* PREVENT DUPLICATE CODES */
-for(let key in users){
-  if(users[key].code === code){
-    code = "user" + Math.floor(1000 + Math.random()*9000);
+  if(!email || !phone || !pass){
+    alert("Fill all fields");
+    return;
   }
-}
 
-user={
-email:emailVal,
-phone:phoneVal,
-password:passVal,
-balance:0,
-profits:0,
-activated:false,
-package:"basic",
-code:code
-};
+  if(users[email]){
+    alert("Account already exists");
+    return;
+  }
 
-users[emailVal]=user;
+  let code = "user" + Math.floor(Math.random()*9000+1000);
 
-save();
-  localStorage.setItem("currentUser", email);
-show();
-}
+  user = {
+    email,
+    phone,
+    password:pass,
+    balance:0,
+    profits:0,
+    activated:false,
+    package:"none",
+    code:code
+  };
+
+  users[email] = user;
+
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("currentUser", JSON.stringify(user));
+
+  showDashboard();
+  }
 
 /* LOGIN */
 function login(){
