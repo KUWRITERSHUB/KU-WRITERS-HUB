@@ -545,10 +545,10 @@ document.getElementById("liveWithdraw").innerHTML=
 
 /* AUTO LOGIN */
 window.onload = function(){
-  let savedUser = localStorage.getItem("currentUser");
+  let saved = localStorage.getItem("currentUser");
 
-  if(savedUser && users[savedUser]){
-    user = users[savedUser];
+  if(saved && users[saved]){
+    user = users[saved];
     showDashboard();
   }
 }
