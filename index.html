@@ -185,7 +185,13 @@ let user=null;
 
 /* MENU FIX */
 function openMenu(){
-  document.getElementById("menu").classList.add("active");
+
+  if(!user){
+    alert("Login first to access menu");
+    return;
+  }
+
+  document.getElementById("menu").style.left="0";
   document.getElementById("menuOverlay").style.display="block";
 }
 
