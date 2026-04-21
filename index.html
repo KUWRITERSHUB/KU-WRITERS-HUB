@@ -532,9 +532,9 @@ closeMenu();
   }
 /* LOGOUT */
 function logout(){
-localStorage.removeItem("current");
-location.reload();
-}
+  localStorage.removeItem("currentUser");
+  location.reload();
+  }
 
 /* LIVE EARNINGS */
 setInterval(()=>{
