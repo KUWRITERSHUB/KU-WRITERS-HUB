@@ -603,7 +603,21 @@ window.onload = function(){
     }
   }
   }
-  
+  function resetPassword(){
+  let email = prompt("Enter your email:");
+
+  if(!users[email]){
+    alert("Email not found");
+    return;
+  }
+
+  let newPass = prompt("Enter new password:");
+  users[email].password = newPass;
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  alert("Password updated ✅");
+  }
 </script>
 
 </body>
