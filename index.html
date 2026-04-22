@@ -552,6 +552,18 @@ alert("Admin only");
 
 closeMenu();
 }
+  function approveWithdraw(index){
+
+let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+
+withdrawals[index].status = "Paid";
+
+localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+
+alert("Withdrawal approved ✅");
+
+loadWithdrawAdmin();
+  }
   
 /* LOGOUT */
 function logout(){
