@@ -537,93 +537,6 @@ document.getElementById("withdrawHistory").innerHTML = html || "No withdrawals y
 /* ADMIN */
 function openAdmin(){
 
-if(user.email === "muindithomas16@gmail.com"){  // 🔥 your admin email
-  document.getElementById("dashboard").style.display="none";
-  document.getElementById("adminPanel").style.display="block";
-}else{
-  alert("Access denied. Admin only.");
-}
-
-closeMenu();
-}
-function loadUsers(){
-
-let html="";
-
-for(let key in users){
-let u = users[key];
-
-html += `
-<div style="border-bottom:1px solid #333;padding:10px">
-<b>${u.code}</b><br>
-${u.email}<br>
-Balance: ${u.balance}<br>
-Activated: ${u.activated ? "✅" : "❌"}
-</div>
-`;
-}
-
-document.getElementById("userList").innerHTML = html;
-  }
-  function backToUser(){
-document.getElementById("adminPanel").style.display="none";
-document.getElementById("dashboard").style.display="block";
-  }
-  let extraTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-function addTask(){
-
-let name = document.getElementById("taskName").value;
-let pay = document.getElementById("taskPay").value;
-
-if(!name || !pay){
-alert("Enter task details");
-return;
-}
-
-extraTasks.push({name, pay});
-
-localStorage.setItem("tasks", JSON.stringify(extraTasks));
-
-alert("Task added ✅");
-
-document.getElementById("taskName").value="";
-document.getElementById("taskPay").value="";
-  }
-  function loadPending(){
-
-let html="";
-
-for(let key in users){
-let u = users[key];
-
-if(u.pending){
-html += `
-<div style="padding:10px;border-bottom:1px solid #333">
-${u.code} - ${u.email}
-<br>
-<button onclick="approve('${key}')">Approve</button>
-</div>
-`;
-}
-}
-
-document.getElementById("pendingPayments").innerHTML = html;
-  }
-  function approve(email){
-
-users[email].activated = true;
-users[email].pending = false;
-
-localStorage.setItem("users", JSON.stringify(users));
-
-loadPending();
-loadUsers();
-
-alert("Approved ✅");
-  }
-  function openAdmin(){
-
 if(user.email === "muindithomas16@gmail.com"){
 
 dashboard.style.display="none";
@@ -631,13 +544,15 @@ adminPanel.style.display="block";
 
 loadUsers();
 loadPending();
+loadWithdrawAdmin();
 
 }else{
 alert("Admin only");
 }
 
 closeMenu();
-  }
+}
+  
 /* LOGOUT */
 function logout(){
   localStorage.removeItem("currentUser");
