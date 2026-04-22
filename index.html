@@ -564,6 +564,25 @@ alert("Withdrawal approved ✅");
 
 loadWithdrawAdmin();
   }
+  function loadWithdrawAdmin(){
+
+let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+
+let html = "";
+
+withdrawals.forEach((w,i)=>{
+if(w.status === "Pending"){
+html += `
+<div style="padding:10px;border-bottom:1px solid #333">
+${w.user} - KES ${w.amount}<br>
+<button onclick="approveWithdraw(${i})">Approve</button>
+</div>
+`;
+}
+});
+
+document.getElementById("withdrawAdmin").innerHTML = html;
+  }
   
 /* LOGOUT */
 function logout(){
