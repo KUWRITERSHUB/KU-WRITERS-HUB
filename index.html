@@ -192,19 +192,15 @@ let user=null;
 
 /* MENU FIX */
 function openMenu(){
-
-  if(!user){
-    alert("Login first to access menu");
-    return;
-  }
-
-  document.getElementById("menu").style.left="0";
-  document.getElementById("menuOverlay").style.display="block";
+  menu.style.left="0";
+  menuOverlay.style.display="block";
+  menuOverlay.style.pointerEvents="auto";
 }
 
 function closeMenu(){
-  document.getElementById("menu").classList.remove("active");
-  document.getElementById("menuOverlay").style.display="none";
+  menu.style.left="-260px";
+  menuOverlay.style.display="none";
+  menuOverlay.style.pointerEvents="none";
 }
 function showPackages(){
 alert(
