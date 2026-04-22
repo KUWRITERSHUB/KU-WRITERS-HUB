@@ -507,7 +507,27 @@ alert("Withdrawal successful. Waiting for admin approval.");
 loadWithdrawals();
 update();
 }
+function loadWithdrawals(){
 
+let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+
+let html = "";
+
+withdrawals
+.filter(w => w.user === user.email)
+.forEach(w=>{
+html += `
+<div style="border-bottom:1px solid #333;padding:8px">
+KES ${w.amount} → ${w.phone}<br>
+Status: ${w.status}<br>
+${w.date}
+</div>
+`;
+});
+
+document.getElementById("withdrawHistory").innerHTML = html || "No withdrawals yet";
+  }
+  
 /* ADMIN */
 function openAdmin(){
 
