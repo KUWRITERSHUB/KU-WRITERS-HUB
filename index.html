@@ -271,41 +271,24 @@ Upgrade your package to unlock more earning opportunities.`
 
 /* LOGIN */
 function login(){
-  let email = emailEl().value.trim();
-  let pass = passEl().value.trim();
+  let email = document.getElementById("email").value;
+  let pass = document.getElementById("password").value;
 
-  if(!email || !pass){
-    alert("Enter email and password");
+  if(!users[email]){
+    alert("Account not found");
     return;
   }
 
-  let existingUser = users[email];
-
-  if(!existingUser){
-    alert("Account not found. Please register.");
+  if(users[email].password !== pass){
+    alert("Wrong password");
     return;
   }
 
-  // Fix old accounts without password
-  if(!existingUser.password){
-    existingUser.password = pass;
-  }
+  user = users[email];
 
-  if(existingUser.password !== pass){
-    alert("Incorrect password");
-    return;
-  }
+  // 🔥 SAVE SESSION (THIS IS WHAT YOU WERE MISSING)
+  localStorage.setItem("currentUser", email);
 
-  user = existingUser;
-
-  // Ensure code exists
-  if(!user.code){
-    user.code = "user" + Math.floor(Math.random()*9000 + 1000);
-  }
-
-  saveSession();
-
-  alert("Login successful ✅");
   showDashboard();
 }
     
