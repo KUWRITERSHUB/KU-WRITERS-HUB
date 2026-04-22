@@ -271,11 +271,13 @@ Upgrade your package to unlock more earning opportunities.`
 
 /* LOGIN */
 function login(){
-  let email = document.getElementById("email").value;
-  let pass = document.getElementById("password").value;
+  let email = document.getElementById("email").value.trim();
+  let pass = document.getElementById("password").value.trim();
+
+  let users = JSON.parse(localStorage.getItem("users")) || {};
 
   if(!users[email]){
-    alert("Account not found");
+    alert("User not found");
     return;
   }
 
@@ -286,7 +288,7 @@ function login(){
 
   user = users[email];
 
-  // 🔥 SAVE SESSION (THIS IS WHAT YOU WERE MISSING)
+  // 🔥 SAVE SESSION
   localStorage.setItem("currentUser", email);
 
   showDashboard();
