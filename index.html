@@ -431,15 +431,81 @@ alert("LIPA NA MPESA\nBUY GOODS & SERVICES\nTILL: 6892947");
 
 /* WITHDRAW */
 function withdraw(){
-if(user.profits<600){
-alert("Minimum KES 600");
+
+if(!user){
+alert("Login first");
 return;
 }
-user.balance+=user.profits;
-user.profits=0;
+
+if(user.profits < 600){
+alert("Minimum withdrawal is KES 600");
+
+let amount = prompt("Enter withdrawal amount:");
+let phone = prompt("Enter phone number:");
+
+if(!amount || !phone){
+alert("Cancelled");
+return;
+}
+
+if(amount < 600){
+alert("Amount must be above 600");
+return;
+}
+
+let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+
+withdrawals.push({
+user: user.email,
+amount: amount,
+phone: phone,
+status: "Pending",
+date: new Date().toLocaleString()
+});
+
+localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+
+alert("Withdrawal submitted. Waiting for admin approval.");
+
+loadWithdrawals();
+
+return;
+}
+
+/* NORMAL WITHDRAW FLOW */
+let amount = prompt("Enter withdrawal amount:");
+let phone = prompt("Enter phone number:");
+
+if(!amount || !phone){
+alert("Cancelled");
+return;
+}
+
+if(amount > user.profits){
+alert("Insufficient balance");
+return;
+}
+
+user.profits -= amount;
+
+let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+
+withdrawals.push({
+user: user.email,
+amount: amount,
+phone: phone,
+status: "Pending",
+date: new Date().toLocaleString()
+});
+
+localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+
 save();
+
+alert("Withdrawal successful. Waiting for admin approval.");
+
+loadWithdrawals();
 update();
-alert("Withdrawal successful");
 }
 
 /* ADMIN */
