@@ -612,6 +612,11 @@ window.onload = function(){
     alert("Email not found");
     return;
   }
+    function resetSystem(){
+  localStorage.clear();   // 🔥 deletes everything
+  alert("System reset successful ✅");
+  location.reload();      // 🔥 refresh page
+    }
 
   let newPass = prompt("Enter new password:");
   users[email].password = newPass;
