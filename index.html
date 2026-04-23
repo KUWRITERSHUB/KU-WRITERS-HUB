@@ -267,8 +267,10 @@ Upgrade your package to unlock more earning opportunities.`
 
 /* LOGIN */
 function login(){
-  let email = emailEl().value.trim();
-  let pass = passEl().value.trim();
+  alert("Login clicked"); // 🔥 MUST SHOW
+
+  let email = document.getElementById("email").value;
+  let pass = document.getElementById("password").value;
 
   let storedUsers = JSON.parse(localStorage.getItem("users")) || {};
 
@@ -285,8 +287,6 @@ function login(){
   user = storedUsers[email];
 
   localStorage.setItem("currentUser", email);
-
-  alert("Login working ✅"); // 🔥 THIS MUST SHOW
 
   showDashboard();
   }
