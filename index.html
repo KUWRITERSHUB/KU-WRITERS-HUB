@@ -320,10 +320,15 @@ function showDashboard(){
   loadWithdrawals();
   
 /* UPDATE */
-function update(){
-balance.innerText=user.balance;
-profits.innerText=user.profits;
-}
+function updateUI(){
+  if(!user) return;
+
+  let bal = document.getElementById("balance");
+  let prof = document.getElementById("profits");
+
+  if(bal) bal.innerText = user.balance || 0;
+  if(prof) prof.innerText = user.profits || 0;
+    }
 
 /* ACTIVATE */
 function activate(){
