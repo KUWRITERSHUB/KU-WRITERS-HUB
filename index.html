@@ -269,7 +269,6 @@ Upgrade your package to unlock more earning opportunities.`
 
 /* LOGIN */
 function login(){
-
   let email = emailEl().value.trim();
   let pass = passEl().value.trim();
 
@@ -289,8 +288,10 @@ function login(){
 
   localStorage.setItem("currentUser", email);
 
+  alert("Login working ✅"); // 🔥 THIS MUST SHOW
+
   showDashboard();
-}
+  }
     
 /* SAVE */
 function save(){
