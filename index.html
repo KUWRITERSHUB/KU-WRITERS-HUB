@@ -603,14 +603,17 @@ document.getElementById("liveWithdraw").innerHTML=
 
 /* AUTO LOGIN */
 window.onload = function(){
-  let users = JSON.parse(localStorage.getItem("users")) || {};
+
+  let storedUsers = JSON.parse(localStorage.getItem("users")) || {};
   let currentUser = localStorage.getItem("currentUser");
 
-  if(currentUser && users[currentUser]){
-    user = users[currentUser];
+  if(currentUser && storedUsers[currentUser]){
+    user = storedUsers[currentUser];
+    users = storedUsers;
     showDashboard();
   }
   }
+  
   function resetPassword(){
   let email = prompt("Enter your email:");
 
