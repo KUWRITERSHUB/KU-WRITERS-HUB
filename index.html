@@ -623,6 +623,26 @@ window.onload = function(){
 
   alert("Password updated ✅");
   }
+  // 🔥 FORCE BUTTONS TO WORK
+document.addEventListener("DOMContentLoaded", function(){
+
+  let regBtn = document.getElementById("registerBtn");
+  let logBtn = document.getElementById("loginBtn");
+
+  if(regBtn){
+    regBtn.addEventListener("click", function(){
+      register();
+    });
+  }
+
+  if(logBtn){
+    logBtn.addEventListener("click", function(){
+      login();
+    });
+  }
+
+});
+  
 </script>
 
 </body>
