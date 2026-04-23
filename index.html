@@ -300,27 +300,21 @@ localStorage.setItem("current",user.email);
 }
 
 /* SHOW DASHBOARD */
-function show(){
-authBox.style.display="none";
-dashboard.style.display="block";
+function showDashboard(){
 
-let h=new Date().getHours();
-let msg=h<12?"Good morning 🌅":h<18?"Good afternoon ☀️":"Good evening 🌙";
+  let auth = document.getElementById("authBox");
+  let dash = document.getElementById("dashboard");
 
-greet.innerHTML=`${msg}, welcome back <b>${user.email}</b>`;
-update();
-}
-function loadTasks(){
+  if(auth) auth.style.display = "none";
+  if(dash) dash.style.display = "block";
 
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  // prevent crash if element missing
+  let greetEl = document.getElementById("greet");
+  if(greetEl && user){
+    greetEl.innerHTML = "Welcome back " + (user.email || user.code);
+  }
 
-let html = "<h3>📝 Extra Tasks</h3>";
-
-tasks.forEach(t=>{
-html += `<p>• ${t.name} - KES ${t.pay}</p>`;
-});
-
-document.getElementById("extraTasks").innerHTML = html;
+  updateUI();
   }
   loadTasks();
   loadWithdrawals();
