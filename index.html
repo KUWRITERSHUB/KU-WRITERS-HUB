@@ -270,16 +270,10 @@ window.onload = function(){
     document.getElementById("authBox").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
 
-    let greet = document.getElementById("greet");
-    if(greet){
-      greet.innerHTML = "Welcome back " + user.username;
-    }
+    greet.innerHTML = "Welcome back " + user.username;
 
-    let bal = document.getElementById("balance");
-    let prof = document.getElementById("profits");
-
-    if(bal) bal.innerText = user.balance;
-    if(prof) prof.innerText = user.profits;
+    balance.innerText = user.balance;
+    profits.innerText = user.profits;
   }
 };
 
