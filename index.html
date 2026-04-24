@@ -194,7 +194,98 @@ button{
 console.log("Script Loaded ✅");
 /* DATABASE */
 let users = {};
+/* NEW CLEAN AUTH SYSTEM */
+let users = JSON.parse(localStorage.getItem("users")) || {};
+let currentUser = localStorage.getItem("currentUser");
+let user = null;
 
+/* REGISTER */
+function register(){
+  let username = document.getElementById("username").value.trim();
+  let password = document.getElementById("password").value.trim();
+
+  if(!username || !password){
+    alert("Enter username & password");
+    return;
+  }
+
+  if(users[username]){
+    alert("Username already exists");
+    return;
+  }
+
+  let code = "user" + Math.floor(Math.random()*9000 + 1000);
+
+  users[username] = {
+    username,
+    password,
+    balance: 0,
+    profits: 0,
+    activated: false,
+    code: code
+  };
+
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("currentUser", username);
+
+  alert("Account created successfully ✅");
+
+  location.reload(); // 🔥 ensures dashboard loads
+}
+
+/* LOGIN */
+function login(){
+  let username = document.getElementById("username").value.trim();
+  let password = document.getElementById("password").value.trim();
+
+  if(!users[username]){
+    alert("User not found");
+    return;
+  }
+
+  if(users[username].password !== password){
+    alert("Wrong password");
+    return;
+  }
+
+  localStorage.setItem("currentUser", username);
+
+  alert("Login successful ✅");
+
+  location.reload();
+}
+
+/* AUTO LOGIN */
+window.onload = function(){
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+  let currentUser = localStorage.getItem("currentUser");
+
+  if(currentUser && users[currentUser]){
+    user = users[currentUser];
+
+    document.getElementById("authBox").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+
+    let greet = document.getElementById("greet");
+    if(greet){
+      greet.innerHTML = "Welcome back " + user.username;
+    }
+
+    let bal = document.getElementById("balance");
+    let prof = document.getElementById("profits");
+
+    if(bal) bal.innerText = user.balance;
+    if(prof) prof.innerText = user.profits;
+  }
+};
+
+/* RESET SYSTEM */
+function resetSystem(){
+  localStorage.clear();
+  alert("System reset successful");
+  location.reload();
+  }
+  
 /* MENU FIX */
 function openMenu(){
   menu.style.left="0";
@@ -231,68 +322,6 @@ alert(
 Upgrade your package to unlock more earning opportunities.`
 );
 }
-  
-/* REGISTER */
-  function register(){
-  let email = document.getElementById("email").value.trim();
-  let phone = document.getElementById("phone").value.trim();
-  let pass = document.getElementById("password").value.trim();
-
-  if(!email || !pass){
-    alert("Enter email & password");
-    return;
-  }
-
-  let users = JSON.parse(localStorage.getItem("users")) || {};
-
-  if(users[email]){
-    alert("User already exists, login instead");
-    return;
-  }
-
-  let id = "user" + Math.floor(Math.random()*9000+1000);
-
-  users[email] = {
-    email: email,
-    phone: phone,
-    password: pass,
-    balance: 0,
-    profits: 0,
-    activated: false,
-    code: id
-  };
-
-  localStorage.setItem("users", JSON.stringify(users));
-  localStorage.setItem("currentUser", email);
-
-  alert("Registered successfully ✅");
-
-  location.reload(); // 🔥 FORCE REFRESH (important)
-  }
-
-/* LOGIN */
-function login(){
-  let email = document.getElementById("email").value.trim();
-  let pass = document.getElementById("password").value.trim();
-
-  let users = JSON.parse(localStorage.getItem("users")) || {};
-
-  if(!users[email]){
-    alert("User not found");
-    return;
-  }
-
-  if(users[email].password !== pass){
-    alert("Wrong password");
-    return;
-  }
-
-  localStorage.setItem("currentUser", email);
-
-  alert("Login successful ✅");
-
-  location.reload(); // 🔥 THIS FIXES YOUR ISSUE
-  }
     
 /* SAVE */
 function save(){
