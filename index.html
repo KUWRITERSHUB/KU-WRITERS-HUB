@@ -232,38 +232,41 @@ Upgrade your package to unlock more earning opportunities.`
   
 /* REGISTER */
   function register(){
+  let email = document.getElementById("email").value.trim();
+  let phone = document.getElementById("phone").value.trim();
+  let pass = document.getElementById("password").value.trim();
 
-  let email = emailEl().value.trim();
-  let phone = phoneEl().value.trim();
-  let pass = passEl().value.trim();
+  if(!email || !pass){
+    alert("Enter email & password");
+    return;
+  }
 
-  if(!email || !phone || !pass){
-    alert("Fill all fields");
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+
+  if(users[email]){
+    alert("User already exists, login instead");
     return;
   }
 
   let id = "user" + Math.floor(Math.random()*9000+1000);
 
-  user = {
+  users[email] = {
     email: email,
     phone: phone,
     password: pass,
-    balance:0,
-    profits:0,
-    activated:false,
-    code:id
+    balance: 0,
+    profits: 0,
+    activated: false,
+    code: id
   };
-
-  users[email] = user;
 
   localStorage.setItem("users", JSON.stringify(users));
   localStorage.setItem("currentUser", email);
 
-  alert("Account created successfully ✅");
+  alert("Registered successfully ✅");
 
-  showDashboard();
+  location.reload(); // 🔥 FORCE REFRESH (important)
   }
-
 
 /* LOGIN */
 function login(){
