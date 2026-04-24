@@ -204,8 +204,10 @@ function register(){
   let username = document.getElementById("username").value.trim();
   let password = document.getElementById("password").value.trim();
 
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+
   if(!username || !password){
-    alert("Enter username & password");
+    alert("Enter username and password");
     return;
   }
 
@@ -217,8 +219,8 @@ function register(){
   let code = "user" + Math.floor(Math.random()*9000 + 1000);
 
   users[username] = {
-    username,
-    password,
+    username: username,
+    password: password,
     balance: 0,
     profits: 0,
     activated: false,
@@ -228,9 +230,9 @@ function register(){
   localStorage.setItem("users", JSON.stringify(users));
   localStorage.setItem("currentUser", username);
 
-  alert("Account created successfully ✅");
+  alert("Registered successfully ✅");
 
-  location.reload(); // 🔥 ensures dashboard loads
+  location.reload();
 }
 
 /* LOGIN */
