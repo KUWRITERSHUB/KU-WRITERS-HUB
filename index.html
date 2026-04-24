@@ -240,6 +240,8 @@ function login(){
   let username = document.getElementById("username").value.trim();
   let password = document.getElementById("password").value.trim();
 
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+
   if(!users[username]){
     alert("User not found");
     return;
@@ -255,7 +257,7 @@ function login(){
   alert("Login successful ✅");
 
   location.reload();
-}
+        }
 
 /* AUTO LOGIN */
 window.onload = function(){
