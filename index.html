@@ -270,28 +270,26 @@ Upgrade your package to unlock more earning opportunities.`
 
 /* LOGIN */
 function login(){
-  alert("Login clicked"); // 🔥 MUST SHOW
+  let email = document.getElementById("email").value.trim();
+  let pass = document.getElementById("password").value.trim();
 
-  let email = document.getElementById("email").value;
-  let pass = document.getElementById("password").value;
+  let users = JSON.parse(localStorage.getItem("users")) || {};
 
-  let storedUsers = JSON.parse(localStorage.getItem("users")) || {};
-
-  if(!storedUsers[email]){
+  if(!users[email]){
     alert("User not found");
     return;
   }
 
-  if(storedUsers[email].password !== pass){
+  if(users[email].password !== pass){
     alert("Wrong password");
     return;
   }
 
-  user = storedUsers[email];
-
   localStorage.setItem("currentUser", email);
 
-  showDashboard();
+  alert("Login successful ✅");
+
+  location.reload(); // 🔥 THIS FIXES YOUR ISSUE
   }
     
 /* SAVE */
