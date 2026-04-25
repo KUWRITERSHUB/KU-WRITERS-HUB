@@ -554,46 +554,6 @@ window.onload = function(){
   }
 };
   
-  function resetPassword(){
-  let email = prompt("Enter your email:");
-
-  if(!users[email]){
-    alert("Email not found");
-    return;
-  }
-    function resetSystem(){
-  localStorage.clear();   // 🔥 deletes everything
-  alert("System reset successful ✅");
-  location.reload();      // 🔥 refresh page
-    }
-
-  let newPass = prompt("Enter new password:");
-  users[email].password = newPass;
-
-  localStorage.setItem("users", JSON.stringify(users));
-
-  alert("Password updated ✅");
-  }
-  // 🔥 FORCE BUTTONS TO WORK
-document.addEventListener("DOMContentLoaded", function(){
-
-  let regBtn = document.getElementById("registerBtn");
-  let logBtn = document.getElementById("loginBtn");
-
-  if(regBtn){
-    regBtn.addEventListener("click", function(){
-      register();
-    });
-  }
-
-  if(logBtn){
-    logBtn.addEventListener("click", function(){
-      login();
-    });
-  }
-
-});
-  
 </script>
 
 </body>
