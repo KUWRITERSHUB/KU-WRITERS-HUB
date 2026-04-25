@@ -8,46 +8,52 @@
 body{
   margin:0;
   font-family:Arial;
-  background:linear-gradient(135deg,#0ea5e9,#22c55e,#f97316);
+  background:linear-gradient(135deg,#16a34a,#22c55e,#0ea5e9,#f97316);
   color:white;
-  overflow-x:hidden; /* 🔥 THIS FIXES THE DARK EDGE */
 }
 
-/* PREVENT SIDE SCROLL COMPLETELY */
-html{
-  overflow-x:hidden;
+/* HEADER */
+.header{
+  display:flex;
+  align-items:center;
+  padding:15px;
+  background:#065f46;
 }
 
-/* FIX MENU */
+.menu-btn{
+  font-size:22px;
+  cursor:pointer;
+  margin-right:10px;
+}
+
+/* MENU (LEFT CLEAN) */
 #menu{
   position:fixed;
   top:0;
-  left:0; /* 🔥 moved to left */
+  left:-260px;
   width:260px;
   height:100%;
-  background:#0f172a;
-  transform:translateX(-100%); /* hide left */
-  transition:0.3s ease;
-  z-index:101;
+  background:#022c22;
+  transition:.3s;
   padding:20px;
+  z-index:1000;
 }
 
-#menu.active{
-  transform:translateX(0);
+#menu p{
+  padding:12px;
+  border-bottom:1px solid #14532d;
+  cursor:pointer;
 }
-#menuOverlay{
-  pointer-events:none;
-  }
-  
+
 /* CARD */
 .card{
-  background:rgba(0,0,0,0.6);
+  background:rgba(0,0,0,0.4);
   margin:10px;
   padding:15px;
   border-radius:12px;
 }
 
-/* BOXES */
+/* FEATURES */
 .features{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -58,19 +64,18 @@ html{
 .box{
   padding:15px;
   border-radius:10px;
-  background:linear-gradient(135deg,#ff512f,#dd2476);
+  background:linear-gradient(135deg,#22c55e,#4ade80);
   text-align:center;
   font-weight:bold;
   cursor:pointer;
 }
 
-/* BUTTON */
 button{
   padding:10px;
   border:none;
   border-radius:8px;
-  background:#22c55e;
-  font-weight:bold;
+  background:#16a34a;
+  color:white;
 }
 </style>
 </head>
@@ -79,25 +84,30 @@ button{
 
 <!-- HEADER -->
 <div class="header">
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
   <b>🇬🇧 UK WRITERS HUB</b>
-  <div class="menu-btn" onclick="openMenu()">☰</div>
 </div>
 
-<div id="menuOverlay" onclick="closeMenu()"></div>
-
+<!-- MENU -->
 <div id="menu">
 <h3>Menu</h3>
 <p onclick="copyRef()">📎 Referral Link</p>
 <p onclick="showMembers()">👥 Members</p>
-<p onclick="openWhatsApp()">💬 WhatsApp Group</p>
-<p onclick="manual()">💰 Manual Activation</p>
 <p onclick="withdraw()">💸 Withdraw</p>
-<p onclick="openAdmin()">⚙️ Admin Dashboard</p>
-  <p onclick="showPackages()">📦 Packages</p>
+<p onclick="openAdmin()">⚙️ Admin</p>
 <p onclick="logout()">🚪 Logout</p>
 </div>
-  
-  
+
+<!-- LOGIN -->
+<div id="authBox" class="card">
+<h3>Register / Login</h3>
+
+<input id="username" placeholder="Username"><br><br>
+<input id="password" type="password" placeholder="Password"><br><br>
+
+<button onclick="register()">Register</button>
+<button onclick="login()">Login</button>
+</div>
 
 <!-- DASHBOARD -->
 <div id="dashboard" style="display:none">
@@ -105,429 +115,196 @@ button{
 <div class="card" id="greet"></div>
 
 <div class="card">
-<b>Total Profits:</b> KES <span id="profits">0</span>
+Total Profits: KES <span id="profits">0</span>
 </div>
 
 <div class="card">
-<b>Withdrawable Balance:</b> KES <span id="balance">0</span>
+Withdrawable Balance: KES <span id="balance">0</span>
 </div>
 
-<div class="card" id="liveEarn">🔥 Loading earnings...</div>
-<div class="card" id="liveWithdraw">💸 Loading withdrawals...</div>
-  <div class="card" id="extraTasks"></div>
-
-<div class="card">
-<h3>Activate Account (KES 500)</h3>
-<input id="stkPhone" placeholder="2547XXXXXXXX"><br><br>
-<input id="stkAmount" placeholder="500"><br><br>
-<input id="code" placeholder="MPESA Code"><br><br>
-<button onclick="activate()">Submit</button>
-</div>
+<div class="card" id="live"></div>
 
 <div class="features">
 <div class="box" onclick="task('survey')">Surveys</div>
-<div class="box" onclick="task('affiliate')">Affiliate</div>
-<div class="box" onclick="task('academic')">Academic</div>
 <div class="box" onclick="task('blog')">Blog</div>
 <div class="box" onclick="task('article')">Article</div>
+<div class="box" onclick="task('academic')">Academic</div>
+<div class="box" onclick="task('affiliate')">Affiliate</div>
 <div class="box" onclick="task('ecommerce')">E-commerce</div>
 <div class="box" onclick="task('binary')">Binary</div>
 <div class="box" onclick="task('bot')">AI Bot</div>
-<div class="box" onclick="task('chat with foreigners')">Chat with Foreigners</div>
+<div class="box" onclick="task('chat')">Chat</div>
 <div class="box" onclick="task('training')">Training</div>
 </div>
 
-<div class="card">
-<button onclick="withdraw()">Withdraw</button>
 </div>
 
-</div>
-<div id="adminPanel" style="display:none">
-
-<div class="card">
-<h2>⚙️ Admin Dashboard</h2>
-</div>
-
-<div class="card">
-<h3>👥 Users</h3>
-<div id="userList"></div>
-</div>
-
-  <div class="card">
-<h3>💸 Approve Withdrawals</h3>
-<div id="withdrawAdmin"></div>
-  </div>
-
-<div class="card">
-<h3>💰 Approve Activations</h3>
-<div id="pendingPayments"></div>
-</div>
-
-<div class="card">
-<h3>➕ Add Task</h3>
-<input id="taskName" placeholder="Task name"><br><br>
-<input id="taskPay" placeholder="Amount"><br><br>
-<button onclick="addTask()">Add Task</button>
-</div>
-
-<div class="card">
-<button onclick="backToUser()">⬅ Back to Dashboard</button>
-</div>
-
-</div>
 <script>
-console.log("Script Loaded ✅");
+
 /* DATABASE */
-let users = {};
-/* NEW CLEAN AUTH SYSTEM */
 let users = JSON.parse(localStorage.getItem("users")) || {};
 let currentUser = localStorage.getItem("currentUser");
 let user = null;
 
-  
-/* MENU FIX */
-function openMenu(){
-  menu.style.left="0";
-  menuOverlay.style.display="block";
-  menuOverlay.style.pointerEvents="auto";
+/* MENU */
+function toggleMenu(){
+  let m = document.getElementById("menu");
+  m.style.left = m.style.left === "0px" ? "-260px" : "0px";
 }
 
-function closeMenu(){
-  menu.style.left="-260px";
-  menuOverlay.style.display="none";
-  menuOverlay.style.pointerEvents="none";
+/* REGISTER */
+function register(){
+  let username = usernameEl().value.trim();
+  let password = passwordEl().value.trim();
+
+  if(!username || !password){
+    alert("Fill all fields");
+    return;
+  }
+
+  if(users[username]){
+    alert("User exists");
+    return;
+  }
+
+  users[username] = {
+    username,
+    password,
+    balance:0,
+    profits:0,
+    code:"user"+Math.floor(Math.random()*9000+1000)
+  };
+
+  save(username);
+  alert("Registered ✅");
+  show();
 }
-function showPackages(){
-alert(
-`📦 UK WRITERS HUB PACKAGES
 
-🔹 BASIC (KES 500)
-- Access Surveys
-- Affiliate Marketing
+/* LOGIN */
+function login(){
+  let username = usernameEl().value.trim();
+  let password = passwordEl().value.trim();
 
-🔸 INTERMEDIATE (KES 1,500)
-- Blog Writing
-- Article Writing
-- E-commerce
-- Binary Trading
+  if(!users[username]){
+    alert("User not found");
+    return;
+  }
 
-🔶 PREMIUM (KES 2,500)
-- Academic Writing
-- AI Trading Bot
-- Chat with Foreigners
-- Training Access
+  if(users[username].password !== password){
+    alert("Wrong password");
+    return;
+  }
 
-⚠️ NOTE:
-Upgrade your package to unlock more earning opportunities.`
-);
+  save(username);
+  show();
 }
-    
+
 /* SAVE */
-function save(){
-localStorage.setItem("users",JSON.stringify(users));
-localStorage.setItem("current",user.email);
+function save(username){
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("currentUser", username);
 }
 
 /* SHOW DASHBOARD */
-function showDashboard(){
+function show(){
+  user = users[localStorage.getItem("currentUser")];
 
-  let auth = document.getElementById("authBox");
-  let dash = document.getElementById("dashboard");
+  authBox.style.display="none";
+  dashboard.style.display="block";
 
-  if(auth) auth.style.display = "none";
-  if(dash) dash.style.display = "block";
+  let h=new Date().getHours();
+  let g=h<12?"Morning 🌅":h<18?"Afternoon ☀️":"Evening 🌙";
 
-  // prevent crash if element missing
-  let greetEl = document.getElementById("greet");
-  if(greetEl && user){
-    greetEl.innerHTML = "Welcome back " + (user.email || user.code);
-  }
-
-  updateUI();
-  }
-  loadTasks();
-  loadWithdrawals();
-  
-/* UPDATE */
-function updateUI(){
-  if(!user) return;
-
-  let bal = document.getElementById("balance");
-  let prof = document.getElementById("profits");
-
-  if(bal) bal.innerText = user.balance || 0;
-  if(prof) prof.innerText = user.profits || 0;
-    }
-
-/* ACTIVATE */
-function activate(){
-
-user.pending = true; // 🔥 mark as pending
-
-save();
-
-alert("Payment submitted. Waiting for admin approval.");
+  greet.innerHTML=`Good ${g}, ${user.username}`;
+  update();
 }
 
-/* TASK */
+/* UPDATE */
+function update(){
+  balance.innerText=user.balance;
+  profits.innerText=user.profits;
+}
+
+/* TASKS */
 function task(type){
 
-/* NOT ACTIVATED */
-if(!user.activated){
-alert("Activate your account first");
-return;
+  let pay={
+    survey:10,blog:100,article:200,
+    academic:2000,ecommerce:500,binary:300
+  };
+
+  if(type==="chat"){alert("Pay KES 5000");return;}
+  if(type==="training"){alert("Pay KES 2500");return;}
+
+  user.profits += pay[type] || 0;
+  save(user.username);
+  update();
 }
-
-/* PACKAGE CONTROL */
-let basic=["survey","affiliate"];
-let intermediate=["blog","article","ecommerce","binary"];
-let premium=["academic","bot","chat with foreigners","training"];
-
-/* CHECK PACKAGE */
-if(intermediate.includes(type) && user.package!=="intermediate" && user.package!=="premium"){
-alert("Activate your account first ");
-return;
-}
-
-if(premium.includes(type) && user.package!=="premium"){
-alert("Activate your account first ");
-return;
-}
-
-/* EARNINGS */
-let pay={
-survey:10,
-blog:100,
-article:200,
-academic:2000,
-ecommerce:500,
-binary:300
-};
-
-/* SPECIAL SERVICES */
-if(type==="chat with foreigners"){alert("Requires Premium (KES 5000)");return;}
-if(type==="training"){alert("Requires Training Fee (KES 2500)");return;}
-if(type==="affiliate"){alert("Share your link to earn KES 150 per referral ");return;}
-
-/* ADD MONEY */
-user.profits += pay[type] || 0;
-
-save();
-update();
-  }
 
 /* REFERRAL */
 function copyRef(){
-
-if(!user || !user.code){
-alert("User not ready. Please login again.");
-return;
-}
-
-let link = location.origin + "?ref=" + user.code;
-
-navigator.clipboard.writeText(link);
-
-alert("Referral link copied:\n" + link);
+  if(!user){alert("Login first");return;}
+  let link = location.origin + "?ref=" + user.code;
+  navigator.clipboard.writeText(link);
+  alert("Copied:\n"+link);
 }
 
 /* MEMBERS */
 function showMembers(){
-let list=Object.values(users).map(u=>u.email).join("\n");
-alert(list);
-}
-
-/* WHATSAPP */
-function openWhatsApp(){
-window.open("https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou","_blank");
-}
-
-/* MANUAL */
-function manual(){
-alert("LIPA NA MPESA\nBUY GOODS & SERVICES\nTILL: 6892947");
+  alert(Object.keys(users).join("\n"));
 }
 
 /* WITHDRAW */
 function withdraw(){
-
-if(!user){
-alert("Login first");
-return;
-}
-
-if(user.profits < 600){
-alert("Minimum withdrawal is KES 600");
-
-let amount = prompt("Enter withdrawal amount:");
-let phone = prompt("Enter phone number:");
-
-if(!amount || !phone){
-alert("Cancelled");
-return;
-}
-
-if(amount < 600){
-alert("Amount must be above 600");
-return;
-}
-
-let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-withdrawals.push({
-user: user.email,
-amount: amount,
-phone: phone,
-status: "Pending",
-date: new Date().toLocaleString()
-});
-
-localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-
-alert("Withdrawal submitted. Waiting for admin approval.");
-
-loadWithdrawals();
-
-return;
-}
-
-/* NORMAL WITHDRAW FLOW */
-let amount = prompt("Enter withdrawal amount:");
-let phone = prompt("Enter phone number:");
-
-if(!amount || !phone){
-alert("Cancelled");
-return;
-}
-
-if(amount > user.profits){
-alert("Insufficient balance");
-return;
-}
-
-user.profits -= amount;
-
-let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-withdrawals.push({
-user: user.email,
-amount: amount,
-phone: phone,
-status: "Pending",
-date: new Date().toLocaleString()
-});
-
-localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-
-save();
-
-alert("Withdrawal successful. Waiting for admin approval.");
-
-loadWithdrawals();
-update();
-}
-function loadWithdrawals(){
-
-let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-let html = "";
-
-withdrawals
-.filter(w => w.user === user.email)
-.forEach(w=>{
-html += `
-<div style="border-bottom:1px solid #333;padding:8px">
-KES ${w.amount} → ${w.phone}<br>
-Status: ${w.status}<br>
-${w.date}
-</div>
-`;
-});
-
-document.getElementById("withdrawHistory").innerHTML = html || "No withdrawals yet";
+  if(user.balance < 100){
+    alert("Minimum 100");
+    return;
   }
-  
+  user.balance = 0;
+  save(user.username);
+  update();
+}
+
 /* ADMIN */
 function openAdmin(){
-
-if(user.email === "muindithomas16@gmail.com"){
-
-dashboard.style.display="none";
-adminPanel.style.display="block";
-
-loadUsers();
-loadPending();
-loadWithdrawAdmin();
-
-}else{
-alert("Admin only");
-}
-
-closeMenu();
-}
-  function approveWithdraw(index){
-
-let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-withdrawals[index].status = "Paid";
-
-localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-
-alert("Withdrawal approved ✅");
-
-loadWithdrawAdmin();
+  if(user.username==="admin"){
+    alert("Admin Panel Ready (you can extend)");
+  }else{
+    alert("Admin only");
   }
-  function loadWithdrawAdmin(){
-
-let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-let html = "";
-
-withdrawals.forEach((w,i)=>{
-if(w.status === "Pending"){
-html += `
-<div style="padding:10px;border-bottom:1px solid #333">
-${w.user} - KES ${w.amount}<br>
-<button onclick="approveWithdraw(${i})">Approve</button>
-</div>
-`;
 }
-});
 
-document.getElementById("withdrawAdmin").innerHTML = html;
-  }
-  
 /* LOGOUT */
 function logout(){
   localStorage.removeItem("currentUser");
   location.reload();
-  }
+}
 
-/* LIVE EARNINGS */
+/* LIVE SYSTEM */
 setInterval(()=>{
-let services=["Academic","Blog","Article","Affiliate","E-commerce","Binary","AI Bot","Survey","Chat with Foreigners"];
-let u=Math.floor(Math.random()*9000+1000);
-let amt=Math.floor(Math.random()*5000)+100;
+  let names=["user1234","user5678","user9999","user4450"];
+  let services=["Survey","Blog","Academic","Affiliate"];
 
-document.getElementById("liveEarn").innerHTML=
-`🔥 user${u} earned KES ${amt} from ${services[Math.floor(Math.random()*services.length)]}`;
+  let type = Math.random()>0.5 ? "earned" : "withdrew";
+  let amt = Math.floor(Math.random()*5000);
+
+  live.innerHTML = type==="earned"
+  ? `🔥 ${names[Math.floor(Math.random()*names.length)]} earned KES ${amt}`
+  : `💸 ${names[Math.floor(Math.random()*names.length)]} withdrew KES ${amt}`;
 },2000);
 
-/* LIVE WITHDRAWALS */
-setInterval(()=>{
-let u=Math.floor(Math.random()*9000+1000);
-let amt=Math.floor(Math.random()*20000)+500;
+/* AUTO LOGIN */
+window.onload = function(){
+  if(currentUser && users[currentUser]){
+    show();
+  }
+}
 
-document.getElementById("liveWithdraw").innerHTML=
-`💸 user${u} withdrew KES ${amt}`;
-},2500);
+/* HELPERS */
+function usernameEl(){return document.getElementById("username")}
+function passwordEl(){return document.getElementById("password")}
 
-  
 </script>
 
 </body>
   </html>
-<div style="text-align:center;padding:20px;font-size:13px;color:white;opacity:0.8;">
-✅ Trusted Platform for Online Earnings & Digital Opportunities<br>
-🔒 Secure Transactions | 📈 Real-Time Earnings | 🌍 Global Access<br><br>
-© 2026 UK WRITERS HUB. All Rights Reserved.
-</div>
