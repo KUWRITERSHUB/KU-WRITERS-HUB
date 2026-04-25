@@ -521,24 +521,6 @@ document.getElementById("liveWithdraw").innerHTML=
 `💸 user${u} withdrew KES ${amt}`;
 },2500);
 
-/* AUTO LOGIN */
-window.onload = function(){
-  let users = JSON.parse(localStorage.getItem("users")) || {};
-  let currentUser = localStorage.getItem("currentUser");
-
-  if(currentUser && users[currentUser]){
-    user = users[currentUser];
-
-    document.getElementById("authBox").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
-
-    document.getElementById("greet").innerHTML =
-      "Welcome back " + (user.email || user.code);
-
-    document.getElementById("balance").innerText = user.balance || 0;
-    document.getElementById("profits").innerText = user.profits || 0;
-  }
-};
   
 </script>
 
