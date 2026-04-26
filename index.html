@@ -1,1 +1,601 @@
+<!DOCTYPE html>  <html>  
+<head>  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>UK WRITERS HUB</title>  <style>  
+body{  
+  margin:0;  
+  font-family:Arial;  
+  background:linear-gradient(135deg,#0ea5e9,#22c55e,#f97316);  
+  color:white;  
+  overflow-x:hidden; /* 🔥 THIS FIXES THE DARK EDGE */  
+}  
+  
+/* PREVENT SIDE SCROLL COMPLETELY */  
+html{  
+  overflow-x:hidden;  
+}  
+  
+/* FIX MENU */  
+#menu{  
+  position:fixed;  
+  top:0;  
+  left:0; /* 🔥 moved to left */  
+  width:260px;  
+  height:100%;  
+  background:#0f172a;  
+  transform:translateX(-100%); /* hide left */  
+  transition:0.3s ease;  
+  z-index:101;  
+  padding:20px;  
+}  
+  
+#menu.active{  
+  transform:translateX(0);  
+}  
+#menuOverlay{  
+  pointer-events:none;  
+  }  
+    
+/* CARD */  
+.card{  
+  background:rgba(0,0,0,0.6);  
+  margin:10px;  
+  padding:15px;  
+  border-radius:12px;  
+}  
+  
+/* BOXES */  
+.features{  
+  display:grid;  
+  grid-template-columns:1fr 1fr;  
+  gap:10px;  
+  padding:10px;  
+}  
+  
+.box{  
+  padding:15px;  
+  border-radius:10px;  
+  background:linear-gradient(135deg,#ff512f,#dd2476);  
+  text-align:center;  
+  font-weight:bold;  
+  cursor:pointer;  
+}  
+  
+/* BUTTON */  
+button{  
+  padding:10px;  
+  border:none;  
+  border-radius:8px;  
+  background:#22c55e;  
+  font-weight:bold;  
+}  
+</style>  </head>  <body>  <!-- HEADER -->  <div class="header">  
+  <b>🇬🇧 UK WRITERS HUB</b>  
+  <div class="menu-btn" onclick="openMenu()">☰</div>  
+</div>  <div id="menuOverlay" onclick="closeMenu()"></div>  <div id="menu">  
+<h3>Menu</h3>  
+<p onclick="copyRef()">📎 Referral Link</p>  
+<p onclick="showMembers()">👥 Members</p>  
+<p onclick="openWhatsApp()">💬 WhatsApp Group</p>  
+<p onclick="manual()">💰 Manual Activation</p>  
+<p onclick="withdraw()">💸 Withdraw</p>  
+<p onclick="openAdmin()">⚙️ Admin Dashboard</p>  
+  <p onclick="showPackages()">📦 Packages</p>  
+  <p onclick="resetApp()">🗑 Reset System</p>  
+<p onclick="logout()">🚪 Logout</p>  
+</div>  <!-- LOGIN -->  <div id="authBox" class="card">  
+<h3>Register / Login</h3>  
+<input id="email" placeholder="Email"><br><br>  
+<input id="phone" placeholder="Phone"><br><br>  
+<input id="password" type="password" placeholder="Password"><br><br>  
+<button onclick="register()">Register</button>  
+<button onclick="login()">Login</button>  
+  <button onclick="forgotPassword()">Forgot Password?</button>  
+  <button type="button" onclick="resetSystem()">RESET SYSTEM (FIX LOGIN)</button>  
+</div>  <!-- DASHBOARD -->  <div id="dashboard" style="display:none">  <div class="card" id="greet"></div>  <div class="card">  
+<b>Total Profits:</b> KES <span id="profits">0</span>  
+</div>  <div class="card">  
+<b>Withdrawable Balance:</b> KES <span id="balance">0</span>  
+</div>  <div class="card" id="liveEarn">🔥 Loading earnings...</div>  
+<div class="card" id="liveWithdraw">💸 Loading withdrawals...</div>  
+  <div class="card" id="extraTasks"></div>  <div class="card">  
+<h3>Activate Account (KES 500)</h3>  
+<input id="stkPhone" placeholder="2547XXXXXXXX"><br><br>  
+<input id="stkAmount" placeholder="500"><br><br>  
+<input id="code" placeholder="MPESA Code"><br><br>  
+<button onclick="activate()">Submit</button>  
+</div>  <div class="features">  
+<div class="box" onclick="task('survey')">Surveys</div>  
+<div class="box" onclick="task('affiliate')">Affiliate</div>  
+<div class="box" onclick="task('academic')">Academic</div>  
+<div class="box" onclick="task('blog')">Blog</div>  
+<div class="box" onclick="task('article')">Article</div>  
+<div class="box" onclick="task('ecommerce')">E-commerce</div>  
+<div class="box" onclick="task('binary')">Binary</div>  
+<div class="box" onclick="task('bot')">AI Bot</div>  
+<div class="box" onclick="task('chat with foreigners')">Chat with Foreigners</div>  
+<div class="box" onclick="task('training')">Training</div>  
+</div>  <div class="card">  
+<button onclick="withdraw()">Withdraw</button>  
+</div>  </div>  
+<div id="adminPanel" style="display:none">  <div class="card">  
+<h2>⚙️ Admin Dashboard</h2>  
+</div>  <div class="card">  
+<h3>👥 Users</h3>  
+<div id="userList"></div>  
+</div>  <div class="card">  
+<h3>💰 Approve Activations</h3>  
+<div id="pendingPayments"></div>  
+</div>  <div class="card">  
+<h3>➕ Add Task</h3>  
+<input id="taskName" placeholder="Task name"><br><br>  
+<input id="taskPay" placeholder="Amount"><br><br>  
+<button onclick="addTask()">Add Task</button>  
+</div>  <div class="card">  
+<button onclick="backToUser()">⬅ Back to Dashboard</button>  
+</div>  </div>
+  
+<script>  
+console.log("Script Loaded ✅");  
+/* DATABASE */  
+let users=JSON.parse(localStorage.getItem("users"))||{};  
+let current=localStorage.getItem("current");  
+let user=null;  /* MENU FIX */
+function openMenu(){
+menu.style.left="0";
+menuOverlay.style.display="block";
+menuOverlay.style.pointerEvents="auto";
+}
 
+function closeMenu(){
+menu.style.left="-260px";
+menuOverlay.style.display="none";
+menuOverlay.style.pointerEvents="none";
+}
+function showPackages(){
+alert(
+`📦 UK WRITERS HUB PACKAGES
+
+🔹 BASIC (KES 500)
+
+Access Surveys
+
+Affiliate Marketing
+
+
+🔸 INTERMEDIATE (KES 1,500)
+
+Blog Writing
+
+Article Writing
+
+E-commerce
+
+Binary Trading
+
+
+🔶 PREMIUM (KES 2,500)
+
+Academic Writing
+
+AI Trading Bot
+
+Chat with Foreigners
+
+Training Access
+
+
+⚠️ NOTE:
+Upgrade your package to unlock more earning opportunities.`
+);
+}
+
+/* REGISTER */
+function register(){
+let email = emailEl().value.trim();
+let phone = phoneEl().value.trim();
+let pass = passEl().value.trim();
+
+if(!email || !phone || !pass){
+alert("Fill all fields");
+return;
+}
+
+if(users[email]){
+alert("Account already exists, please login");
+return;
+}
+
+user = {
+email,
+phone,
+password: pass,
+balance:0,
+profits:0,
+activated:false,
+package:"none",
+code: "user" + Math.floor(Math.random()*9000 + 1000)
+};
+
+users[email] = user;
+saveSession();
+
+alert("Registered successfully ✅");
+showDashboard();
+}
+
+/* LOGIN */
+function login(){
+let email = emailEl().value.trim();
+let pass = passEl().value.trim();
+
+if(!email || !pass){
+alert("Enter email and password");
+return;
+}
+
+let existingUser = users[email];
+
+if(!existingUser){
+alert("Account not found. Please register.");
+return;
+}
+
+// Fix old accounts without password
+if(!existingUser.password){
+existingUser.password = pass;
+}
+
+if(existingUser.password !== pass){
+alert("Incorrect password");
+return;
+}
+
+user = existingUser;
+
+// Ensure code exists
+if(!user.code){
+user.code = "user" + Math.floor(Math.random()*9000 + 1000);
+}
+
+saveSession();
+
+alert("Login successful ✅");
+showDashboard();
+}
+
+/* SAVE */
+function save(){
+localStorage.setItem("users",JSON.stringify(users));
+localStorage.setItem("current",user.email);
+}
+
+/* SHOW DASHBOARD */
+function show(){
+authBox.style.display="none";
+dashboard.style.display="block";
+
+let h=new Date().getHours();
+let msg=h<12?"Good morning 🌅":h<18?"Good afternoon ☀️":"Good evening 🌙";
+
+greet.innerHTML=${msg}, welcome back <b>${user.email}</b>;
+update();
+}
+function loadTasks(){
+
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+let html = "<h3>📝 Extra Tasks</h3>";
+
+tasks.forEach(t=>{
+html += <p>• ${t.name} - KES ${t.pay}</p>;
+});
+
+document.getElementById("extraTasks").innerHTML = html;
+}
+loadTasks();
+
+/* UPDATE */
+function update(){
+balance.innerText=user.balance;
+profits.innerText=user.profits;
+}
+
+/* ACTIVATE */
+function activate(){
+
+user.pending = true; // 🔥 mark as pending
+
+save();
+
+alert("Payment submitted. Waiting for admin approval.");
+}
+
+/* TASK */
+function task(type){
+
+/* NOT ACTIVATED */
+if(!user.activated){
+alert("Activate your account first");
+return;
+}
+
+/* PACKAGE CONTROL */
+let basic=["survey","affiliate"];
+let intermediate=["blog","article","ecommerce","binary"];
+let premium=["academic","bot","chat with foreigners","training"];
+
+/* CHECK PACKAGE */
+if(intermediate.includes(type) && user.package!=="intermediate" && user.package!=="premium"){
+alert("Activate your account first ");
+return;
+}
+
+if(premium.includes(type) && user.package!=="premium"){
+alert("Activate your account first ");
+return;
+}
+
+/* EARNINGS */
+let pay={
+survey:10,
+blog:100,
+article:200,
+academic:2000,
+ecommerce:500,
+binary:300
+};
+
+/* SPECIAL SERVICES */
+if(type==="chat with foreigners"){alert("Requires Premium (KES 5000)");return;}
+if(type==="training"){alert("Requires Training Fee (KES 2500)");return;}
+if(type==="affiliate"){alert("Share your link to earn KES 150 per referral ");return;}
+
+/* ADD MONEY */
+user.profits += pay[type] || 0;
+
+save();
+update();
+}
+
+/* REFERRAL */
+function copyRef(){
+
+if(!user || !user.code){
+alert("User not ready. Please login again.");
+return;
+}
+
+let link = location.origin + "?ref=" + user.code;
+
+navigator.clipboard.writeText(link);
+
+alert("Referral link copied:\n" + link);
+}
+
+/* MEMBERS */
+function showMembers(){
+let list=Object.values(users).map(u=>u.email).join("\n");
+alert(list);
+}
+
+/* WHATSAPP */
+function openWhatsApp(){
+window.open("https://chat.whatsapp.com/J5ADgIBZ7x05toVKpjRjou","_blank");
+}
+
+/* MANUAL */
+function manual(){
+alert("LIPA NA MPESA\nBUY GOODS & SERVICES\nTILL: 6892947");
+}
+
+/* WITHDRAW */
+function withdraw(){
+if(user.profits<600){
+alert("Minimum KES 600");
+return;
+}
+user.balance+=user.profits;
+user.profits=0;
+save();
+update();
+alert("Withdrawal successful");
+}
+
+/* ADMIN */
+function openAdmin(){
+
+if(user.email === "muindithomas16@gmail.com"){  // 🔥 your admin email
+document.getElementById("dashboard").style.display="none";
+document.getElementById("adminPanel").style.display="block";
+}else{
+alert("Access denied. Admin only.");
+}
+
+closeMenu();
+}
+function loadUsers(){
+
+let html="";
+
+for(let key in users){
+let u = users[key];
+
+html += `
+
+<div style="border-bottom:1px solid #333;padding:10px">  
+<b>${u.code}</b><br>  
+${u.email}<br>  
+Balance: ${u.balance}<br>  
+Activated: ${u.activated ? "✅" : "❌"}  
+</div>  
+`;  
+}  document.getElementById("userList").innerHTML = html;
+}
+function backToUser(){
+document.getElementById("adminPanel").style.display="none";
+document.getElementById("dashboard").style.display="block";
+}
+let extraTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+function addTask(){
+
+let name = document.getElementById("taskName").value;
+let pay = document.getElementById("taskPay").value;
+
+if(!name || !pay){
+alert("Enter task details");
+return;
+}
+
+extraTasks.push({name, pay});
+
+localStorage.setItem("tasks", JSON.stringify(extraTasks));
+
+alert("Task added ✅");
+
+document.getElementById("taskName").value="";
+document.getElementById("taskPay").value="";
+}
+function loadPending(){
+
+let html="";
+
+for(let key in users){
+let u = users[key];
+
+if(u.pending){
+html += `
+
+<div style="padding:10px;border-bottom:1px solid #333">  
+${u.code} - ${u.email}  
+<br>  
+<button onclick="approve('${key}')">Approve</button>  
+</div>  
+`;  
+}  
+}  document.getElementById("pendingPayments").innerHTML = html;
+}
+function approve(email){
+
+users[email].activated = true;
+users[email].pending = false;
+
+localStorage.setItem("users", JSON.stringify(users));
+
+loadPending();
+loadUsers();
+
+alert("Approved ✅");
+}
+function openAdmin(){
+
+if(user.email === "muindithomas16@gmail.com"){
+
+dashboard.style.display="none";
+adminPanel.style.display="block";
+
+loadUsers();
+loadPending();
+
+}else{
+alert("Admin only");
+}
+
+closeMenu();
+}
+/* LOGOUT */
+function logout(){
+localStorage.removeItem("currentUser");
+location.reload();
+}
+
+/* LIVE EARNINGS */
+setInterval(()=>{
+let services=["Academic","Blog","Article","Affiliate","E-commerce","Binary","AI Bot","Survey","Chat with Foreigners"];
+let u=Math.floor(Math.random()*9000+1000);
+let amt=Math.floor(Math.random()*5000)+100;
+
+document.getElementById("liveEarn").innerHTML=
+🔥 user${u} earned KES ${amt} from ${services[Math.floor(Math.random()*services.length)]};
+},2000);
+
+/* LIVE WITHDRAWALS */
+setInterval(()=>{
+let u=Math.floor(Math.random()*9000+1000);
+let amt=Math.floor(Math.random()*20000)+500;
+
+document.getElementById("liveWithdraw").innerHTML=
+💸 user${u} withdrew KES ${amt};
+},2500);
+
+/* AUTO LOGIN */
+window.onload = function(){
+
+let saved = localStorage.getItem("currentUser");
+
+if(saved){
+try{
+let parsed = JSON.parse(saved);
+
+// if stored as object  
+  if(parsed && parsed.email && users[parsed.email]){  
+    user = users[parsed.email];  
+    showDashboard();  
+    return;  
+  }  
+
+  // if stored as string (OLD VERSION FIX)  
+  if(typeof parsed === "string" && users[parsed]){  
+    user = users[parsed];  
+    showDashboard();  
+    return;  
+  }  
+
+}catch(e){  
+  // fallback if JSON fails  
+  if(users[saved]){  
+    user = users[saved];  
+    showDashboard();  
+    return;  
+  }  
+}
+
+}
+}
+function resetPassword(){
+let email = prompt("Enter your email:");
+
+if(!users[email]){
+alert("Email not found");
+return;
+}
+
+let newPass = prompt("Enter new password:");
+users[email].password = newPass;
+
+localStorage.setItem("users", JSON.stringify(users));
+
+alert("Password updated ✅");
+}
+  function emailEl(){ return document.getElementById("email"); }
+function phoneEl(){ return document.getElementById("phone"); }
+function passEl(){ return document.getElementById("password"); }
+
+function saveSession(){
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("currentUser", JSON.stringify(user));
+}
+
+function showDashboard(){
+  show();
+  }
+</script>
+
+</body>  
+  </html>  
+<div style="text-align:center;padding:20px;font-size:13px;color:white;opacity:0.8;">  
+✅ Trusted Platform for Online Earnings & Digital Opportunities<br>  
+🔒 Secure Transactions | 📈 Real-Time Earnings | 🌍 Global Access<br><br>  
+© 2026 UK WRITERS HUB. All Rights Reserved.  
+  </div>
