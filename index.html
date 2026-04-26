@@ -63,7 +63,6 @@ body{
   text-align:center;
   font-weight:bold;
   cursor:pointer;
-  color:white;
 }
 
 .box:nth-child(3n){background:#0ea5e9}
@@ -97,7 +96,7 @@ input{
 
 <div id="menu">
 <h3>Menu</h3>
-<p onclick="copyRef()">📎 Referral Link</p>
+<p onclick="copyRef()">📎 Referral</p>
 <p onclick="showMembers()">👥 Members</p>
 <p onclick="showPackages()">📦 Packages</p>
 <p onclick="withdraw()">💸 Withdraw</p>
@@ -128,38 +127,31 @@ Withdrawable Balance: KES <span id="balance">0</span>
 
 <div class="card" id="live"></div>
 
+<div class="card" id="withdrawLive"></div>
+
 <div class="features">
 <div class="box" onclick="task('survey')">Surveys</div>
-<div class="box" onclick="task('blog')">Blog Writing</div>
-<div class="box" onclick="task('article')">Article Writing</div>
-<div class="box" onclick="task('academic')">Academic Writing</div>
+<div class="box" onclick="task('blog')">Blog</div>
+<div class="box" onclick="task('article')">Article</div>
+<div class="box" onclick="task('academic')">Academic</div>
 <div class="box" onclick="task('affiliate')">Affiliate</div>
 <div class="box" onclick="task('ecommerce')">E-commerce</div>
-<div class="box" onclick="task('binary')">Binary Trading</div>
+<div class="box" onclick="task('binary')">Binary</div>
 <div class="box" onclick="task('bot')">AI Bot</div>
-<div class="box" onclick="task('chat')">Chat Foreigners</div>
+<div class="box" onclick="task('chat')">Chat</div>
 <div class="box" onclick="task('training')">Training</div>
 </div>
 
 <div class="card">
 <h3>Activate Account (KES 500)</h3>
-<button onclick="activate()">Activate Now</button>
+<button onclick="activate()">Activate</button>
 </div>
 
 </div>
 
 <script>
 
-/* STORAGE SAFE LOAD */
-function getUsers(){
-  try{
-    return JSON.parse(localStorage.getItem("users")) || {};
-  }catch{
-    return {};
-  }
-}
-
-let users = getUsers();
+let users = JSON.parse(localStorage.getItem("users")) || {};
 let user = null;
 
 /* MENU */
@@ -170,13 +162,10 @@ function toggleMenu(){
 
 /* REGISTER */
 function register(){
-  let u=username.value.trim();
-  let p=password.value.trim();
+  let u=document.getElementById("username").value.trim();
+  let p=document.getElementById("password").value.trim();
 
-  if(!u||!p){alert("Fill all");return;}
-
-  users = getUsers();
-
+  if(!u||!p){alert("Fill all fields");return;}
   if(users[u]){alert("User exists");return;}
 
   users[u]={
@@ -196,10 +185,8 @@ function register(){
 
 /* LOGIN */
 function login(){
-  let u=username.value.trim();
-  let p=password.value.trim();
-
-  users = getUsers();
+  let u=document.getElementById("username").value.trim();
+  let p=document.getElementById("password").value.trim();
 
   if(!users[u]){alert("User not found");return;}
   if(users[u].password!==p){alert("Wrong password");return;}
@@ -208,32 +195,32 @@ function login(){
   show();
 }
 
-/* SHOW DASHBOARD */
+/* SHOW */
 function show(){
-  users = getUsers();
-  let current = localStorage.getItem("currentUser");
-
+  let current=localStorage.getItem("currentUser");
   if(!users[current]) return;
 
-  user = users[current];
+  user=users[current];
 
-  authBox.style.display="none";
-  dashboard.style.display="block";
+  document.getElementById("authBox").style.display="none";
+  document.getElementById("dashboard").style.display="block";
 
   let h=new Date().getHours();
   let g=h<12?"Good Morning 🌅":h<18?"Good Afternoon ☀️":"Good Evening 🌙";
 
-  greet.innerHTML=`${g}, welcome back ${user.username}`;
+  document.getElementById("greet").innerHTML=
+    `${g}, welcome back ${user.username}`;
+
   update();
 }
 
 /* UPDATE */
 function update(){
-  balance.innerText=user.balance;
-  profits.innerText=user.profits;
+  document.getElementById("balance").innerText=user.balance;
+  document.getElementById("profits").innerText=user.profits;
 }
 
-/* TASK SYSTEM */
+/* TASKS */
 function task(type){
   if(!user.activated){
     alert("Activate your account first");
@@ -241,31 +228,26 @@ function task(type){
   }
 
   let pay={
-    survey:10,
-    blog:100,
-    article:200,
-    academic:2000,
-    ecommerce:500,
-    binary:300
+    survey:10,blog:100,article:200,
+    academic:2000,ecommerce:500,binary:300
   };
 
-  if(type==="chat"){alert("Unlock with KES 5000");return;}
-  if(type==="training"){alert("Unlock with KES 2500");return;}
+  if(type==="chat"){alert("Pay KES 5000 to unlock");return;}
+  if(type==="training"){alert("Pay KES 2500 to unlock");return;}
 
   user.profits += pay[type] || 0;
-
-  saveUser();
+  save();
 }
 
 /* ACTIVATE */
 function activate(){
   user.activated=true;
-  saveUser();
+  save();
   alert("Account Activated ✅");
 }
 
-/* SAVE USER */
-function saveUser(){
+/* SAVE */
+function save(){
   users[user.username]=user;
   localStorage.setItem("users",JSON.stringify(users));
   update();
@@ -276,7 +258,7 @@ function copyRef(){
   if(!user){alert("Login first");return;}
   let link=location.origin+"?ref="+user.code;
   navigator.clipboard.writeText(link);
-  alert(link);
+  alert("Copied:\n"+link);
 }
 
 /* MEMBERS */
@@ -286,15 +268,18 @@ function showMembers(){
 
 /* PACKAGES */
 function showPackages(){
-  alert("Standard - 500\nIntermediate - 1500\nPremium - 2500");
+  alert("Basic: 500\nIntermediate: 1500\nPremium: 2500");
 }
 
 /* WITHDRAW */
 function withdraw(){
-  if(user.profits<100){alert("Minimum 100");return;}
+  if(user.profits<100){
+    alert("Minimum KES 100");
+    return;
+  }
   user.balance+=user.profits;
   user.profits=0;
-  saveUser();
+  save();
 }
 
 /* LOGOUT */
@@ -303,27 +288,32 @@ function logout(){
   location.reload();
 }
 
-/* LIVE SYSTEM */
+/* LIVE */
 setInterval(()=>{
-  let keys=Object.keys(getUsers());
+  let keys=Object.keys(users);
+  if(keys.length===0) return;
 
-  if(keys.length===0){
-    live.innerHTML="🔥 Waiting for users...";
-    return;
-  }
-
-  let services=["Academic","Blog","Article","Affiliate","E-commerce","Binary","AI Bot","Survey"];
+  let services=["Academic","Blog","Article","Affiliate","E-commerce","Binary","Survey"];
   let u=keys[Math.floor(Math.random()*keys.length)];
   let amt=Math.floor(Math.random()*5000);
   let s=services[Math.floor(Math.random()*services.length)];
 
-  live.innerHTML=`🔥 ${u} earned KES ${amt} from ${s}`;
+  document.getElementById("live").innerHTML=
+    `🔥 ${u} earned KES ${amt} from ${s}`;
 },2000);
+
+setInterval(()=>{
+  let u="user"+Math.floor(Math.random()*9000);
+  let amt=Math.floor(Math.random()*20000);
+
+  document.getElementById("withdrawLive").innerHTML=
+    `💸 ${u} withdrew KES ${amt}`;
+},2500);
 
 /* AUTO LOGIN */
 window.onload=function(){
   let current=localStorage.getItem("currentUser");
-  if(current) show();
+  if(current && users[current]) show();
 }
 
 </script>
