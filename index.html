@@ -1,1 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UK WRITERS HUB</title>
 
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(135deg,#16a34a,#22c55e,#0ea5e9,#f97316);
+  color:white;
+}
+
+/* HEADER */
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:15px;
+  background:#022c22;
+}
+
+.menu-btn{font-size:22px;cursor:pointer}
+
+/* MENU */
+#menu{
+  position:fixed;
+  top:0;
+  left:-260px;
+  width:260px;
+  height:100%;
+  background:#0f172a;
+  padding:20px;
+  transition:.3s;
+}
+
+#menu p{
+  padding:12px;
+  border-bottom:1px solid #1f2937;
+  cursor:pointer;
+}
+
+/* CARDS */
+.card{
+  background:rgba(0,0,0,0.4);
+  margin:10px;
+  padding:15px;
+  border-radius:12px;
+}
+
+/* FEATURES */
+.features{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:10px;
+}
+
+.box{
+  padding:15px;
+  border-radius:10px;
+  text-align:center;
+  font-weight:bold;
+  cursor:pointer;
+  color:white;
+}
+
+.box:nth-child(3n){background:#0ea5e9}
+.box:nth-child(3n+1){background:#22c55e}
+.box:nth-child(3n+2){background:#f97316}
+
+button{
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:#16a34a;
+  color:white;
+}
+
+input{
+  width:90%;
+  padding:10px;
+  margin:5px;
+  border-radius:8px;
+  border:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+  <b>🇬🇧 UK WRITERS HUB</b>
+</div>
+
+<div id="menu">
+<h3>Menu</h3>
+<p onclick="copyRef()">📎 Referral Link</p>
+<p onclick="showMembers()">👥 Members</p>
+<p onclick="showPackages()">📦 Packages</p>
+<p onclick="withdraw()">💸 Withdraw</p>
+<p onclick="logout()">🚪 Logout</p>
+</div>
+
+<!-- LOGIN -->
+<div id="authBox" class="card">
+<h3>Register / Login</h3>
+<input id="username" placeholder="Username">
+<input id="password" type="password" placeholder="Password">
+<button onclick="register()">Register</button>
+<button onclick="login()">Login</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" style="display:none">
+
+<div class="card" id="greet"></div>
+
+<div class="card">
+Total Profits: KES <span id="profits">0</span>
+</div>
+
+<div class="card">
+Withdrawable Balance: KES <span id="balance">0</span>
+</div>
+
+<div class="card" id="live"></div>
+
+<div class="features">
+<div class="box" onclick="task('survey')">Surveys</div>
+<div class="box" onclick="task('blog')">Blog Writing</div>
+<div class="box" onclick="task('article')">Article Writing</div>
+<div class="box" onclick="task('academic')">Academic Writing</div>
+<div class="box" onclick="task('affiliate')">Affiliate</div>
+<div class="box" onclick="task('ecommerce')">E-commerce</div>
+<div class="box" onclick="task('binary')">Binary Trading</div>
+<div class="box" onclick="task('bot')">AI Bot</div>
+<div class="box" onclick="task('chat')">Chat Foreigners</div>
+<div class="box" onclick="task('training')">Training</div>
+</div>
+
+<div class="card">
+<h3>Activate Account (KES 500)</h3>
+<button onclick="activate()">Activate Now</button>
+</div>
+
+</div>
+
+<script>
+
+/* STORAGE SAFE LOAD */
+function getUsers(){
+  try{
+    return JSON.parse(localStorage.getItem("users")) || {};
+  }catch{
+    return {};
+  }
+}
+
+let users = getUsers();
+let user = null;
+
+/* MENU */
+function toggleMenu(){
+  let m=document.getElementById("menu");
+  m.style.left = m.style.left==="0px"?"-260px":"0px";
+}
+
+/* REGISTER */
+function register(){
+  let u=username.value.trim();
+  let p=password.value.trim();
+
+  if(!u||!p){alert("Fill all");return;}
+
+  users = getUsers();
+
+  if(users[u]){alert("User exists");return;}
+
+  users[u]={
+    username:u,
+    password:p,
+    balance:0,
+    profits:0,
+    activated:false,
+    code:"user"+Math.floor(Math.random()*9000+1000)
+  };
+
+  localStorage.setItem("users",JSON.stringify(users));
+  localStorage.setItem("currentUser",u);
+
+  show();
+}
+
+/* LOGIN */
+function login(){
+  let u=username.value.trim();
+  let p=password.value.trim();
+
+  users = getUsers();
+
+  if(!users[u]){alert("User not found");return;}
+  if(users[u].password!==p){alert("Wrong password");return;}
+
+  localStorage.setItem("currentUser",u);
+  show();
+}
+
+/* SHOW DASHBOARD */
+function show(){
+  users = getUsers();
+  let current = localStorage.getItem("currentUser");
+
+  if(!users[current]) return;
+
+  user = users[current];
+
+  authBox.style.display="none";
+  dashboard.style.display="block";
+
+  let h=new Date().getHours();
+  let g=h<12?"Good Morning 🌅":h<18?"Good Afternoon ☀️":"Good Evening 🌙";
+
+  greet.innerHTML=`${g}, welcome back ${user.username}`;
+  update();
+}
+
+/* UPDATE */
+function update(){
+  balance.innerText=user.balance;
+  profits.innerText=user.profits;
+}
+
+/* TASK SYSTEM */
+function task(type){
+  if(!user.activated){
+    alert("Activate your account first");
+    return;
+  }
+
+  let pay={
+    survey:10,
+    blog:100,
+    article:200,
+    academic:2000,
+    ecommerce:500,
+    binary:300
+  };
+
+  if(type==="chat"){alert("Unlock with KES 5000");return;}
+  if(type==="training"){alert("Unlock with KES 2500");return;}
+
+  user.profits += pay[type] || 0;
+
+  saveUser();
+}
+
+/* ACTIVATE */
+function activate(){
+  user.activated=true;
+  saveUser();
+  alert("Account Activated ✅");
+}
+
+/* SAVE USER */
+function saveUser(){
+  users[user.username]=user;
+  localStorage.setItem("users",JSON.stringify(users));
+  update();
+}
+
+/* REFERRAL */
+function copyRef(){
+  if(!user){alert("Login first");return;}
+  let link=location.origin+"?ref="+user.code;
+  navigator.clipboard.writeText(link);
+  alert(link);
+}
+
+/* MEMBERS */
+function showMembers(){
+  alert(Object.keys(users).join("\n"));
+}
+
+/* PACKAGES */
+function showPackages(){
+  alert("Standard - 500\nIntermediate - 1500\nPremium - 2500");
+}
+
+/* WITHDRAW */
+function withdraw(){
+  if(user.profits<100){alert("Minimum 100");return;}
+  user.balance+=user.profits;
+  user.profits=0;
+  saveUser();
+}
+
+/* LOGOUT */
+function logout(){
+  localStorage.removeItem("currentUser");
+  location.reload();
+}
+
+/* LIVE SYSTEM */
+setInterval(()=>{
+  let keys=Object.keys(getUsers());
+
+  if(keys.length===0){
+    live.innerHTML="🔥 Waiting for users...";
+    return;
+  }
+
+  let services=["Academic","Blog","Article","Affiliate","E-commerce","Binary","AI Bot","Survey"];
+  let u=keys[Math.floor(Math.random()*keys.length)];
+  let amt=Math.floor(Math.random()*5000);
+  let s=services[Math.floor(Math.random()*services.length)];
+
+  live.innerHTML=`🔥 ${u} earned KES ${amt} from ${s}`;
+},2000);
+
+/* AUTO LOGIN */
+window.onload=function(){
+  let current=localStorage.getItem("currentUser");
+  if(current) show();
+}
+
+</script>
+
+</body>
+  </html>
