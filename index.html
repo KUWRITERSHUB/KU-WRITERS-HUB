@@ -8,11 +8,15 @@
 body{
   margin:0;
   font-family:Arial;
-  background:linear-gradient(135deg,#16a34a,#22c55e,#0ea5e9,#f97316);
+  background:linear-gradient(135deg,#0ea5e9,#22c55e,#f97316,#ef4444,#a855f7);
   color:white;
+  min-height:100vh;
+  overflow-x:hidden;
+  background-attachment:fixed;
 }
 
-/* HEADER */
+html{min-height:100%;}
+
 .header{
   display:flex;
   align-items:center;
@@ -23,7 +27,6 @@ body{
 
 .menu-btn{font-size:22px;cursor:pointer}
 
-/* MENU */
 #menu{
   position:fixed;
   top:0;
@@ -33,6 +36,7 @@ body{
   background:#0f172a;
   padding:20px;
   transition:.3s;
+  z-index:1000;
 }
 
 #menu p{
@@ -41,7 +45,6 @@ body{
   cursor:pointer;
 }
 
-/* CARDS */
 .card{
   background:rgba(0,0,0,0.4);
   margin:10px;
@@ -49,7 +52,6 @@ body{
   border-radius:12px;
 }
 
-/* FEATURES */
 .features{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -63,11 +65,12 @@ body{
   text-align:center;
   font-weight:bold;
   cursor:pointer;
+  color:white;
 }
 
-.box:nth-child(3n){background:#0ea5e9}
-.box:nth-child(3n+1){background:#22c55e}
-.box:nth-child(3n+2){background:#f97316}
+.box:nth-child(3n){background:linear-gradient(135deg,#0ea5e9,#3b82f6)}
+.box:nth-child(3n+1){background:linear-gradient(135deg,#22c55e,#16a34a)}
+.box:nth-child(3n+2){background:linear-gradient(135deg,#f97316,#ef4444)}
 
 button{
   padding:10px;
@@ -75,12 +78,13 @@ button{
   border-radius:8px;
   background:#16a34a;
   color:white;
+  font-weight:bold;
 }
 
 input{
   width:90%;
   padding:10px;
-  margin:5px;
+  margin:5px 0;
   border-radius:8px;
   border:none;
 }
@@ -100,34 +104,27 @@ input{
 <p onclick="showMembers()">👥 Members</p>
 <p onclick="showPackages()">📦 Packages</p>
 <p onclick="withdraw()">💸 Withdraw</p>
+<p onclick="openAdmin()">⚙️ Admin</p>
 <p onclick="logout()">🚪 Logout</p>
 </div>
 
-<!-- LOGIN -->
 <div id="authBox" class="card">
 <h3>Register / Login</h3>
-<input id="username" placeholder="Username">
-<input id="password" type="password" placeholder="Password">
+<input id="username" placeholder="Username"><br>
+<input id="password" type="password" placeholder="Password"><br>
+<input id="ref" placeholder="Referral Code (optional)"><br>
 <button onclick="register()">Register</button>
 <button onclick="login()">Login</button>
 </div>
 
-<!-- DASHBOARD -->
 <div id="dashboard" style="display:none">
 
 <div class="card" id="greet"></div>
 
-<div class="card">
-Total Profits: KES <span id="profits">0</span>
-</div>
-
-<div class="card">
-Withdrawable Balance: KES <span id="balance">0</span>
-</div>
+<div class="card">Profits: KES <span id="profits">0</span></div>
+<div class="card">Balance: KES <span id="balance">0</span></div>
 
 <div class="card" id="live"></div>
-
-<div class="card" id="withdrawLive"></div>
 
 <div class="features">
 <div class="box" onclick="task('survey')">Surveys</div>
@@ -144,179 +141,126 @@ Withdrawable Balance: KES <span id="balance">0</span>
 
 <div class="card">
 <h3>Activate Account (KES 500)</h3>
+<input id="phone" placeholder="Phone">
+<input id="code" placeholder="MPESA Code">
 <button onclick="activate()">Activate</button>
 </div>
 
 </div>
 
 <script>
-
 let users = JSON.parse(localStorage.getItem("users")) || {};
+let currentUser = localStorage.getItem("currentUser");
 let user = null;
 
-/* MENU */
 function toggleMenu(){
-  let m=document.getElementById("menu");
-  m.style.left = m.style.left==="0px"?"-260px":"0px";
+  const m=document.getElementById("menu");
+  m.style.left = (m.style.left==="0px")?"-260px":"0px";
 }
 
-/* REGISTER */
 function register(){
-  let u=document.getElementById("username").value.trim();
-  let p=document.getElementById("password").value.trim();
-
-  if(!u||!p){alert("Fill all fields");return;}
-  if(users[u]){alert("User exists");return;}
+  let u=username.value,p=password.value,r=ref.value;
+  if(!u||!p)return alert("Fill all");
+  if(users[u])return alert("Exists");
 
   users[u]={
-    username:u,
-    password:p,
-    balance:0,
-    profits:0,
-    activated:false,
-    code:"user"+Math.floor(Math.random()*9000+1000)
+    username:u,password:p,balance:0,profits:0,
+    code:"user"+Math.floor(Math.random()*9999),
+    activated:false,referrer:r||null
   };
 
+  save(u);
+  alert("Registered");
+  show();
+}
+
+function login(){
+  let u=username.value,p=password.value;
+  if(!users[u])return alert("Not found");
+  if(users[u].password!==p)return alert("Wrong password");
+  save(u);show();
+}
+
+function save(u){
   localStorage.setItem("users",JSON.stringify(users));
   localStorage.setItem("currentUser",u);
-
-  show();
 }
 
-/* LOGIN */
-function login(){
-  let u=document.getElementById("username").value.trim();
-  let p=document.getElementById("password").value.trim();
-
-  if(!users[u]){alert("User not found");return;}
-  if(users[u].password!==p){alert("Wrong password");return;}
-
-  localStorage.setItem("currentUser",u);
-  show();
-}
-
-/* SHOW */
 function show(){
-  let current=localStorage.getItem("currentUser");
-  if(!users[current]) return;
-
-  user=users[current];
-
-  document.getElementById("authBox").style.display="none";
-  document.getElementById("dashboard").style.display="block";
+  user=users[localStorage.getItem("currentUser")];
+  authBox.style.display="none";
+  dashboard.style.display="block";
 
   let h=new Date().getHours();
-  let g=h<12?"Good Morning 🌅":h<18?"Good Afternoon ☀️":"Good Evening 🌙";
+  let t=h<12?"Good Morning 🌅":h<18?"Good Afternoon ☀️":"Good Evening 🌙";
 
-  document.getElementById("greet").innerHTML=
-    `${g}, welcome back ${user.username}`;
-
+  greet.innerHTML=`${t}, welcome back ${user.username}`;
   update();
 }
 
-/* UPDATE */
 function update(){
-  document.getElementById("balance").innerText=user.balance;
-  document.getElementById("profits").innerText=user.profits;
+  balance.innerText=user.balance;
+  profits.innerText=user.profits;
 }
 
-/* TASKS */
 function task(type){
-  if(!user.activated){
-    alert("Activate your account first");
-    return;
-  }
+  if(!user.activated){alert("Activate account first");return;}
 
-  let pay={
-    survey:10,blog:100,article:200,
-    academic:2000,ecommerce:500,binary:300
-  };
+  let pay={survey:10,blog:100,article:200,academic:2000,ecommerce:500,binary:300};
 
-  if(type==="chat"){alert("Pay KES 5000 to unlock");return;}
-  if(type==="training"){alert("Pay KES 2500 to unlock");return;}
-
-  user.profits += pay[type] || 0;
-  save();
-}
-
-/* ACTIVATE */
-function activate(){
-  user.activated=true;
-  save();
-  alert("Account Activated ✅");
-}
-
-/* SAVE */
-function save(){
-  users[user.username]=user;
-  localStorage.setItem("users",JSON.stringify(users));
+  user.profits += pay[type]||0;
+  save(user.username);
   update();
 }
 
-/* REFERRAL */
-function copyRef(){
-  if(!user){alert("Login first");return;}
-  let link=location.origin+"?ref="+user.code;
-  navigator.clipboard.writeText(link);
-  alert("Copied:\n"+link);
-}
+function activate(){
+  if(user.activated)return alert("Already active");
 
-/* MEMBERS */
-function showMembers(){
-  alert(Object.keys(users).join("\n"));
-}
+  user.activated=true;
 
-/* PACKAGES */
-function showPackages(){
-  alert("Basic: 500\nIntermediate: 1500\nPremium: 2500");
-}
-
-/* WITHDRAW */
-function withdraw(){
-  if(user.profits<100){
-    alert("Minimum KES 100");
-    return;
+  if(user.referrer && users[user.referrer]){
+    users[user.referrer].balance += 150;
   }
+
+  save(user.username);
+  alert("Activated");
+}
+
+function withdraw(){
+  if(user.profits<100)return alert("Min 100");
   user.balance+=user.profits;
   user.profits=0;
-  save();
+  save(user.username);
+  update();
 }
 
-/* LOGOUT */
-function logout(){
-  localStorage.removeItem("currentUser");
-  location.reload();
+function copyRef(){
+  navigator.clipboard.writeText(location.origin+"?ref="+user.code);
+  alert("Copied referral");
 }
 
-/* LIVE */
+function showMembers(){alert(Object.keys(users).join("\n"));}
+
+function showPackages(){alert("Basic 500\nIntermediate 1500\nPremium 2500");}
+
+function openAdmin(){
+  if(user.username==="admin")alert("Admin access granted");
+  else alert("Admin only");
+}
+
+function logout(){localStorage.removeItem("currentUser");location.reload();}
+
 setInterval(()=>{
-  let keys=Object.keys(users);
-  if(keys.length===0) return;
-
-  let services=["Academic","Blog","Article","Affiliate","E-commerce","Binary","Survey"];
-  let u=keys[Math.floor(Math.random()*keys.length)];
-  let amt=Math.floor(Math.random()*5000);
+  let services=["Survey","Blog","Academic","Affiliate","Binary","E-commerce","AI Bot","Chat","Training"];
+  let u=Object.keys(users)[Math.floor(Math.random()*Object.keys(users).length)]||"user";
+  let amt=Math.floor(Math.random()*3000);
   let s=services[Math.floor(Math.random()*services.length)];
 
-  document.getElementById("live").innerHTML=
-    `🔥 ${u} earned KES ${amt} from ${s}`;
+  live.innerHTML=`🔥 ${u} earned KES ${amt} from ${s}`;
 },2000);
 
-setInterval(()=>{
-  let u="user"+Math.floor(Math.random()*9000);
-  let amt=Math.floor(Math.random()*20000);
-
-  document.getElementById("withdrawLive").innerHTML=
-    `💸 ${u} withdrew KES ${amt}`;
-},2500);
-
-/* AUTO LOGIN */
-window.onload=function(){
-  let current=localStorage.getItem("currentUser");
-  if(current && users[current]) show();
-}
-
+window.onload=()=>{if(currentUser&&users[currentUser])show();}
 </script>
 
 </body>
-  </html>
+</html>
